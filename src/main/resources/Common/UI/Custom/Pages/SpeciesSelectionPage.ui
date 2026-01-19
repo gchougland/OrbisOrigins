@@ -1,0 +1,143 @@
+$C = "../Common.ui";
+
+$C.@DecoratedContainer {
+  Anchor: (Left: 10, Width: 550, Height: 600);
+
+  #Title {
+    Group {
+      $C.@Title {
+        @Text = %server.customUI.orbisOriginsSpeciesSelection.title;
+      }
+    }
+  }
+
+  #Content {
+    Group {
+      LayoutMode: Top;
+      FlexWeight: 1;
+      Padding: (Full: 15);
+
+      Group {
+        LayoutMode: Left;
+        FlexWeight: 1;
+
+        // Left: Species List
+        Group #SpeciesListContainer {
+          Anchor: (Width: 200);
+          LayoutMode: Top;
+          Padding: (Right: 15);
+
+          Label {
+            Style: (RenderBold: true);
+            Text: %server.customUI.orbisOriginsSpeciesSelection.speciesList;
+          }
+
+          Group #SpeciesList {
+            FlexWeight: 1;
+            LayoutMode: TopScrolling;
+            ScrollbarStyle: $C.@DefaultScrollbarStyle;
+            Padding: (Top: 10);
+          }
+        }
+
+        // Right: Description
+        Group #DescriptionContainer {
+          Anchor: (Width: 300);
+          LayoutMode: Top;
+          Padding: (Left: 15);
+
+          Label {
+            Style: (RenderBold: true);
+            Text: %server.customUI.orbisOriginsSpeciesSelection.description;
+          }
+
+          Group #DescriptionPanel {
+            FlexWeight: 1;
+            LayoutMode: Top;
+            Padding: (Full: 15);
+            Background: #2a2a2a;
+
+            Label #SpeciesName {
+              Style: (RenderBold: true, FontSize: 18);
+              Text: "";
+              Padding: (Bottom: 10);
+            }
+
+            Group {
+              FlexWeight: 1;
+              LayoutMode: TopScrolling;
+              ScrollbarStyle: $C.@DefaultScrollbarStyle;
+              Padding: (Full: 5);
+              
+              Label #SpeciesDescription {
+                Text: "";
+              }
+            }
+          }
+        }
+      }
+
+      // Variant controls (separate from description)
+      Group {
+        LayoutMode: Left;
+        Padding: (Top: 10, Bottom: 10);
+        Anchor: (Height: 50);
+
+        $C.@TextButton #LeftArrow {
+          Anchor: (Width: 50, Height: 50);
+          Text: "<";
+          Visible: false;
+          Style: (
+            Default: (
+              Background: #4a4a4a
+            ),
+            Hovered: (
+              Background: #5a5a5a
+            )
+          );
+        }
+
+        Label #VariantLabel {
+          FlexWeight: 1;
+          Style: (RenderBold: true);
+          Text: "";
+          Padding: (Left: 10, Right: 10);
+        }
+
+        $C.@TextButton #RightArrow {
+          Anchor: (Width: 50, Height: 50);
+          Text: ">";
+          Visible: false;
+          Style: (
+            Default: (
+              Background: #4a4a4a
+            ),
+            Hovered: (
+              Background: #5a5a5a
+            )
+          );
+        }
+      }
+
+      Group {
+        LayoutMode: Left;
+        Padding: (Top: 15, Left: 0, Right: 0, Bottom: 0);
+
+        $C.@CancelTextButton #CancelButton {
+          Text: %server.customUI.orbisOriginsSpeciesSelection.cancel;
+        }
+
+        Group {
+          Anchor: (Width: 10);
+        }
+
+        $C.@TextButton #ConfirmButton {
+          Text: %server.customUI.orbisOriginsSpeciesSelection.confirm;
+          FlexWeight: 1;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

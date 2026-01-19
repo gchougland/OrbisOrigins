@@ -1,0 +1,58 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.OrbisOrigins_Species_Selector.name"
+  },
+  "Icon": "Icons/ItemsGenerated/PortalKey_Howling_Sands.png",
+  "Quality": "Common",
+  "PlayerAnimationsId": "Item",
+  "BlockType": {
+    "DrawType": "Model",
+    "Material": "Solid",
+    "Opacity": "Transparent",
+    "CustomModel": "Blocks/Miscellaneous/Portal_Shard.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Blocks/Miscellaneous/Portal_Shard_Texture.png",
+        "Weight": 1
+      }
+    ]
+  },
+  "Interactions": {
+    "Secondary": "OrbisOrigins_Species_Selector"
+  },
+  "MaxStack": 1,
+  "IconProperties": {
+    "Scale": 1.4,
+    "Rotation": [
+      22.5,
+      137.0,
+      22.5
+    ],
+    "Translation": [
+      0.0,
+      1.0
+    ]
+  },
+  "Recipe": {
+    "TimeSeconds": 1,
+    "Input": [
+      {
+        "ItemId": "Rock_Gem_Emerald",
+        "Quantity": 1
+      },
+      {
+        "ItemId": "Ingredient_Crystal_Green",
+        "Quantity": 8
+      }
+    ],
+    "BenchRequirement": [
+      {
+        "Id": "Arcanebench",
+        "Type": "Crafting",
+        "Categories": [
+          "Arcane_Misc"
+        ]
+      }
+    ]
+  }
+}

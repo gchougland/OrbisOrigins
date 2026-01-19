@@ -1,1 +1,24 @@
-items.Example_Block.name=Example Block
+# Orbis Origins
+items.OrbisOrigins_Species_Selector.name=Species Selector
+
+# Custom UI
+customUI.orbisOriginsSpeciesSelection.title=Choose Your Species
+customUI.orbisOriginsSpeciesSelection.speciesList=Species
+customUI.orbisOriginsSpeciesSelection.preview=Preview
+customUI.orbisOriginsSpeciesSelection.description=Description
+customUI.orbisOriginsSpeciesSelection.confirm=Confirm
+customUI.orbisOriginsSpeciesSelection.cancel=Cancel
+
+# Species Names
+species.kweebec.name=Kweebec
+species.trork.name=Trork
+species.feran.name=Feran
+species.skeleton.name=Skeleton
+species.human.name=Human
+
+# Species Descriptions
+species.kweebec.description=A small, agile forest-dwelling creature. Lower health but higher stamina. Resistant to nature damage.
+species.trork.description=A large, brutish warrior. Higher health but lower stamina. Resistant to physical damage.
+species.feran.description=A balanced feline species. Moderate health and stamina. Resistant to fire and lava.
+species.skeleton.description=An undead creature. Lower health but balanced stamina. Immune to poison, but vulnerable to fire.
+species.human.description=A standard human. No special bonuses or penalties.

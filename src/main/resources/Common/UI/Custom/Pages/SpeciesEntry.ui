@@ -1,0 +1,14 @@
+Button #Button {
+  Padding: (Full: 8);
+  LayoutMode: Left;
+  Style: (
+    Hovered: (
+      Background: #4a90e2(0.3),
+    )
+  );
+
+  Label #Name {
+    Style: (RenderBold: true);
+    FlexWeight: 1;
+  }
+}
