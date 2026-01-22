@@ -85,8 +85,8 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             return;
         }
 
-        // Skip human (no model to maintain)
-        if (species.getId().equals("human")) {
+        // Skip orbian (no model to maintain)
+        if (species.getId().equals("orbian")) {
             return;
         }
 
@@ -117,9 +117,11 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             world.execute(() -> {
                 if (ref.isValid()) {
                     SpeciesData speciesToApply = SpeciesRegistry.getSpecies(finalSpeciesId);
-                    if (speciesToApply != null && !speciesToApply.getId().equals("human")) {
+                    if (speciesToApply != null && !speciesToApply.getId().equals("orbian")) {
                         String modelName = speciesToApply.getModelName(finalVariantIndex);
-                        ModelUtil.applyModelToPlayer(ref, store, modelName);
+                        float eyeHeightModifier = speciesToApply.getEyeHeightModifier(modelName);
+                        float hitboxHeightModifier = speciesToApply.getHitboxHeightModifier(modelName);
+                        ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
                         LOGGER.info("SpeciesModelMaintenanceSystem: Re-applied model (was wrong/missing): " + modelName);
                     }
                 }

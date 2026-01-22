@@ -10,6 +10,7 @@ import com.hexvane.orbisorigins.systems.FirstJoinSystem;
 import com.hexvane.orbisorigins.systems.SpeciesDamageResistanceSystem;
 import com.hexvane.orbisorigins.systems.SpeciesModelSystem;
 import com.hexvane.orbisorigins.systems.SpeciesModelMaintenanceSystem;
+import com.hexvane.orbisorigins.commands.OriginsCommand;
 import com.hypixel.hytale.component.query.Query;
 
 public class OrbisOriginsPlugin extends JavaPlugin {
@@ -22,8 +23,11 @@ public class OrbisOriginsPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
-        // Initialize species registry
-        SpeciesRegistry.initialize();
+        // Initialize persistent data storage
+        com.hexvane.orbisorigins.data.PlayerDataStorage.initialize(this.getDataDirectory());
+        
+        // Initialize species registry (loads from JSON files)
+        SpeciesRegistry.initialize(this.getDataDirectory());
         
         // Register the custom UI page supplier
         OpenCustomUIInteraction.PAGE_CODEC.register(
@@ -60,5 +64,16 @@ public class OrbisOriginsPlugin extends JavaPlugin {
         }
         this.getEntityStoreRegistry().registerSystem(damageResistanceSystem);
         LOGGER.atInfo().log("Registered Orbis Origins damage resistance system");
+        
+        // Register commands
+        this.getCommandRegistry().registerCommand(new OriginsCommand(this));
+        LOGGER.atInfo().log("Registered Orbis Origins commands");
+    }
+    
+    @Override
+    protected void shutdown() {
+        // Save all player data before shutdown
+        com.hexvane.orbisorigins.data.PlayerDataStorage.saveAll();
+        LOGGER.atInfo().log("Saved all player data on shutdown");
     }
 }

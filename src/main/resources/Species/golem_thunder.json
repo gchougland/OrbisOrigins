@@ -1,0 +1,21 @@
+{
+  "id": "golem_thunder",
+  "displayName": "Thunder Golem",
+  "displayNameKey": "species.golem_thunder.name",
+  "description": "A construct of lightning and crystal. Very high health, immune to lightning, and strong resistances.",
+  "descriptionKey": "species.golem_thunder.description",
+  "modelBaseName": "Golem_Crystal_Thunder",
+  "variants": [
+    "Golem_Crystal_Thunder"
+  ],
+  "healthModifier": 50,
+  "staminaModifier": -5,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Lightning": 0.0,
+    "Physical": 0.6,
+    "Magic": 0.8
+  }
+}

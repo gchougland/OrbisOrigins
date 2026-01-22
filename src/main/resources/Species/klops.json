@@ -1,0 +1,28 @@
+{
+  "id": "klops",
+  "displayName": "Klops",
+  "displayNameKey": "species.klops.name",
+  "description": "A small, industrious creature known for mining and trading. Slightly higher stamina and minor physical resistance.",
+  "descriptionKey": "species.klops.description",
+  "modelBaseName": "Klops_Merchant",
+  "variants": [
+    "Klops_Merchant",
+    "Klops_Miner",
+    "Klops_Gentleman"
+  ],
+  "healthModifier": 5,
+  "staminaModifier": 10,
+  "eyeHeightModifiers": {
+    "Klops_Merchant": 0.1,
+    "Klops_Miner": 0.1,
+    "Klops_Gentleman": 0.1
+  },
+  "hitboxHeightModifiers": {},
+  "starterItems": [
+    "Weapon_Staff_Onion",
+    "Weapon_Axe_Crude"
+  ],
+  "damageResistances": {
+    "Physical": 0.9
+  }
+}

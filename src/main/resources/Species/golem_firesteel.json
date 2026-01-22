@@ -1,0 +1,22 @@
+{
+  "id": "golem_firesteel",
+  "displayName": "Firesteel Golem",
+  "displayNameKey": "species.golem_firesteel.name",
+  "description": "A construct of firesteel. Very high health, fire resistance, and physical resistance. Weak to cold.",
+  "descriptionKey": "species.golem_firesteel.description",
+  "modelBaseName": "Golem_Firesteel",
+  "variants": [
+    "Golem_Firesteel"
+  ],
+  "healthModifier": 50,
+  "staminaModifier": -5,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Fire": 0.5,
+    "Lava": 0.5,
+    "Physical": 0.7,
+    "Cold": 1.4
+  }
+}

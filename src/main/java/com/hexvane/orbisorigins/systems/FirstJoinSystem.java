@@ -14,6 +14,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hexvane.orbisorigins.data.PlayerSpeciesData;
+import com.hexvane.orbisorigins.data.PlayerDataStorage;
 import com.hexvane.orbisorigins.species.SpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesRegistry;
 import com.hexvane.orbisorigins.util.ModelUtil;
@@ -71,17 +72,16 @@ public class FirstJoinSystem extends HolderSystem<EntityStore> {
         UUID playerUuid = uuidComponent != null ? uuidComponent.getUuid() : null;
         LOGGER.info("FirstJoinSystem: Player spawned - UUID: " + playerUuid + ", World: " + world.getName());
 
-        // Check if player has already chosen a species
-        boolean hasChosen = PlayerSpeciesData.hasChosenSpecies(holder, world);
-        LOGGER.info("FirstJoinSystem: Player has chosen species: " + hasChosen);
+        // Check if player has already received the selector item for this world
+        boolean hasReceivedSelector = PlayerDataStorage.hasReceivedSelector(playerUuid, world.getName());
+        LOGGER.info("FirstJoinSystem: Player has received selector: " + hasReceivedSelector);
         
-        if (hasChosen) {
-            LOGGER.info("FirstJoinSystem: Player already chose species, skipping item give");
-            // Model and stats will be re-applied by SpeciesModelSystem which runs after PlayerSpawnedSystem
+        if (hasReceivedSelector) {
+            LOGGER.info("FirstJoinSystem: Player already received selector, skipping item give");
             return;
         }
 
-        LOGGER.info("FirstJoinSystem: Player has NOT chosen species, will give item");
+        LOGGER.info("FirstJoinSystem: Player has NOT received selector, will give item");
 
         // Defer item giving to next tick to ensure inventory is ready
         // Get PlayerRef component from holder for deferred execution
@@ -100,6 +100,12 @@ public class FirstJoinSystem extends HolderSystem<EntityStore> {
                         LOGGER.info("FirstJoinSystem: Creating item stack: " + SPECIES_SELECTOR_ITEM_ID);
                         var transaction = player.getInventory().getCombinedHotbarFirst().addItemStack(selectorItem);
                         LOGGER.info("FirstJoinSystem: Attempted to give species selector item. Transaction: " + transaction);
+                        
+                        // Mark that player has received the selector for this world
+                        if (transaction != null && transaction.succeeded()) {
+                            PlayerDataStorage.setReceivedSelector(playerUuid, world.getName());
+                            LOGGER.info("FirstJoinSystem: Marked player as having received selector");
+                        }
                     } else {
                         LOGGER.warning("FirstJoinSystem: Player component is null in deferred execution");
                     }

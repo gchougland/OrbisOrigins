@@ -1,0 +1,29 @@
+{
+  "id": "kweebec",
+  "displayName": "Kweebec",
+  "displayNameKey": "species.kweebec.name",
+  "description": "A small, agile forest-dwelling creature. Higher stamina and nature resistance.",
+  "descriptionKey": "species.kweebec.description",
+  "modelBaseName": "Kweebec_Rootling",
+  "variants": [
+    "Kweebec_Rootling",
+    "Kweebec_Sapling",
+    "Kweebec_Seedling",
+    "Kweebec_Sapling_Orange",
+    "Kweebec_Sapling_Pink",
+    "Kweebec_Sproutling",
+    "Kweebec_Razorleaf"
+  ],
+  "healthModifier": -5,
+  "staminaModifier": 20,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [
+    "Armor_Kweebec_Head",
+    "Armor_Kweebec_Chest",
+    "Weapon_Staff_Wood_Kweebec"
+  ],
+  "damageResistances": {
+    "Nature": 0.5
+  }
+}

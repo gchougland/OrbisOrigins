@@ -1,0 +1,15 @@
+{
+  "id": "orbian",
+  "displayName": "Orbian",
+  "displayNameKey": "species.orbian.name",
+  "description": "The standard Orbian species. No special bonuses or penalties.",
+  "descriptionKey": "species.orbian.description",
+  "modelBaseName": "",
+  "variants": [],
+  "healthModifier": 0,
+  "staminaModifier": 0,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {}
+}

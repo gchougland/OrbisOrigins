@@ -326,8 +326,8 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             return;
         }
         
-        // Skip preview for human (no model)
-        if (species.getId().equals("human")) {
+        // Skip preview for orbian (no model)
+        if (species.getId().equals("orbian")) {
             if (modelPreview != null && modelPreview.isValid()) {
                 store.removeEntity(modelPreview, RemoveReason.REMOVE);
                 modelPreview = null;
@@ -494,13 +494,15 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName());
         logger.info("confirmSelection: Applying species " + selectedSpeciesId + " variant " + variantIndex);
         
-        // Apply model (if not human)
-        if (!species.getId().equals("human")) {
+        // Apply model (if not orbian)
+        if (!species.getId().equals("orbian")) {
             String modelName = species.getModelName(variantIndex);
+            float eyeHeightModifier = species.getEyeHeightModifier(modelName);
+            float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
             logger.info("confirmSelection: Applying model: " + modelName);
-            ModelUtil.applyModelToPlayer(ref, store, modelName);
+            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
         } else {
-            // Reset to player skin for human
+            // Reset to player skin for orbian
             logger.info("confirmSelection: Resetting to player skin");
             ModelUtil.resetToPlayerSkin(ref, store);
         }

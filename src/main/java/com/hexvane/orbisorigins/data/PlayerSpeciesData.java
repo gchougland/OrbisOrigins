@@ -16,12 +16,9 @@ import javax.annotation.Nullable;
 
 /**
  * Manages persistent storage of player species selection data.
- * Since PlayerWorldData is final, we store data separately but associate it with player UUID and world.
+ * Uses PlayerDataStorage for file-based persistence.
  */
 public class PlayerSpeciesData {
-    // In-memory storage: player UUID -> world name -> species data
-    // In a production system, this would be persisted to disk/database
-    private static final Map<UUID, Map<String, SpeciesSelection>> STORAGE = new HashMap<>();
 
     public static class SpeciesSelection {
         private final String speciesId;
@@ -73,13 +70,7 @@ public class PlayerSpeciesData {
             return null;
         }
         String worldName = world.getName();
-        
-        Map<String, SpeciesSelection> worldData = STORAGE.get(playerId);
-        if (worldData == null) {
-            return null;
-        }
-        
-        return worldData.get(worldName);
+        return PlayerDataStorage.getSpeciesSelection(playerId, worldName);
     }
 
     public static void setSpeciesSelection(
@@ -94,9 +85,7 @@ public class PlayerSpeciesData {
             return;
         }
         String worldName = world.getName();
-        
-        STORAGE.computeIfAbsent(playerId, k -> new HashMap<>())
-                .put(worldName, new SpeciesSelection(speciesId, variantIndex, true));
+        PlayerDataStorage.setSpeciesSelection(playerId, worldName, speciesId, variantIndex);
     }
 
     public static boolean hasChosenSpecies(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull World world) {
@@ -110,11 +99,7 @@ public class PlayerSpeciesData {
             return false;
         }
         String worldName = world.getName();
-        Map<String, SpeciesSelection> worldData = STORAGE.get(playerId);
-        if (worldData == null) {
-            return false;
-        }
-        SpeciesSelection selection = worldData.get(worldName);
+        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId, worldName);
         return selection != null && selection.hasChosen();
     }
 
@@ -136,11 +121,7 @@ public class PlayerSpeciesData {
             return null;
         }
         String worldName = world.getName();
-        Map<String, SpeciesSelection> worldData = STORAGE.get(playerId);
-        if (worldData == null) {
-            return null;
-        }
-        SpeciesSelection selection = worldData.get(worldName);
+        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId, worldName);
         return selection != null ? selection.getSpeciesId() : null;
     }
 
@@ -150,11 +131,7 @@ public class PlayerSpeciesData {
             return 0;
         }
         String worldName = world.getName();
-        Map<String, SpeciesSelection> worldData = STORAGE.get(playerId);
-        if (worldData == null) {
-            return 0;
-        }
-        SpeciesSelection selection = worldData.get(worldName);
+        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId, worldName);
         return selection != null ? selection.getVariantIndex() : 0;
     }
 }

@@ -1,0 +1,26 @@
+{
+  "id": "goblin",
+  "displayName": "Goblin",
+  "displayNameKey": "species.goblin.name",
+  "description": "A small, crafty creature known for scavenging. Higher stamina and poison resistance.",
+  "descriptionKey": "species.goblin.description",
+  "modelBaseName": "Goblin_Scrapper",
+  "variants": [
+    "Goblin_Scrapper",
+    "Goblin_Scavenger",
+    "Goblin_Ogre",
+    "Goblin_Miner"
+  ],
+  "healthModifier": -5,
+  "staminaModifier": 15,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [
+    "Weapon_Sword_Scrap",
+    "Weapon_Club_Scrap",
+    "Weapon_Shield_Scrap"
+  ],
+  "damageResistances": {
+    "Poison": 0.75
+  }
+}

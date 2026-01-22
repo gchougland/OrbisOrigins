@@ -1,0 +1,24 @@
+{
+  "id": "outlander",
+  "displayName": "Outlander",
+  "displayNameKey": "species.outlander.name",
+  "description": "Humans who split off from civilization. Balanced stats with minor magic resistance.",
+  "descriptionKey": "species.outlander.description",
+  "modelBaseName": "Outlander",
+  "variants": [
+    "Outlander",
+    "Outlander_Ranged",
+    "Outlander_Cultist"
+  ],
+  "healthModifier": 10,
+  "staminaModifier": 10,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [
+    "Weapon_Shortbow_Crude",
+    "Weapon_Spear_Scrap"
+  ],
+  "damageResistances": {
+    "Magic": 0.85
+  }
+}

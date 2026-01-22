@@ -59,13 +59,95 @@ public class ModelUtil {
             @Nonnull Store<EntityStore> store,
             @Nonnull String modelName
     ) {
-        Model model = getModel(modelName);
-        if (model == null) {
+        applyModelToPlayer(playerRef, store, modelName, 0.0f);
+    }
+
+    /**
+     * Applies a model to a player entity with an eye height modifier.
+     * @param eyeHeightModifier Additive modifier to the model's base eye height (in blocks)
+     */
+    public static void applyModelToPlayer(
+            @Nonnull Ref<EntityStore> playerRef,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull String modelName,
+            float eyeHeightModifier
+    ) {
+        applyModelToPlayer(playerRef, store, modelName, eyeHeightModifier, 0.0f);
+    }
+
+    /**
+     * Applies a model to a player entity with modifiers.
+     * @param eyeHeightModifier Additive modifier to the model's base eye height (in blocks)
+     * @param hitboxHeightModifier Additive modifier to the bounding box height (in blocks, modifies max.y)
+     */
+    public static void applyModelToPlayer(
+            @Nonnull Ref<EntityStore> playerRef,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull String modelName,
+            float eyeHeightModifier,
+            float hitboxHeightModifier
+    ) {
+        Model baseModel = getModel(modelName);
+        if (baseModel == null) {
             LOGGER.warning("ModelUtil: Failed to get model: " + modelName);
             return;
         }
         
-        store.putComponent(playerRef, ModelComponent.getComponentType(), new ModelComponent(model));
+        Model modelToApply = baseModel;
+        boolean needsNewModel = false;
+        float newEyeHeight = baseModel.getEyeHeight();
+        com.hypixel.hytale.math.shape.Box newBoundingBox = baseModel.getBoundingBox();
+        
+        // Check if we need to modify eye height
+        if (Math.abs(eyeHeightModifier) > 0.001f) {
+            needsNewModel = true;
+            newEyeHeight = baseModel.getEyeHeight() + eyeHeightModifier;
+        }
+        
+        // Check if we need to modify hitbox height
+        if (Math.abs(hitboxHeightModifier) > 0.001f && baseModel.getBoundingBox() != null) {
+            needsNewModel = true;
+            // Clone the bounding box and modify max.y to change height
+            newBoundingBox = baseModel.getBoundingBox().clone();
+            newBoundingBox.max.y += hitboxHeightModifier;
+            // Ensure height is still positive
+            if (newBoundingBox.height() <= 0.0) {
+                LOGGER.warning("ModelUtil: Hitbox height modifier would result in invalid height, clamping");
+                newBoundingBox.max.y = newBoundingBox.min.y + 0.1; // Minimum height of 0.1 blocks
+            }
+        }
+        
+        // Create a new Model if we modified anything
+        if (needsNewModel) {
+            modelToApply = new Model(
+                    baseModel.getModelAssetId(),
+                    baseModel.getScale(),
+                    baseModel.getRandomAttachmentIds(),
+                    baseModel.getAttachments(),
+                    newBoundingBox, // Modified bounding box (or original)
+                    baseModel.getModel(),
+                    baseModel.getTexture(),
+                    baseModel.getGradientSet(),
+                    baseModel.getGradientId(),
+                    newEyeHeight, // Modified eye height (or original)
+                    baseModel.getCrouchOffset(),
+                    baseModel.getAnimationSetMap(),
+                    baseModel.getCamera(),
+                    baseModel.getLight(),
+                    baseModel.getParticles(),
+                    baseModel.getTrails(),
+                    baseModel.getPhysicsValues(),
+                    baseModel.getDetailBoxes(),
+                    baseModel.getPhobia(),
+                    baseModel.getPhobiaModelAssetId()
+            );
+            LOGGER.fine("ModelUtil: Applied model with modifiers: " + modelName + 
+                    " (eyeHeight: " + baseModel.getEyeHeight() + " -> " + newEyeHeight + 
+                    ", hitboxHeight: " + (baseModel.getBoundingBox() != null ? baseModel.getBoundingBox().height() : "null") + 
+                    " -> " + (newBoundingBox != null ? newBoundingBox.height() : "null") + ")");
+        }
+        
+        store.putComponent(playerRef, ModelComponent.getComponentType(), new ModelComponent(modelToApply));
         LOGGER.fine("ModelUtil: Applied model to player: " + modelName);
     }
 

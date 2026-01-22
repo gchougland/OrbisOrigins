@@ -1,0 +1,21 @@
+{
+  "id": "golem_sand",
+  "displayName": "Sand Golem",
+  "displayNameKey": "species.golem_sand.name",
+  "description": "A construct of sand and crystal. Very high health and strong physical resistance. Weak to water.",
+  "descriptionKey": "species.golem_sand.description",
+  "modelBaseName": "Golem_Crystal_Sand",
+  "variants": [
+    "Golem_Crystal_Sand"
+  ],
+  "healthModifier": 50,
+  "staminaModifier": -5,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Physical": 0.5,
+    "Nature": 0.8,
+    "Water": 1.3
+  }
+}

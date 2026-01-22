@@ -28,8 +28,8 @@ species.golem_void.name=Void Golem
 species.human.name=Human
 
 # Species Descriptions
-species.kweebec.description=A small, agile forest-dwelling creature. Higher stamina and nature resistance. Starts with a kweebec helm.
-species.trork.description=A large, brutish warrior. Much higher health and physical resistance. Starts with a trork helm.
+species.kweebec.description=A small, agile forest-dwelling creature. Higher stamina and nature resistance.
+species.trork.description=A large, brutish warrior. Much higher health and physical resistance.
 species.feran.description=A balanced feline species. Moderate health and stamina. Resistant to fire and lava.
 species.skeleton.description=An undead creature. Immune to poison and balanced stamina. Vulnerable to fire.
 species.klops.description=A small, industrious creature known for mining and trading. Slightly higher stamina and minor physical resistance.

@@ -1,0 +1,21 @@
+{
+  "id": "golem_frost",
+  "displayName": "Frost Golem",
+  "displayNameKey": "species.golem_frost.name",
+  "description": "A construct of ice and crystal. Very high health, immune to cold, and physical resistance. Weak to fire.",
+  "descriptionKey": "species.golem_frost.description",
+  "modelBaseName": "Golem_Crystal_Frost",
+  "variants": [
+    "Golem_Crystal_Frost"
+  ],
+  "healthModifier": 50,
+  "staminaModifier": -5,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Cold": 0.0,
+    "Physical": 0.6,
+    "Fire": 1.3
+  }
+}

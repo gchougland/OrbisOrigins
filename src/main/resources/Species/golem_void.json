@@ -1,0 +1,21 @@
+{
+  "id": "golem_void",
+  "displayName": "Void Golem",
+  "displayNameKey": "species.golem_void.name",
+  "description": "A construct of void energy. Very high health, immune to void, and strong magic resistance.",
+  "descriptionKey": "species.golem_void.description",
+  "modelBaseName": "Golem_Guardian_Void",
+  "variants": [
+    "Golem_Guardian_Void"
+  ],
+  "healthModifier": 50,
+  "staminaModifier": -5,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Void": 0.0,
+    "Magic": 0.5,
+    "Physical": 0.6
+  }
+}

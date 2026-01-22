@@ -1,0 +1,33 @@
+{
+  "id": "trork",
+  "displayName": "Trork",
+  "displayNameKey": "species.trork.name",
+  "description": "A large, brutish warrior. Much higher health and physical resistance.",
+  "descriptionKey": "species.trork.description",
+  "modelBaseName": "Trork_Warrior",
+  "variants": [
+    "Trork_Warrior",
+    "Trork_Shaman",
+    "Trork_Sentry",
+    "Trork_Mauler",
+    "Trork_Hunter",
+    "Trork_Guard",
+    "Trork_Doctor_Witch",
+    "Trork_Chieftain",
+    "Trork_Brawler"
+  ],
+  "healthModifier": 40,
+  "staminaModifier": -5,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [
+    "Armor_Trork_Head",
+    "Armor_Trork_Chest",
+    "Armor_Trork_Hands",
+    "Armor_Trork_Legs",
+    "Weapon_Sword_Stone_Trork"
+  ],
+  "damageResistances": {
+    "Physical": 0.75
+  }
+}

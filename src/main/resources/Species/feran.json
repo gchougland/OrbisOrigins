@@ -1,0 +1,42 @@
+{
+  "id": "feran",
+  "displayName": "Feran",
+  "displayNameKey": "species.feran.name",
+  "description": "A balanced fennec fox species. Moderate health and stamina. Resistant to fire and lava.",
+  "descriptionKey": "species.feran.description",
+  "modelBaseName": "Feran_Civilian",
+  "variants": [
+    "Feran_Cub",
+    "Feran_Civilian",
+    "Feran_Burrower",
+    "Feran_Sharptooth",
+    "Feran_Longtooth",
+    "Feran_Windwalker"
+  ],
+  "healthModifier": 10,
+  "staminaModifier": 10,
+  "eyeHeightModifiers": {
+    "Feran_Cub": -0.7,
+    "Feran_Civilian": 0.0,
+    "Feran_Burrower": 0.0,
+    "Feran_Sharptooth": 0.0,
+    "Feran_Longtooth": 0.0,
+    "Feran_Windwalker": 0.0
+  },
+  "hitboxHeightModifiers": {
+    "Feran_Cub": -1.0,
+    "Feran_Civilian": 0.0,
+    "Feran_Burrower": 0.0,
+    "Feran_Sharptooth": 0.0,
+    "Feran_Longtooth": 0.0,
+    "Feran_Windwalker": 0.0
+  },
+  "starterItems": [
+    "Weapon_Shortbow_Crude",
+    "Weapon_Axe_Crude"
+  ],
+  "damageResistances": {
+    "Fire": 0.5,
+    "Lava": 0.5
+  }
+}

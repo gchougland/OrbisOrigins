@@ -1,0 +1,22 @@
+{
+  "id": "golem_flame",
+  "displayName": "Flame Golem",
+  "displayNameKey": "species.golem_flame.name",
+  "description": "A construct of fire and crystal. Very high health, immune to fire and lava, and physical resistance. Weak to cold.",
+  "descriptionKey": "species.golem_flame.description",
+  "modelBaseName": "Golem_Crystal_Flame",
+  "variants": [
+    "Golem_Crystal_Flame"
+  ],
+  "healthModifier": 50,
+  "staminaModifier": -5,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Fire": 0.0,
+    "Lava": 0.0,
+    "Physical": 0.6,
+    "Cold": 1.5
+  }
+}
