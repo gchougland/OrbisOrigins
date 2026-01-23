@@ -1,5 +1,6 @@
 package com.hexvane.orbisorigins.data;
 
+import com.hexvane.orbisorigins.util.WorldUtil;
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.GsonBuilder;
 import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
@@ -68,7 +69,8 @@ public class PlayerDataStorage {
         if (worldData == null) {
             return null;
         }
-        return worldData.get(worldName);
+
+        return worldData.get(WorldUtil.getNormalizedName(worldName));
     }
     
     public static void setSpeciesSelection(
@@ -77,8 +79,9 @@ public class PlayerDataStorage {
             @Nonnull String speciesId,
             int variantIndex
     ) {
+        String worldNormalizedName = WorldUtil.getNormalizedName(worldName);
         SPECIES_STORAGE.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
-                .put(worldName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true));
+                .put(worldNormalizedName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true));
         saveSpeciesData();
     }
     
@@ -89,12 +92,14 @@ public class PlayerDataStorage {
         if (worldData == null) {
             return false;
         }
-        return Boolean.TRUE.equals(worldData.get(worldName));
+        String worldNormalizedName = WorldUtil.getNormalizedName(worldName);
+        return Boolean.TRUE.equals(worldData.get(worldNormalizedName));
     }
     
     public static void setReceivedSelector(@Nonnull UUID playerId, @Nonnull String worldName) {
+        String worldNormalizedName = WorldUtil.getNormalizedName(worldName);
         FIRST_JOIN_STORAGE.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
-                .put(worldName, true);
+                .put(worldNormalizedName, true);
         saveFirstJoinData();
     }
     
