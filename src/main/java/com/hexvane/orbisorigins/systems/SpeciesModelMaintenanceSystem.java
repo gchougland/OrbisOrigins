@@ -86,9 +86,7 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
         }
 
         // Get expected model name
-        String expectedModelName = !species.getId().equals("orbian")
-                ? species.getModelName(variantIndex)
-                : "Player";
+        String expectedModelName = species.getId().equals("orbian") ? "Player" : species.getModelName(variantIndex);
 
         // Check if model component exists and matches expected model
         ModelComponent modelComponent = store.getComponent(ref, ModelComponent.getComponentType());
