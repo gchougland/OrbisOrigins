@@ -24,11 +24,17 @@ public class PlayerSpeciesData {
         private final String speciesId;
         private final int variantIndex;
         private final boolean hasChosen;
+        private final Map<String, String> attachmentSelections; // attachment type -> selected option name
 
         public SpeciesSelection(@Nonnull String speciesId, int variantIndex, boolean hasChosen) {
+            this(speciesId, variantIndex, hasChosen, new HashMap<>());
+        }
+
+        public SpeciesSelection(@Nonnull String speciesId, int variantIndex, boolean hasChosen, @Nonnull Map<String, String> attachmentSelections) {
             this.speciesId = speciesId;
             this.variantIndex = variantIndex;
             this.hasChosen = hasChosen;
+            this.attachmentSelections = new HashMap<>(attachmentSelections);
         }
 
         @Nonnull
@@ -42,6 +48,11 @@ public class PlayerSpeciesData {
 
         public boolean hasChosen() {
             return hasChosen;
+        }
+
+        @Nonnull
+        public Map<String, String> getAttachmentSelections() {
+            return new HashMap<>(attachmentSelections);
         }
     }
 
@@ -80,12 +91,29 @@ public class PlayerSpeciesData {
             @Nonnull String speciesId,
             int variantIndex
     ) {
+        setSpeciesSelection(ref, store, world, speciesId, variantIndex, new HashMap<>());
+    }
+
+    public static void setSpeciesSelection(
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull World world,
+            @Nonnull String speciesId,
+            int variantIndex,
+            @Nonnull Map<String, String> attachmentSelections
+    ) {
         UUID playerId = getPlayerUuid(ref, store);
         if (playerId == null) {
             return;
         }
         String worldName = world.getName();
-        PlayerDataStorage.setSpeciesSelection(playerId, worldName, speciesId, variantIndex);
+        PlayerDataStorage.setSpeciesSelection(playerId, worldName, speciesId, variantIndex, attachmentSelections);
+    }
+
+    @Nonnull
+    public static Map<String, String> getAttachmentSelections(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull World world) {
+        SpeciesSelection selection = getSpeciesSelection(ref, store, world);
+        return selection != null ? selection.getAttachmentSelections() : new HashMap<>();
     }
 
     public static boolean hasChosenSpecies(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull World world) {

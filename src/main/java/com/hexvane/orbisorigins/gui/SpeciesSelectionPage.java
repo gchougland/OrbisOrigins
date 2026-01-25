@@ -31,10 +31,12 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.TargetUtil;
 import com.hexvane.orbisorigins.data.PlayerSpeciesData;
+import com.hexvane.orbisorigins.species.AttachmentOption;
 import com.hexvane.orbisorigins.species.SpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesRegistry;
 import com.hexvane.orbisorigins.util.ModelUtil;
 import com.hexvane.orbisorigins.util.SpeciesStatUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
     @Nullable
     private String selectedSpeciesId;
     private final Map<String, Integer> variantIndices = new HashMap<>(); // species ID -> variant index
+    private final Map<String, Map<String, String>> attachmentSelections = new HashMap<>(); // species ID -> attachment type -> selected option name
     @Nullable
     private Ref<EntityStore> modelPreview;
     private Vector3d previewPosition;
@@ -62,6 +65,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         if (!allSpecies.isEmpty()) {
             this.selectedSpeciesId = allSpecies.get(0).getId();
             this.variantIndices.put(this.selectedSpeciesId, 0);
+            this.attachmentSelections.put(this.selectedSpeciesId, new HashMap<>());
         }
     }
 
@@ -82,6 +86,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         if (selectedSpeciesId != null) {
             updateDescription(commandBuilder);
             updateVariantControls(commandBuilder);
+            updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
         }
         
         // Schedule preview entity creation for next tick (can't modify store during build)
@@ -123,6 +128,8 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
                 EventData.of("Action", "NextVariant"),
                 false
         );
+        
+        // Attachment selector events are registered dynamically in updateAttachmentSelectors
     }
 
     @Override
@@ -149,6 +156,16 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
                     break;
                 case "NextVariant":
                     cycleVariant(ref, store, 1);
+                    break;
+                case "PreviousAttachment":
+                    if (data.attachmentType != null) {
+                        cycleAttachment(ref, store, data.attachmentType, -1);
+                    }
+                    break;
+                case "NextAttachment":
+                    if (data.attachmentType != null) {
+                        cycleAttachment(ref, store, data.attachmentType, 1);
+                    }
                     break;
             }
         }
@@ -213,6 +230,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         // Update description and variant controls
         updateDescription(commandBuilder);
         updateVariantControls(commandBuilder);
+        updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
         
         // Schedule preview entity update for next tick (can't modify store during event handling)
         world.execute(() -> {
@@ -350,14 +368,45 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
         String modelName = species.getModelName(variantIndex);
         
+        // Get attachment selections for preview
+        Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
+        
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName());
         logger.info("createPreviewEntity: Creating preview for model: " + modelName);
         
-        Model model = ModelUtil.getModel(modelName);
-        if (model == null) {
+        // Get base model
+        com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset modelAsset = 
+            com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset.getAssetMap().getAsset(modelName);
+        if (modelAsset == null) {
+            logger.warning("createPreviewEntity: Model asset not found: " + modelName);
+            return;
+        }
+        
+        com.hypixel.hytale.server.core.asset.type.model.config.Model baseModel = ModelUtil.getModel(modelName);
+        if (baseModel == null) {
             logger.warning("createPreviewEntity: Failed to get model: " + modelName);
             return;
         }
+        
+        // Build attachment map for preview
+        Map<String, String> attachmentMap = new HashMap<>();
+        if (baseModel.getRandomAttachmentIds() != null) {
+            attachmentMap.putAll(baseModel.getRandomAttachmentIds());
+        }
+        for (Map.Entry<String, String> entry : attachmentSelectionsForSpecies.entrySet()) {
+            String attachmentType = entry.getKey();
+            String selectedOption = entry.getValue();
+            if (selectedOption != null && !selectedOption.isEmpty() && !"null".equals(selectedOption)) {
+                attachmentMap.put(attachmentType, selectedOption);
+            } else {
+                attachmentMap.remove(attachmentType);
+            }
+        }
+        
+        // Create model with selected attachments
+        com.hypixel.hytale.server.core.asset.type.model.config.Model model = 
+            com.hypixel.hytale.server.core.asset.type.model.config.Model.createScaledModel(
+                modelAsset, baseModel.getScale(), attachmentMap);
         
         TransformComponent transformComponent = store.getComponent(ref, TransformComponent.getComponentType());
         if (transformComponent == null) {
@@ -449,7 +498,9 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         variantIndices.put(selectedSpeciesId, newIndex);
         
         UICommandBuilder commandBuilder = new UICommandBuilder();
+        UIEventBuilder eventBuilder = new UIEventBuilder();
         updateVariantControls(commandBuilder);
+        updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
         
         // Schedule preview entity update for next tick (can't modify store during event handling)
         world.execute(() -> {
@@ -460,7 +511,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             }
         });
         
-        this.sendUpdate(commandBuilder, null, false);
+        this.sendUpdate(commandBuilder, eventBuilder, false);
     }
 
     private void updateVariantControls(@Nonnull UICommandBuilder commandBuilder) {
@@ -482,6 +533,201 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             commandBuilder.set("#LeftArrow.Visible", false);
             commandBuilder.set("#RightArrow.Visible", false);
         }
+    }
+
+    private void updateAttachmentSelectors(
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull UICommandBuilder commandBuilder,
+            @Nonnull UIEventBuilder eventBuilder
+    ) {
+        if (selectedSpeciesId == null) {
+            commandBuilder.set("#AttachmentSelectors.Visible", false);
+            return;
+        }
+
+        SpeciesData species = SpeciesRegistry.getSpecies(selectedSpeciesId);
+        if (species == null) {
+            commandBuilder.set("#AttachmentSelectors.Visible", false);
+            return;
+        }
+
+        // Skip orbian (no model, no attachments)
+        if (species.getId().equals("orbian")) {
+            commandBuilder.set("#AttachmentSelectors.Visible", false);
+            return;
+        }
+
+        // Get current variant to discover attachments for
+        int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
+        String modelName = species.getModelName(variantIndex);
+
+        // Get available attachments for this species/variant
+        Map<String, Map<String, AttachmentOption>> availableAttachments = 
+            SpeciesRegistry.getAvailableAttachments(species, modelName);
+
+        java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName());
+        logger.info("SpeciesSelectionPage.updateAttachmentSelectors: Available attachments for " + modelName + ": " + availableAttachments.size() + " types");
+        
+        // Count non-empty attachment types
+        int nonEmptyTypes = 0;
+        for (Map.Entry<String, Map<String, AttachmentOption>> entry : availableAttachments.entrySet()) {
+            if (!entry.getValue().isEmpty()) {
+                nonEmptyTypes++;
+                logger.info("SpeciesSelectionPage.updateAttachmentSelectors: Attachment type '" + entry.getKey() + "' has " + entry.getValue().size() + " options");
+            }
+        }
+
+        if (nonEmptyTypes == 0) {
+            logger.info("SpeciesSelectionPage.updateAttachmentSelectors: No attachments available (empty or none found), hiding selectors");
+            commandBuilder.set("#AttachmentSelectors.Visible", false);
+            return;
+        }
+        
+        logger.info("SpeciesSelectionPage.updateAttachmentSelectors: Found " + nonEmptyTypes + " attachment types with options, showing selectors");
+
+        // Show attachment selectors
+        commandBuilder.set("#AttachmentSelectors.Visible", true);
+        commandBuilder.clear("#AttachmentSelectors");
+
+        // Get or initialize attachment selections for this species
+        Map<String, String> selections = attachmentSelections.computeIfAbsent(selectedSpeciesId, k -> new HashMap<>());
+
+        // Build a selector for each attachment type
+        int attachmentIndex = 0;
+        for (Map.Entry<String, Map<String, AttachmentOption>> attachmentTypeEntry : availableAttachments.entrySet()) {
+            String attachmentType = attachmentTypeEntry.getKey();
+            Map<String, AttachmentOption> options = attachmentTypeEntry.getValue();
+
+            if (options.isEmpty()) {
+                continue;
+            }
+
+            // Get current selection or default to first option
+            String currentSelection = selections.get(attachmentType);
+            List<String> optionNames = new ArrayList<>(options.keySet());
+            if (currentSelection == null || !optionNames.contains(currentSelection)) {
+                // Default to first option, or "null" if available
+                if (optionNames.contains("null")) {
+                    currentSelection = "null";
+                } else {
+                    currentSelection = optionNames.get(0);
+                }
+                selections.put(attachmentType, currentSelection);
+            }
+
+            int currentIndex = optionNames.indexOf(currentSelection);
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            }
+
+            // Create selector UI elements
+            String selectorPrefix = "#AttachmentSelectors[" + attachmentIndex + "]";
+            
+            // Append attachment selector template (we'll create it inline)
+            commandBuilder.append("#AttachmentSelectors", "Pages/AttachmentSelector.ui");
+
+            // Set attachment type label
+            commandBuilder.set(selectorPrefix + " #AttachmentTypeLabel.Text", attachmentType + ":");
+
+            // Set current selection label
+            AttachmentOption selectedOption = options.get(currentSelection);
+            String displayName = selectedOption != null ? selectedOption.getDisplayNameOrDefault(currentSelection) : currentSelection;
+            commandBuilder.set(selectorPrefix + " #AttachmentLabel.Text", displayName);
+
+            // Show/hide arrows based on number of options
+            if (optionNames.size() > 1) {
+                commandBuilder.set(selectorPrefix + " #AttachmentLeftArrow.Visible", true);
+                commandBuilder.set(selectorPrefix + " #AttachmentRightArrow.Visible", true);
+            } else {
+                commandBuilder.set(selectorPrefix + " #AttachmentLeftArrow.Visible", false);
+                commandBuilder.set(selectorPrefix + " #AttachmentRightArrow.Visible", false);
+            }
+
+            // Register event bindings
+            EventData prevEvent = EventData.of("Action", "PreviousAttachment");
+            prevEvent.append("AttachmentType", attachmentType);
+            eventBuilder.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    selectorPrefix + " #AttachmentLeftArrow",
+                    prevEvent,
+                    false
+            );
+
+            EventData nextEvent = EventData.of("Action", "NextAttachment");
+            nextEvent.append("AttachmentType", attachmentType);
+            eventBuilder.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    selectorPrefix + " #AttachmentRightArrow",
+                    nextEvent,
+                    false
+            );
+
+            attachmentIndex++;
+        }
+    }
+
+    private void cycleAttachment(
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull String attachmentType,
+            int direction
+    ) {
+        if (selectedSpeciesId == null) return;
+
+        SpeciesData species = SpeciesRegistry.getSpecies(selectedSpeciesId);
+        if (species == null) return;
+
+        // Skip orbian
+        if (species.getId().equals("orbian")) return;
+
+        // Get current variant
+        int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
+        String modelName = species.getModelName(variantIndex);
+
+        // Get available attachments
+        Map<String, Map<String, AttachmentOption>> availableAttachments = 
+            SpeciesRegistry.getAvailableAttachments(species, modelName);
+
+        Map<String, AttachmentOption> options = availableAttachments.get(attachmentType);
+        if (options == null || options.isEmpty()) return;
+
+        // Get current selection
+        Map<String, String> selections = attachmentSelections.computeIfAbsent(selectedSpeciesId, k -> new HashMap<>());
+        String currentSelection = selections.get(attachmentType);
+        List<String> optionNames = new ArrayList<>(options.keySet());
+
+        // Find current index
+        int currentIndex = optionNames.indexOf(currentSelection);
+        if (currentIndex < 0) {
+            currentIndex = 0;
+        }
+
+        // Cycle
+        int newIndex = currentIndex + direction;
+        if (newIndex < 0) {
+            newIndex = optionNames.size() - 1;
+        } else if (newIndex >= optionNames.size()) {
+            newIndex = 0;
+        }
+
+        selections.put(attachmentType, optionNames.get(newIndex));
+
+        // Update UI
+        UICommandBuilder commandBuilder = new UICommandBuilder();
+        UIEventBuilder eventBuilder = new UIEventBuilder();
+        updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
+
+        // Schedule preview update
+        world.execute(() -> {
+            Ref<EntityStore> playerRef = this.playerRef.getReference();
+            if (playerRef != null && playerRef.isValid()) {
+                Store<EntityStore> playerStore = playerRef.getStore();
+                createPreviewEntity(playerRef, playerStore);
+            }
+        });
+
+        this.sendUpdate(commandBuilder, eventBuilder, false);
     }
 
     private void confirmSelection(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store) {
@@ -511,8 +757,9 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             String modelName = species.getModelName(variantIndex);
             float eyeHeightModifier = species.getEyeHeightModifier(modelName);
             float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
+            Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
             logger.info("confirmSelection: Applying model: " + modelName);
-            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
+            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelectionsForSpecies);
         } else {
             // Reset to player skin for orbian
             logger.info("confirmSelection: Resetting to player skin");
@@ -528,8 +775,11 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             playerComponent.getInventory().getCombinedHotbarFirst().addItemStack(itemStack);
         }
         
-        // Store choice
-        PlayerSpeciesData.setSpeciesSelection(ref, store, world, selectedSpeciesId, variantIndex);
+        // Get attachment selections for this species
+        Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
+        
+        // Store choice with attachment selections
+        PlayerSpeciesData.setSpeciesSelection(ref, store, world, selectedSpeciesId, variantIndex, attachmentSelectionsForSpecies);
         
         // Consume item from inventory
         consumeSelectorItem(playerComponent);
@@ -574,11 +824,16 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         public static final BuilderCodec<SpeciesEventData> CODEC = BuilderCodec.builder(
                 SpeciesEventData.class, SpeciesEventData::new
         )
-        .addField(new KeyedCodec<>("Action", Codec.STRING), (data, s) -> data.action = s, data -> data.action)
-        .addField(new KeyedCodec<>("SpeciesId", Codec.STRING), (data, s) -> data.speciesId = s, data -> data.speciesId)
+        .append(new KeyedCodec<>("Action", Codec.STRING), (data, s) -> data.action = s, data -> data.action)
+        .add()
+        .append(new KeyedCodec<>("SpeciesId", Codec.STRING), (data, s) -> data.speciesId = s, data -> data.speciesId)
+        .add()
+        .append(new KeyedCodec<>("AttachmentType", Codec.STRING), (data, s) -> data.attachmentType = s, data -> data.attachmentType)
+        .add()
         .build();
         
         private String action;
         private String speciesId;
+        private String attachmentType;
     }
 }

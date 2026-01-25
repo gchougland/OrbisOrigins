@@ -77,8 +77,18 @@ public class PlayerDataStorage {
             @Nonnull String speciesId,
             int variantIndex
     ) {
+        setSpeciesSelection(playerId, worldName, speciesId, variantIndex, new HashMap<>());
+    }
+
+    public static void setSpeciesSelection(
+            @Nonnull UUID playerId,
+            @Nonnull String worldName,
+            @Nonnull String speciesId,
+            int variantIndex,
+            @Nonnull Map<String, String> attachmentSelections
+    ) {
         SPECIES_STORAGE.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
-                .put(worldName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true));
+                .put(worldName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true, attachmentSelections));
         saveSpeciesData();
     }
     
@@ -128,8 +138,10 @@ public class PlayerDataStorage {
                     Map<String, PlayerSpeciesData.SpeciesSelection> worldData = new ConcurrentHashMap<>();
                     for (Map.Entry<String, SpeciesSelectionData> worldEntry : playerEntry.getValue().entrySet()) {
                         SpeciesSelectionData data = worldEntry.getValue();
+                        Map<String, String> attachmentSelections = data.attachmentSelections != null ? 
+                            new HashMap<>(data.attachmentSelections) : new HashMap<>();
                         worldData.put(worldEntry.getKey(), 
-                            new PlayerSpeciesData.SpeciesSelection(data.speciesId, data.variantIndex, data.hasChosen));
+                            new PlayerSpeciesData.SpeciesSelection(data.speciesId, data.variantIndex, data.hasChosen, attachmentSelections));
                     }
                     SPECIES_STORAGE.put(playerId, worldData);
                 }
@@ -154,7 +166,8 @@ public class PlayerDataStorage {
                 for (Map.Entry<String, PlayerSpeciesData.SpeciesSelection> worldEntry : playerEntry.getValue().entrySet()) {
                     PlayerSpeciesData.SpeciesSelection selection = worldEntry.getValue();
                     worldData.put(worldEntry.getKey(), new SpeciesSelectionData(
-                        selection.getSpeciesId(), selection.getVariantIndex(), selection.hasChosen()));
+                        selection.getSpeciesId(), selection.getVariantIndex(), selection.hasChosen(), 
+                        selection.getAttachmentSelections()));
                 }
                 toSave.put(playerEntry.getKey().toString(), worldData);
             }
@@ -231,11 +244,17 @@ public class PlayerDataStorage {
         String speciesId;
         int variantIndex;
         boolean hasChosen;
+        Map<String, String> attachmentSelections;
         
         SpeciesSelectionData(String speciesId, int variantIndex, boolean hasChosen) {
+            this(speciesId, variantIndex, hasChosen, new HashMap<>());
+        }
+        
+        SpeciesSelectionData(String speciesId, int variantIndex, boolean hasChosen, Map<String, String> attachmentSelections) {
             this.speciesId = speciesId;
             this.variantIndex = variantIndex;
             this.hasChosen = hasChosen;
+            this.attachmentSelections = attachmentSelections != null ? attachmentSelections : new HashMap<>();
         }
     }
 }

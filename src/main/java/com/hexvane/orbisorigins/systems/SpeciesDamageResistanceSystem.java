@@ -97,7 +97,8 @@ public class SpeciesDamageResistanceSystem extends DamageEventSystem {
         }
 
         // Get damage cause
-        DamageCause damageCause = damage.getCause();
+        int damageCauseIndex = damage.getDamageCauseIndex();
+        DamageCause damageCause = DamageCause.getAssetMap().getAsset(damageCauseIndex);
         if (damageCause == null) {
             return;
         }

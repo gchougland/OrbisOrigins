@@ -124,12 +124,18 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
             return;
         }
         
+        World world = store.getExternalData().getWorld();
+        if (world == null) {
+            return;
+        }
+        
         // Apply model (if not orbian)
         if (!species.getId().equals("orbian")) {
             String modelName = species.getModelName(variantIndex);
             float eyeHeightModifier = species.getEyeHeightModifier(modelName);
             float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
-            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
+            java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
+            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
             LOGGER.info("SpeciesModelSystem: Re-applied model: " + modelName + " (eyeHeightModifier: " + eyeHeightModifier + ", hitboxHeightModifier: " + hitboxHeightModifier + ")");
         } else {
             ModelUtil.resetToPlayerSkin(ref, store);

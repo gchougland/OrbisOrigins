@@ -11,13 +11,14 @@
   "healthModifier": 50,
   "staminaModifier": -5,
   "manaModifier": 10,
+  "enableAttachmentDiscovery": true,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],
   "damageResistances": {
     "Fire": 0.5,
     "Lava": 0.5,
-    "Physical": 0.7,
+    "Physical": 0.9,
     "Cold": 1.4
   }
 }

@@ -31,6 +31,8 @@ Each species file must be named `{speciesId}.json` and contain the following str
   "staminaModifier": 5,
   "manaModifier": 0,
   "enabled": true,
+  "enableAttachmentDiscovery": false,
+  "attachments": {},
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [
@@ -60,6 +62,8 @@ Each species file must be named `{speciesId}.json` and contain the following str
 
 - **`manaModifier`** (integer): Mana modifier (can be negative, default: 0)
 - **`enabled`** (boolean): Whether this species should appear in the selection list (default: true). Set to `false` to disable a species without deleting the file.
+- **`enableAttachmentDiscovery`** (boolean): Enables automatic discovery of model attachments from Hytale's model JSON files (default: false). When `true`, the mod will read `RandomAttachmentSets` from the model's JSON definition and make them available for player customization in the UI.
+- **`attachments`** (object): Manual attachment definitions for custom or non-discoverable attachments (default: empty object `{}`). See the [Attachment Customization](#attachment-customization) section for details.
 
 - **`displayNameKey`** (string): Language key for display name (e.g., `"species.my_custom_species.name"`)
 - **`descriptionKey`** (string): Language key for description (e.g., `"species.my_custom_species.description"`)
@@ -108,6 +112,74 @@ You can reference models from other mods by using the object format with a names
 ```
 
 **Note**: Models are looked up via Hytale's global asset registry. If a model isn't found at load time, a warning is logged but the species will still load (allows mods to load in any order). Runtime validation in `ModelUtil` handles missing models gracefully.
+
+## Attachment Customization
+
+Model attachments are customizable parts of a model (e.g., hair styles, outfits, accessories, beards, etc.) that can be swapped. Orbis Origins supports two methods for defining attachments:
+
+### Automatic Attachment Discovery
+
+When `enableAttachmentDiscovery` is set to `true`, the mod automatically reads `RandomAttachmentSets` from Hytale's model JSON files. This discovers all available attachment types and options for each model variant.
+
+**Example:**
+```json
+{
+  "id": "kweebec",
+  "enableAttachmentDiscovery": true,
+  "variants": [
+    "Kweebec_Sapling_Pink",
+    "Kweebec_Sapling_Orange"
+  ]
+}
+```
+
+The mod will automatically find attachment types like "Hair", "Outfit", "Beard", etc. from the model's JSON definition and make them available in the UI.
+
+### Manual Attachment Definitions
+
+For custom attachments or when automatic discovery isn't sufficient, you can manually define attachments using the `attachments` field:
+
+```json
+{
+  "attachments": {
+    "Hair": {
+      "Short": {
+        "model": "NPC/Intelligent/Custom/Attachments/Hair_Short.blockymodel",
+        "texture": "NPC/Intelligent/Custom/Attachments/Hair_Short.png",
+        "displayName": "Short Hair"
+      },
+      "Long": {
+        "model": "NPC/Intelligent/Custom/Attachments/Hair_Long.blockymodel",
+        "texture": "NPC/Intelligent/Custom/Attachments/Hair_Long.png",
+        "displayName": "Long Hair"
+      }
+    },
+    "Outfit": {
+      "Casual": {
+        "model": "NPC/Intelligent/Custom/Attachments/Outfit_Casual.blockymodel",
+        "texture": "NPC/Intelligent/Custom/Attachments/Outfit_Casual.png"
+      }
+    }
+  }
+}
+```
+
+**Structure:**
+- Top level: Attachment type name (e.g., "Hair", "Outfit", "Beard")
+- Second level: Option name (e.g., "Short", "Long", "Casual")
+- Option properties:
+  - **`model`** (string, required): Path to the attachment model file
+  - **`texture`** (string, required): Path to the attachment texture file
+  - **`displayName`** (string, optional): Display name shown in the UI (defaults to option name if not provided)
+
+**Note:** Manual attachments are merged with discovered attachments. If both exist for the same attachment type, discovered attachments take precedence.
+
+### Attachment Selection in UI
+
+When attachments are available (either discovered or manually defined), players will see attachment selectors in the species selection UI. Each attachment type appears as a selector with left/right arrows to cycle through options. Selected attachments are:
+- Shown in the preview entity
+- Saved with the player's species selection
+- Applied when the player spawns or the model is re-applied
 
 ## Damage Resistance Types
 
@@ -172,6 +244,8 @@ The system will prefer the language key if available, falling back to inline tex
   "staminaModifier": 0,
   "manaModifier": 0,
   "enabled": true,
+  "enableAttachmentDiscovery": false,
+  "attachments": {},
   "starterItems": [],
   "damageResistances": {}
 }
@@ -199,6 +273,8 @@ The system will prefer the language key if available, falling back to inline tex
   "staminaModifier": 10,
   "manaModifier": 15,
   "enabled": true,
+  "enableAttachmentDiscovery": true,
+  "attachments": {},
   "eyeHeightModifiers": {},
   "starterItems": [
     "CustomMod_Item1",
@@ -230,6 +306,14 @@ Invalid files will log warnings but won't crash the mod - other species will sti
 - Ensure the file is in the correct directory
 - Verify the `id` field is unique
 - Check if `enabled` is set to `false` (disabled species won't appear in the selection list)
+
+### Attachments Not Showing
+- Verify `enableAttachmentDiscovery` is set to `true` if using automatic discovery
+- Check that the model JSON files have `RandomAttachmentSets` defined
+- For manual attachments, verify the `attachments` field structure is correct
+- Check server logs for attachment discovery warnings
+- Ensure attachment model and texture paths are correct (for manual attachments)
+- Note: Not all model variants have attachments - some variants may not show attachment selectors
 
 ### Model Not Found
 - Verify the model name is correct (check Hytale's asset registry)

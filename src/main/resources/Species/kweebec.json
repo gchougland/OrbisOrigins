@@ -17,6 +17,7 @@
   "healthModifier": -5,
   "staminaModifier": 20,
   "manaModifier": 15,
+  "enableAttachmentDiscovery": true,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [

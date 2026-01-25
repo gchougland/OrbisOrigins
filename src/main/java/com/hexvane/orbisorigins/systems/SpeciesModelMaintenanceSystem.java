@@ -114,6 +114,7 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             // Reapply the model
             final String finalSpeciesId = speciesId;
             final int finalVariantIndex = variantIndex;
+            java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
             world.execute(() -> {
                 if (ref.isValid()) {
                     SpeciesData speciesToApply = SpeciesRegistry.getSpecies(finalSpeciesId);
@@ -121,7 +122,7 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
                         String modelName = speciesToApply.getModelName(finalVariantIndex);
                         float eyeHeightModifier = speciesToApply.getEyeHeightModifier(modelName);
                         float hitboxHeightModifier = speciesToApply.getHitboxHeightModifier(modelName);
-                        ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
+                        ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
                         LOGGER.info("SpeciesModelMaintenanceSystem: Re-applied model (was wrong/missing): " + modelName);
                     }
                 }

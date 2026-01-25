@@ -1,5 +1,6 @@
 package com.hexvane.orbisorigins.species;
 
+import com.hexvane.orbisorigins.util.AttachmentDiscoveryUtil;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,15 +49,64 @@ public class SpeciesRegistry {
     /**
      * Register a species programmatically (for backward compatibility).
      * Note: Species loaded from JSON files are automatically registered.
+     * If attachment discovery is enabled, attachments will be discovered for all variants.
      */
     public static void registerSpecies(@Nonnull SpeciesData species) {
         // Remove existing species with same ID if present
         SPECIES_LIST.removeIf(s -> s.getId().equals(species.getId()));
         SPECIES_MAP.remove(species.getId());
         
+        // If attachment discovery is enabled, discover attachments for all variants
+        if (species.isAttachmentDiscoveryEnabled()) {
+            LOGGER.info("SpeciesRegistry: Attachment discovery enabled for " + species.getId() + ", discovering attachments...");
+            // Attachments are discovered on-demand when needed, not cached here
+            // This keeps the registry simple and allows lazy loading
+        }
+        
         SPECIES_MAP.put(species.getId(), species);
         SPECIES_LIST.add(species);
         LOGGER.info("Registered species: " + species.getId());
+    }
+
+    /**
+     * Gets available attachments for a species variant.
+     * Combines discovered attachments (if discovery is enabled) with manual attachments.
+     */
+    @Nonnull
+    public static Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> getAvailableAttachments(
+            @Nonnull SpeciesData species,
+            @Nonnull String modelName
+    ) {
+        Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> result = new HashMap<>();
+        
+        LOGGER.info("SpeciesRegistry.getAvailableAttachments: Getting attachments for species " + species.getId() + ", model " + modelName + ", discovery enabled: " + species.isAttachmentDiscoveryEnabled());
+        
+        // Start with manual attachments
+        Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> manualAttachments = species.getManualAttachments();
+        LOGGER.info("SpeciesRegistry.getAvailableAttachments: Manual attachments: " + manualAttachments.size() + " types");
+        for (Map.Entry<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> entry : manualAttachments.entrySet()) {
+            result.put(entry.getKey(), new HashMap<>(entry.getValue()));
+        }
+        
+        // If discovery is enabled, discover and merge attachments
+        if (species.isAttachmentDiscoveryEnabled()) {
+            LOGGER.info("SpeciesRegistry.getAvailableAttachments: Discovering attachments for model: " + modelName);
+            Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> discovered = 
+                AttachmentDiscoveryUtil.discoverAttachments(modelName);
+            if (discovered != null) {
+                LOGGER.info("SpeciesRegistry.getAvailableAttachments: Discovered " + discovered.size() + " attachment types");
+                // Merge discovered attachments (discovered can override manual if same type)
+                for (Map.Entry<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> entry : discovered.entrySet()) {
+                    Map<String, com.hexvane.orbisorigins.species.AttachmentOption> existing = result.computeIfAbsent(entry.getKey(), k -> new HashMap<>());
+                    existing.putAll(entry.getValue());
+                }
+            } else {
+                LOGGER.info("SpeciesRegistry.getAvailableAttachments: No attachments discovered for model: " + modelName);
+            }
+        }
+        
+        LOGGER.info("SpeciesRegistry.getAvailableAttachments: Total attachment types: " + result.size());
+        return result;
     }
 
     @Nullable

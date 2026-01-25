@@ -1,0 +1,51 @@
+$C = "../Common.ui";
+
+Group {
+  LayoutMode: Left;
+  Padding: (Top: 5, Bottom: 5);
+  Anchor: (Height: 40);
+
+  Label #AttachmentTypeLabel {
+    Anchor: (Width: 100);
+    Style: (RenderBold: true);
+    Text: "";
+  }
+
+  Button #AttachmentLeftArrow {
+    Anchor: (Width: 120, Height: 40);
+    Visible: false;
+    Style: $C.@DefaultButtonStyle;
+    
+    Group {
+      LayoutMode: MiddleCenter;
+      Anchor: (Full: 0);
+      
+      Group {
+        Anchor: (Width: 20, Height: 20);
+        Background: "../Arrow-Left.png";
+      }
+    }
+  }
+
+  Label #AttachmentLabel {
+    FlexWeight: 1;
+    Text: "";
+    Padding: (Left: 10, Right: 10);
+  }
+
+  Button #AttachmentRightArrow {
+    Anchor: (Width: 120, Height: 40);
+    Visible: false;
+    Style: $C.@DefaultButtonStyle;
+    
+    Group {
+      LayoutMode: MiddleCenter;
+      Anchor: (Full: 0);
+      
+      Group {
+        Anchor: (Width: 20, Height: 20);
+        Background: "../Arrow-Right.png";
+      }
+    }
+  }
+}
