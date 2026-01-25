@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.hexvane"
-version = "1.1.0"
+version = "1.2.0"
 val javaVersion = 25
 
 val appData = System.getenv("APPDATA") ?: (System.getenv("HOME") + "/.var/app/com.hypixel.HytaleLauncher/data")
@@ -36,6 +36,11 @@ java {
     }
 
     withSourcesJar()
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-Xlint:deprecation")
+    options.compilerArgs.add("-Xlint:unchecked")
 }
 
 tasks.named<ProcessResources>("processResources") {

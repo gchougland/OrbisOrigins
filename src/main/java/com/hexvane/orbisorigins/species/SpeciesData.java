@@ -20,6 +20,10 @@ public class SpeciesData {
     private final String descriptionKey; // Optional language key override
     private final int healthModifier;
     private final int staminaModifier;
+    private final int manaModifier;
+    private final boolean enabled;
+    private final boolean enableAttachmentDiscovery;
+    private final Map<String, Map<String, AttachmentOption>> manualAttachments; // attachment type -> option name -> AttachmentOption
     private final Map<String, Float> eyeHeightModifiers; // Per-variant eye height modifiers (model name -> modifier in blocks)
     private final Map<String, Float> hitboxHeightModifiers; // Per-variant hitbox height modifiers (model name -> modifier in blocks)
     private final List<String> starterItems;
@@ -36,7 +40,7 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances
     ) {
-        this(id, displayName, null, modelBaseName, variants, description, null, healthModifier, staminaModifier, new HashMap<>(), new HashMap<>(), starterItems, damageResistances);
+        this(id, displayName, null, modelBaseName, variants, description, null, healthModifier, staminaModifier, 0, true, false, new HashMap<>(), new HashMap<>(), new HashMap<>(), starterItems, damageResistances);
     }
 
     public SpeciesData(
@@ -49,6 +53,10 @@ public class SpeciesData {
             @Nullable String descriptionKey,
             int healthModifier,
             int staminaModifier,
+            int manaModifier,
+            boolean enabled,
+            boolean enableAttachmentDiscovery,
+            @Nonnull Map<String, Map<String, AttachmentOption>> manualAttachments,
             @Nonnull Map<String, Float> eyeHeightModifiers,
             @Nonnull Map<String, Float> hitboxHeightModifiers,
             @Nonnull List<String> starterItems,
@@ -63,6 +71,14 @@ public class SpeciesData {
         this.descriptionKey = descriptionKey;
         this.healthModifier = healthModifier;
         this.staminaModifier = staminaModifier;
+        this.manaModifier = manaModifier;
+        this.enabled = enabled;
+        this.enableAttachmentDiscovery = enableAttachmentDiscovery;
+        // Deep copy manual attachments
+        this.manualAttachments = new HashMap<>();
+        for (Map.Entry<String, Map<String, AttachmentOption>> entry : manualAttachments.entrySet()) {
+            this.manualAttachments.put(entry.getKey(), new HashMap<>(entry.getValue()));
+        }
         this.eyeHeightModifiers = new HashMap<>(eyeHeightModifiers);
         this.hitboxHeightModifiers = new HashMap<>(hitboxHeightModifiers);
         this.starterItems = new ArrayList<>(starterItems);
@@ -110,6 +126,39 @@ public class SpeciesData {
 
     public int getStaminaModifier() {
         return staminaModifier;
+    }
+
+    public int getManaModifier() {
+        return manaModifier;
+    }
+
+    /**
+     * Returns whether this species is enabled and should appear in the selection list.
+     * @return true if enabled, false if disabled
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Returns whether attachment discovery is enabled for this species.
+     * @return true if discovery is enabled, false otherwise
+     */
+    public boolean isAttachmentDiscoveryEnabled() {
+        return enableAttachmentDiscovery;
+    }
+
+    /**
+     * Gets manually defined attachments for this species.
+     * @return Map of attachment type -> option name -> AttachmentOption
+     */
+    @Nonnull
+    public Map<String, Map<String, AttachmentOption>> getManualAttachments() {
+        Map<String, Map<String, AttachmentOption>> result = new HashMap<>();
+        for (Map.Entry<String, Map<String, AttachmentOption>> entry : manualAttachments.entrySet()) {
+            result.put(entry.getKey(), new HashMap<>(entry.getValue()));
+        }
+        return result;
     }
 
     /**

@@ -1,7 +1,7 @@
 $C = "../Common.ui";
 
 $C.@DecoratedContainer {
-  Anchor: (Left: 10, Width: 550, Height: 600);
+  Anchor: (Left: 10, Width: 650, Height: 600);
 
   #Title {
     Group {
@@ -17,9 +17,12 @@ $C.@DecoratedContainer {
       FlexWeight: 1;
       Padding: (Full: 15);
 
+      // Species list and description section with border
       Group {
         LayoutMode: Left;
         FlexWeight: 1;
+        Background: (TexturePath: "../Common/ContainerPanelPatch.png", Border: 4);
+        Padding: (Full: 10);
 
         // Left: Species List
         Group #SpeciesListContainer {
@@ -42,7 +45,7 @@ $C.@DecoratedContainer {
 
         // Right: Description
         Group #DescriptionContainer {
-          Anchor: (Width: 300);
+          Anchor: (Width: 350);
           LayoutMode: Top;
           Padding: (Left: 15);
 
@@ -80,21 +83,23 @@ $C.@DecoratedContainer {
       // Variant controls (separate from description)
       Group {
         LayoutMode: Left;
-        Padding: (Top: 10, Bottom: 10);
+        Padding: (Top: 20, Bottom: 10);
         Anchor: (Height: 50);
 
-        $C.@TextButton #LeftArrow {
-          Anchor: (Width: 50, Height: 50);
-          Text: "<";
+        Button #LeftArrow {
+          Anchor: (Width: 150, Height: 50);
           Visible: false;
-          Style: (
-            Default: (
-              Background: #4a4a4a
-            ),
-            Hovered: (
-              Background: #5a5a5a
-            )
-          );
+          Style: $C.@DefaultButtonStyle;
+          
+          Group {
+            LayoutMode: MiddleCenter;
+            Anchor: (Full: 0);
+            
+            Group {
+              Anchor: (Width: 24, Height: 24);
+              Background: "../Arrow-Left.png";
+            }
+          }
         }
 
         Label #VariantLabel {
@@ -104,19 +109,31 @@ $C.@DecoratedContainer {
           Padding: (Left: 10, Right: 10);
         }
 
-        $C.@TextButton #RightArrow {
-          Anchor: (Width: 50, Height: 50);
-          Text: ">";
+        Button #RightArrow {
+          Anchor: (Width: 150, Height: 50);
           Visible: false;
-          Style: (
-            Default: (
-              Background: #4a4a4a
-            ),
-            Hovered: (
-              Background: #5a5a5a
-            )
-          );
+          Style: $C.@DefaultButtonStyle;
+          
+          Group {
+            LayoutMode: MiddleCenter;
+            Anchor: (Full: 0);
+            
+            Group {
+              Anchor: (Width: 24, Height: 24);
+              Background: "../Arrow-Right.png";
+            }
+          }
         }
+      }
+
+      // Attachment selectors (dynamic, scrollable)
+      Group #AttachmentSelectors {
+        LayoutMode: TopScrolling;
+        FlexWeight: 1;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        Padding: (Top: 10, Bottom: 10);
+        Anchor: (Height: 150);
+        Visible: false;
       }
 
       Group {

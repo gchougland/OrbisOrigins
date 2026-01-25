@@ -15,6 +15,8 @@
   ],
   "healthModifier": 10,
   "staminaModifier": 10,
+  "manaModifier": 5,
+  "enableAttachmentDiscovery": true,
   "eyeHeightModifiers": {
     "Feran_Cub": -0.7,
     "Feran_Civilian": 0.0,

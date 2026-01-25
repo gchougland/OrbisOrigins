@@ -7,6 +7,7 @@ import com.nimbusds.jose.shaded.gson.JsonDeserializer;
 import com.nimbusds.jose.shaded.gson.JsonElement;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.nimbusds.jose.shaded.gson.JsonParseException;
+import com.hexvane.orbisorigins.species.AttachmentOption;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +48,10 @@ public class SpeciesJsonCodec {
         List<Object> variants; // Can be String or Map
         int healthModifier;
         int staminaModifier;
+        int manaModifier;
+        Boolean enabled;
+        Boolean enableAttachmentDiscovery;
+        Map<String, Object> attachments; // Manual attachment definitions
         Map<String, Float> eyeHeightModifiers; // Per-variant eye height modifiers
         Map<String, Float> hitboxHeightModifiers; // Per-variant hitbox height modifiers
         List<String> starterItems;
@@ -116,6 +121,13 @@ public class SpeciesJsonCodec {
             Map<String, Float> resistances = damageResistances != null ? damageResistances : new HashMap<>();
             Map<String, Float> eyeHeightMods = eyeHeightModifiers != null ? eyeHeightModifiers : new HashMap<>();
             Map<String, Float> hitboxHeightMods = hitboxHeightModifiers != null ? hitboxHeightModifiers : new HashMap<>();
+            
+            // Default enabled to true if not specified (for backward compatibility)
+            boolean isEnabled = enabled != null ? enabled : true;
+            boolean isAttachmentDiscoveryEnabled = enableAttachmentDiscovery != null ? enableAttachmentDiscovery : false;
+            
+            // Parse manual attachments
+            Map<String, Map<String, AttachmentOption>> manualAttachments = parseManualAttachments(attachments);
 
             return new SpeciesData(
                     id,
@@ -127,11 +139,70 @@ public class SpeciesJsonCodec {
                     descriptionKey,
                     healthModifier,
                     staminaModifier,
+                    manaModifier,
+                    isEnabled,
+                    isAttachmentDiscoveryEnabled,
+                    manualAttachments,
                     eyeHeightMods,
                     hitboxHeightMods,
                     items,
                     resistances
             );
+        }
+
+        /**
+         * Parses manual attachment definitions from JSON.
+         * Format: { "Hair": { "Option1": { "model": "...", "texture": "..." }, ... } }
+         */
+        @Nonnull
+        private Map<String, Map<String, AttachmentOption>> parseManualAttachments(@Nullable Map<String, Object> attachmentsJson) {
+            Map<String, Map<String, AttachmentOption>> result = new HashMap<>();
+            
+            if (attachmentsJson == null) {
+                return result;
+            }
+
+            for (Map.Entry<String, Object> attachmentTypeEntry : attachmentsJson.entrySet()) {
+                String attachmentType = attachmentTypeEntry.getKey();
+                Object attachmentTypeValue = attachmentTypeEntry.getValue();
+                
+                if (!(attachmentTypeValue instanceof Map)) {
+                    continue;
+                }
+                
+                @SuppressWarnings("unchecked")
+                Map<String, Object> options = (Map<String, Object>) attachmentTypeValue;
+                Map<String, AttachmentOption> optionMap = new HashMap<>();
+                
+                for (Map.Entry<String, Object> optionEntry : options.entrySet()) {
+                    String optionName = optionEntry.getKey();
+                    Object optionValue = optionEntry.getValue();
+                    
+                    if (!(optionValue instanceof Map)) {
+                        continue;
+                    }
+                    
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> optionData = (Map<String, Object>) optionValue;
+                    
+                    Object modelObj = optionData.get("model");
+                    Object textureObj = optionData.get("texture");
+                    Object displayNameObj = optionData.get("displayName");
+                    
+                    if (modelObj != null && textureObj != null) {
+                        String model = modelObj.toString();
+                        String texture = textureObj.toString();
+                        String displayName = displayNameObj != null ? displayNameObj.toString() : null;
+                        optionMap.put(optionName, new AttachmentOption(model, texture, displayName));
+                    }
+                }
+                
+                if (!optionMap.isEmpty()) {
+                    result.put(attachmentType, optionMap);
+                }
+            }
+            
+            return result;
         }
     }
 
@@ -154,6 +225,15 @@ public class SpeciesJsonCodec {
             data.modelNamespace = jsonObject.has("modelNamespace") ? jsonObject.get("modelNamespace").getAsString() : null;
             data.healthModifier = jsonObject.has("healthModifier") ? jsonObject.get("healthModifier").getAsInt() : 0;
             data.staminaModifier = jsonObject.has("staminaModifier") ? jsonObject.get("staminaModifier").getAsInt() : 0;
+            data.manaModifier = jsonObject.has("manaModifier") ? jsonObject.get("manaModifier").getAsInt() : 0;
+            data.enabled = jsonObject.has("enabled") ? jsonObject.get("enabled").getAsBoolean() : null;
+            data.enableAttachmentDiscovery = jsonObject.has("enableAttachmentDiscovery") ? jsonObject.get("enableAttachmentDiscovery").getAsBoolean() : null;
+
+            // Deserialize manual attachments
+            if (jsonObject.has("attachments")) {
+                data.attachments = context.deserialize(jsonObject.get("attachments"), 
+                        new com.nimbusds.jose.shaded.gson.reflect.TypeToken<Map<String, Object>>(){}.getType());
+            }
 
             // Deserialize eye height modifiers (per-variant)
             if (jsonObject.has("eyeHeightModifiers")) {

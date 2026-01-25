@@ -79,9 +79,19 @@ public class PlayerDataStorage {
             @Nonnull String speciesId,
             int variantIndex
     ) {
+        setSpeciesSelection(playerId, worldName, speciesId, variantIndex, new HashMap<>());
+    }
+
+    public static void setSpeciesSelection(
+            @Nonnull UUID playerId,
+            @Nonnull String worldName,
+            @Nonnull String speciesId,
+            int variantIndex,
+            @Nonnull Map<String, String> attachmentSelections
+    ) {
         String worldNormalizedName = WorldUtil.getNormalizedName(worldName);
         SPECIES_STORAGE.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
-                .put(worldNormalizedName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true));
+                .put(worldNormalizedName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true, attachmentSelections));
         saveSpeciesData();
     }
     

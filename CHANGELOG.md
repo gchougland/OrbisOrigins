@@ -2,6 +2,73 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [1.2.0] - 2026-01-25
+
+### Added
+
+#### Mana Modifier System
+- **Mana stat modifier support** - Species can now have a `manaModifier` field in their JSON files to adjust maximum mana
+- **Mana modifier display** - Mana modifiers are now shown in the species selection UI description
+- **Default mana values** - All built-in species now have appropriate default mana modifiers:
+  - **High mana** (+15): Kweebec (+15), Thunder Golem (+15), Void Golem (+15)
+  - **Moderate mana** (+5 to +10): Feran (+5), Skeleton (+10), Outlander (+10), Elemental Golems (+10)
+  - **Standard mana** (0): Goblin, Klops, Orbian, Trork, Zombie
+
+#### Species Enable/Disable Feature
+- **Species visibility control** - Species can now be disabled from appearing in the selection list by setting `"enabled": false` in their JSON file
+- **Backward compatible** - Existing species files without the `enabled` field default to `true` (enabled)
+- **Filtered species list** - The species selection UI now only shows enabled species
+
+#### Model Attachment Customization System
+- **Automatic attachment discovery** - Species can enable automatic discovery of model attachments from Hytale's model JSON files using `"enableAttachmentDiscovery": true`
+- **Manual attachment definitions** - Species can manually define attachment options using the `attachments` field for custom or non-discoverable attachments
+- **Attachment selection UI** - Players can now customize model attachments (hair, outfits, accessories, etc.) through the species selection interface
+- **Persistent attachment selections** - Player attachment choices are saved and persist across server restarts
+- **Attachment preview** - Selected attachments are shown in the preview entity before confirmation
+- **Default attachment discovery** - All built-in species now have `enableAttachmentDiscovery: true` enabled
+
+### Changed
+
+#### Species Stat System
+- **Extended stat modifiers** - The stat modifier system now supports health, stamina, and mana modifiers
+- **Species registry filtering** - `SpeciesRegistry.getAllSpecies()` now returns only enabled species by default
+- **Internal access method** - Added `getAllSpeciesIncludingDisabled()` for internal use when all species are needed
+
+#### Balance Changes
+- **Golem physical resistance nerf** - Reduced physical damage resistance for all golem species from 0.5-0.7 to 0.9 (10% resistance instead of 30-50% resistance) to improve game balance
+
+### Technical Details
+
+#### Modified Files
+- `SpeciesData.java` - Added `manaModifier` (int), `enabled` (boolean), `enableAttachmentDiscovery` (boolean), and `manualAttachments` (Map) fields with getters
+- `SpeciesJsonCodec.java` - Added parsing for `manaModifier`, `enabled`, `enableAttachmentDiscovery`, and `attachments` fields (defaults: 0, true, false, empty map)
+- `SpeciesStatUtil.java` - Added mana modifier application using Hytale's EntityStatMap system
+- `SpeciesRegistry.java` - Updated `getAllSpecies()` to filter disabled species, added `getAllSpeciesIncludingDisabled()`, added `getAvailableAttachments()` method
+- `SpeciesSelectionPage.java` - Added attachment selector UI, attachment cycling logic, and attachment selection persistence
+- `ModelUtil.java` - Updated to support attachment selections when applying models to players
+- `PlayerSpeciesData.java` - Added attachment selections storage and retrieval
+- `PlayerDataStorage.java` - Added attachment selections serialization/deserialization
+- `SpeciesModelSystem.java` - Updated to apply saved attachment selections on player spawn
+- `SpeciesModelMaintenanceSystem.java` - Updated to maintain attachment selections during periodic model re-application
+- `AttachmentDiscoveryUtil.java` - New utility for discovering attachments from Hytale model assets
+- `AttachmentOption.java` - New data class for representing attachment options
+- `SPECIES_JSON_GUIDE.md` - Updated documentation with attachment fields and examples
+- All 16 built-in species JSON files - Added `manaModifier` values and `enableAttachmentDiscovery: true`
+- `SpeciesSelectionPage.ui` - Added attachment selector container and improved button styling
+- `AttachmentSelector.ui` - New UI template for attachment type selectors
+
+#### New JSON Fields
+- `manaModifier` (integer, optional, default: 0) - Adjusts maximum mana (can be negative)
+- `enabled` (boolean, optional, default: true) - Controls whether species appears in selection list
+- `enableAttachmentDiscovery` (boolean, optional, default: false) - Enables automatic discovery of attachments from model JSON files
+- `attachments` (object, optional, default: empty) - Manual attachment definitions (see SPECIES_JSON_GUIDE.md for format)
+
+### Migration Notes
+
+- **Existing species files** - All existing species JSON files will continue to work without modification (defaults apply)
+- **Custom species** - Users can now add `manaModifier` and `enabled` fields to their custom species JSON files
+- **Disabled species** - To disable a species, add `"enabled": false` to its JSON file
+
 ## [1.1.0] - 2026-01-22
 
 ### Added

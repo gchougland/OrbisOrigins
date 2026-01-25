@@ -8,6 +8,8 @@
   "variants": [],
   "healthModifier": 0,
   "staminaModifier": 0,
+  "manaModifier": 0,
+  "enableAttachmentDiscovery": true,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],
