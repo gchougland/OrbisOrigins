@@ -12,6 +12,7 @@
   ],
   "healthModifier": 5,
   "staminaModifier": 10,
+  "manaModifier": 0,
   "eyeHeightModifiers": {
     "Klops_Merchant": 0.1,
     "Klops_Miner": 0.1,

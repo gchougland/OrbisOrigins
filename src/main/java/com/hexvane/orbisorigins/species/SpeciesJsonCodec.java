@@ -47,6 +47,8 @@ public class SpeciesJsonCodec {
         List<Object> variants; // Can be String or Map
         int healthModifier;
         int staminaModifier;
+        int manaModifier;
+        Boolean enabled;
         Map<String, Float> eyeHeightModifiers; // Per-variant eye height modifiers
         Map<String, Float> hitboxHeightModifiers; // Per-variant hitbox height modifiers
         List<String> starterItems;
@@ -116,6 +118,9 @@ public class SpeciesJsonCodec {
             Map<String, Float> resistances = damageResistances != null ? damageResistances : new HashMap<>();
             Map<String, Float> eyeHeightMods = eyeHeightModifiers != null ? eyeHeightModifiers : new HashMap<>();
             Map<String, Float> hitboxHeightMods = hitboxHeightModifiers != null ? hitboxHeightModifiers : new HashMap<>();
+            
+            // Default enabled to true if not specified (for backward compatibility)
+            boolean isEnabled = enabled != null ? enabled : true;
 
             return new SpeciesData(
                     id,
@@ -127,6 +132,8 @@ public class SpeciesJsonCodec {
                     descriptionKey,
                     healthModifier,
                     staminaModifier,
+                    manaModifier,
+                    isEnabled,
                     eyeHeightMods,
                     hitboxHeightMods,
                     items,
@@ -154,6 +161,8 @@ public class SpeciesJsonCodec {
             data.modelNamespace = jsonObject.has("modelNamespace") ? jsonObject.get("modelNamespace").getAsString() : null;
             data.healthModifier = jsonObject.has("healthModifier") ? jsonObject.get("healthModifier").getAsInt() : 0;
             data.staminaModifier = jsonObject.has("staminaModifier") ? jsonObject.get("staminaModifier").getAsInt() : 0;
+            data.manaModifier = jsonObject.has("manaModifier") ? jsonObject.get("manaModifier").getAsInt() : 0;
+            data.enabled = jsonObject.has("enabled") ? jsonObject.get("enabled").getAsBoolean() : null;
 
             // Deserialize eye height modifiers (per-variant)
             if (jsonObject.has("eyeHeightModifiers")) {

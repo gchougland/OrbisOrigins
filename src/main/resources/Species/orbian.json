@@ -8,6 +8,7 @@
   "variants": [],
   "healthModifier": 0,
   "staminaModifier": 0,
+  "manaModifier": 0,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],

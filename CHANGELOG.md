@@ -2,6 +2,51 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [1.2.0] - 2026-01-25
+
+### Added
+
+#### Mana Modifier System
+- **Mana stat modifier support** - Species can now have a `manaModifier` field in their JSON files to adjust maximum mana
+- **Mana modifier display** - Mana modifiers are now shown in the species selection UI description
+- **Default mana values** - All built-in species now have appropriate default mana modifiers:
+  - **High mana** (+15): Kweebec (+15), Thunder Golem (+15), Void Golem (+15)
+  - **Moderate mana** (+5 to +10): Feran (+5), Skeleton (+10), Outlander (+10), Elemental Golems (+10)
+  - **Standard mana** (0): Goblin, Klops, Orbian, Trork, Zombie
+
+#### Species Enable/Disable Feature
+- **Species visibility control** - Species can now be disabled from appearing in the selection list by setting `"enabled": false` in their JSON file
+- **Backward compatible** - Existing species files without the `enabled` field default to `true` (enabled)
+- **Filtered species list** - The species selection UI now only shows enabled species
+
+### Changed
+
+#### Species Stat System
+- **Extended stat modifiers** - The stat modifier system now supports health, stamina, and mana modifiers
+- **Species registry filtering** - `SpeciesRegistry.getAllSpecies()` now returns only enabled species by default
+- **Internal access method** - Added `getAllSpeciesIncludingDisabled()` for internal use when all species are needed
+
+### Technical Details
+
+#### Modified Files
+- `SpeciesData.java` - Added `manaModifier` (int) and `enabled` (boolean) fields with getters
+- `SpeciesJsonCodec.java` - Added parsing for `manaModifier` and `enabled` fields (defaults: 0 and true)
+- `SpeciesStatUtil.java` - Added mana modifier application using Hytale's EntityStatMap system
+- `SpeciesRegistry.java` - Updated `getAllSpecies()` to filter disabled species, added `getAllSpeciesIncludingDisabled()`
+- `SpeciesSelectionPage.java` - Added mana modifier display in species description
+- `SPECIES_JSON_GUIDE.md` - Updated documentation with new fields and examples
+- All 16 built-in species JSON files - Added `manaModifier` values
+
+#### New JSON Fields
+- `manaModifier` (integer, optional, default: 0) - Adjusts maximum mana (can be negative)
+- `enabled` (boolean, optional, default: true) - Controls whether species appears in selection list
+
+### Migration Notes
+
+- **Existing species files** - All existing species JSON files will continue to work without modification (defaults apply)
+- **Custom species** - Users can now add `manaModifier` and `enabled` fields to their custom species JSON files
+- **Disabled species** - To disable a species, add `"enabled": false` to its JSON file
+
 ## [1.1.0] - 2026-01-22
 
 ### Added

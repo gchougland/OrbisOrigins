@@ -64,8 +64,27 @@ public class SpeciesRegistry {
         return SPECIES_MAP.get(id);
     }
 
+    /**
+     * Gets all enabled species (species that should appear in the selection list).
+     * @return List of enabled species
+     */
     @Nonnull
     public static List<SpeciesData> getAllSpecies() {
+        List<SpeciesData> enabledSpecies = new ArrayList<>();
+        for (SpeciesData species : SPECIES_LIST) {
+            if (species.isEnabled()) {
+                enabledSpecies.add(species);
+            }
+        }
+        return enabledSpecies;
+    }
+
+    /**
+     * Gets all species including disabled ones (for internal use).
+     * @return List of all species regardless of enabled status
+     */
+    @Nonnull
+    public static List<SpeciesData> getAllSpeciesIncludingDisabled() {
         return new ArrayList<>(SPECIES_LIST);
     }
 

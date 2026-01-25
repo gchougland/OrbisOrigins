@@ -29,6 +29,8 @@ Each species file must be named `{speciesId}.json` and contain the following str
   ],
   "healthModifier": 10,
   "staminaModifier": 5,
+  "manaModifier": 0,
+  "enabled": true,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [
@@ -55,6 +57,9 @@ Each species file must be named `{speciesId}.json` and contain the following str
 - **`staminaModifier`** (integer): Stamina modifier (can be negative, but total stamina cannot go below 5)
 
 ### Optional Fields
+
+- **`manaModifier`** (integer): Mana modifier (can be negative, default: 0)
+- **`enabled`** (boolean): Whether this species should appear in the selection list (default: true). Set to `false` to disable a species without deleting the file.
 
 - **`displayNameKey`** (string): Language key for display name (e.g., `"species.my_custom_species.name"`)
 - **`descriptionKey`** (string): Language key for description (e.g., `"species.my_custom_species.description"`)
@@ -165,6 +170,8 @@ The system will prefer the language key if available, falling back to inline tex
   ],
   "healthModifier": 0,
   "staminaModifier": 0,
+  "manaModifier": 0,
+  "enabled": true,
   "starterItems": [],
   "damageResistances": {}
 }
@@ -190,6 +197,8 @@ The system will prefer the language key if available, falling back to inline tex
   ],
   "healthModifier": 20,
   "staminaModifier": 10,
+  "manaModifier": 15,
+  "enabled": true,
   "eyeHeightModifiers": {},
   "starterItems": [
     "CustomMod_Item1",
@@ -220,6 +229,7 @@ Invalid files will log warnings but won't crash the mod - other species will sti
 - Check server logs for error messages
 - Ensure the file is in the correct directory
 - Verify the `id` field is unique
+- Check if `enabled` is set to `false` (disabled species won't appear in the selection list)
 
 ### Model Not Found
 - Verify the model name is correct (check Hytale's asset registry)

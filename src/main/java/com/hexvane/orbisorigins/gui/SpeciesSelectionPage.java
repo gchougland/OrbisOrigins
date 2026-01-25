@@ -283,6 +283,18 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             descriptionText.append("\n");
         }
         
+        // Mana modifier
+        int manaMod = species.getManaModifier();
+        if (manaMod != 0) {
+            descriptionText.append("Max Mana: ");
+            if (manaMod > 0) {
+                descriptionText.append("+").append(manaMod);
+            } else {
+                descriptionText.append(manaMod);
+            }
+            descriptionText.append("\n");
+        }
+        
         // Damage resistances
         Map<String, Float> resistances = species.getDamageResistances();
         if (!resistances.isEmpty()) {

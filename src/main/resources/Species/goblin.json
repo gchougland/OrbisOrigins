@@ -13,6 +13,7 @@
   ],
   "healthModifier": -5,
   "staminaModifier": 15,
+  "manaModifier": 0,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [
