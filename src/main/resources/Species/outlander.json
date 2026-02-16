@@ -5,10 +5,189 @@
   "description": "Humans who split off from civilization. Balanced stats with minor magic resistance.",
   "descriptionKey": "species.outlander.description",
   "modelBaseName": "Outlander",
+  "version": 2,
   "variants": [
-    "Outlander",
-    "Outlander_Ranged",
-    "Outlander_Cultist"
+    {
+      "VariantName": "Outlander",
+      "ParentModel": "Outlander",
+      "Model": "Characters/Player_With_Face.blockymodel",
+      "Textures": [
+        "Characters/Player_Textures/Outlander_1.png"
+      ],
+      "defaultAttachments": [
+        {
+          "Model": "Characters/Body_Attachments/Mouths/Mouth1.blockymodel",
+          "Texture": "Characters/Body_Attachments/Mouths/Mouth1_Textures/Outlander_1.png"
+        }
+      ],
+      "attachments": {
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Berserker",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Chest_Texture.png"
+            },
+            {
+              "Name": "Culist",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Chest_Texture.png"
+            },
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Chest_Texture.png"
+            },
+            {
+              "Name": "Marauder",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Chest_Texture.png"
+            },
+            {
+              "Name": "Marauder - Skull",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Chest_Skull.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Chest_Texture.png"
+            },
+            {
+              "Name": "Priest",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Chest_Texture.png"
+            },
+            {
+              "Name": "Sorcerer",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Chest_Sorcerer.png"
+            },
+            {
+              "Name": "Stalker",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Stalker/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Stalker/Chest_Texture.png"
+            }
+          ]
+        },
+        "Hands": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Berserker",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Hands.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Hands_Texture.png"
+            },
+            {
+              "Name": "Cultist",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Hand.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Hand_Texture.png"
+            }
+          ]
+        },
+        "Head": {
+          "allowsNone": false,
+          "options": [
+            {
+              "Name": "Berserker",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Head_Texture.png"
+            },
+            {
+              "Name": "Cultist",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Head_Texture.png"
+            },
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Head_Texture.png"
+            },
+            {
+              "Name": "Hunter - Stalker",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Head_Stalker.png"
+            },
+            {
+              "Name": "Marauder",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Head_Texture.png"
+            },
+            {
+              "Name": "Priest",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Head_Texture.png"
+            },
+            {
+              "Name": "Sorcerer",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Sorcerer/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Sorcerer/Head_Texture.png"
+            }
+          ]
+        },
+        "Legs": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Berserker",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Berserker/Legs_Texture.png"
+            },
+            {
+              "Name": "Cultist",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Legs_Texture.png"
+            },
+            {
+              "Name": "Cultist - Grey",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Legs_Grey.png"
+            },
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Legs_Texture.png"
+            },
+            {
+              "Name": "Marauder",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Marauder/Legs_Texture.png"
+            },
+            {
+              "Name": "Priest",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Legs_Texture.png"
+            },
+            {
+              "Name": "Sorcerer",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Priest/Legs_Sorcerer.png"
+            }
+          ]
+        },
+        "Jaw": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Cultist",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Jaw.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Cultist/Jaw_Texture.png"
+            }
+          ]
+        },
+        "Cape": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Cape.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Hunter/Cape_Texture.png"
+            },
+            {
+              "Name": "Stalker",
+              "Model": "NPC/Intelligent/Outlander/Models/Attachments/Stalker/Cape.blockymodel",
+              "Texture": "NPC/Intelligent/Outlander/Models/Attachments/Stalker/Cape_Texture.png"
+            }
+          ]
+        }
+      }
+    }
   ],
   "healthModifier": 10,
   "staminaModifier": 10,

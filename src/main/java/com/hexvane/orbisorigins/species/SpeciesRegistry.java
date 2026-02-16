@@ -4,6 +4,7 @@ import com.hexvane.orbisorigins.util.AttachmentDiscoveryUtil;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -70,48 +71,76 @@ public class SpeciesRegistry {
 
     /**
      * Gets available attachments for a species variant.
-     * Combines discovered attachments (if discovery is enabled) with manual attachments.
+     * For v2: returns attachment options from variant config.
+     * For v1: combines discovered attachments (if discovery is enabled) with manual attachments.
      */
     @Nonnull
     public static Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> getAvailableAttachments(
             @Nonnull SpeciesData species,
-            @Nonnull String modelName
+            int variantIndex,
+            @Nullable String modelName
     ) {
         Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> result = new HashMap<>();
         
-        LOGGER.info("SpeciesRegistry.getAvailableAttachments: Getting attachments for species " + species.getId() + ", model " + modelName + ", discovery enabled: " + species.isAttachmentDiscoveryEnabled());
+        // v2: get from variant config (no discovery); preserve JSON order via LinkedHashMap
+        if (species.isVersion2()) {
+            for (String slot : species.getAttachmentSlotNames(variantIndex)) {
+                Map<String, com.hexvane.orbisorigins.species.AttachmentOption> options = species.getAttachmentOptions(variantIndex, slot);
+                if (!options.isEmpty()) {
+                    Map<String, com.hexvane.orbisorigins.species.AttachmentOption> optionMap = new LinkedHashMap<>(options);
+                    if (species.attachmentAllowsNone(variantIndex, slot)) {
+                        Map<String, com.hexvane.orbisorigins.species.AttachmentOption> withNone = new LinkedHashMap<>();
+                        withNone.put("null", new com.hexvane.orbisorigins.species.AttachmentOption("", "", "None"));
+                        withNone.putAll(optionMap);
+                        result.put(slot, withNone);
+                    } else {
+                        result.put(slot, optionMap);
+                    }
+                }
+            }
+            return result;
+        }
         
-        // Start with manual attachments
+        // v1: manual + discovered
+        LOGGER.info("SpeciesRegistry.getAvailableAttachments: Getting attachments for species " + species.getId() + ", model " + modelName + ", discovery enabled: " + species.isAttachmentDiscoveryEnabled());
         Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> manualAttachments = species.getManualAttachments();
-        LOGGER.info("SpeciesRegistry.getAvailableAttachments: Manual attachments: " + manualAttachments.size() + " types");
         for (Map.Entry<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> entry : manualAttachments.entrySet()) {
             result.put(entry.getKey(), new HashMap<>(entry.getValue()));
         }
-        
-        // If discovery is enabled, discover and merge attachments
-        if (species.isAttachmentDiscoveryEnabled()) {
-            LOGGER.info("SpeciesRegistry.getAvailableAttachments: Discovering attachments for model: " + modelName);
-            Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> discovered = 
-                AttachmentDiscoveryUtil.discoverAttachments(modelName);
+        if (species.isAttachmentDiscoveryEnabled() && modelName != null) {
+            Map<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> discovered = AttachmentDiscoveryUtil.discoverAttachments(modelName);
             if (discovered != null) {
-                LOGGER.info("SpeciesRegistry.getAvailableAttachments: Discovered " + discovered.size() + " attachment types");
-                // Merge discovered attachments (discovered can override manual if same type)
                 for (Map.Entry<String, Map<String, com.hexvane.orbisorigins.species.AttachmentOption>> entry : discovered.entrySet()) {
                     Map<String, com.hexvane.orbisorigins.species.AttachmentOption> existing = result.computeIfAbsent(entry.getKey(), k -> new HashMap<>());
                     existing.putAll(entry.getValue());
                 }
-            } else {
-                LOGGER.info("SpeciesRegistry.getAvailableAttachments: No attachments discovered for model: " + modelName);
             }
         }
-        
-        LOGGER.info("SpeciesRegistry.getAvailableAttachments: Total attachment types: " + result.size());
         return result;
     }
 
     @Nullable
     public static SpeciesData getSpecies(@Nonnull String id) {
         return SPECIES_MAP.get(id);
+    }
+
+    /**
+     * Returns the species for the given id if it exists, otherwise the default species (orbian).
+     * Use this when applying species to a player so that removed/unavailable species fall back safely.
+     * @return The species, or the default species, or null if neither exists (e.g. no species loaded)
+     */
+    @Nullable
+    public static SpeciesData getSpeciesOrDefault(@Nonnull String id) {
+        SpeciesData species = SPECIES_MAP.get(id);
+        return species != null ? species : getDefaultSpecies();
+    }
+
+    /**
+     * Returns true if the given species id is currently registered and enabled.
+     */
+    public static boolean isSpeciesAvailable(@Nonnull String id) {
+        SpeciesData species = SPECIES_MAP.get(id);
+        return species != null && species.isEnabled();
     }
 
     /**
@@ -138,8 +167,17 @@ public class SpeciesRegistry {
         return new ArrayList<>(SPECIES_LIST);
     }
 
+    /**
+     * Default species used when a player's stored species has been removed from the mod.
+     * Prefers "orbian"; if orbian is not loaded, returns the first enabled species if any.
+     */
     @Nullable
     public static SpeciesData getDefaultSpecies() {
-        return getSpecies("orbian");
+        SpeciesData orbian = getSpecies("orbian");
+        if (orbian != null) {
+            return orbian;
+        }
+        List<SpeciesData> enabled = getAllSpecies();
+        return enabled.isEmpty() ? null : enabled.get(0);
     }
 }

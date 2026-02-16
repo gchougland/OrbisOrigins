@@ -48,11 +48,11 @@ public class SpeciesLoader {
         try {
             // List of known species files
             String[] speciesFiles = {
-                    "kweebec.json", "trork.json", "feran.json", "skeleton.json",
-                    "klops.json", "goblin.json", "outlander.json", "zombie.json",
+                    "orbian.json", "kweebec.json", "trork.json", "feran.json", "undead.json",
+                    "klops.json", "goblin.json", "outlander.json", "slothian.json", "tuluk.json", "saurian.json", "fen_stalker.json",
                     "golem_earth.json", "golem_frost.json", "golem_flame.json",
                     "golem_thunder.json", "golem_sand.json", "golem_firesteel.json",
-                    "golem_void.json", "orbian.json"
+                    "golem_void.json"
             };
 
             for (String fileName : speciesFiles) {

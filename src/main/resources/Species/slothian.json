@@ -1,0 +1,191 @@
+{
+  "id": "slothian",
+  "displayName": "Slothian",
+  "displayNameKey": "species.slothian.name",
+  "description": "Sloth people of the canopy. Laid-back and hardy, with a strong connection to nature.",
+  "descriptionKey": "species.slothian.description",
+  "modelBaseName": "Slothian",
+  "version": 2,
+  "variants": [
+    {
+      "VariantName": "Slothian",
+      "ParentModel": "Slothian",
+      "Model": "NPC/Intelligent/Slothian/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Slothian/Models/Gray_Texture.png",
+        "NPC/Intelligent/Slothian/Models/Blond_Texture.png",
+        "NPC/Intelligent/Slothian/Models/Brown_Texture.png",
+        "NPC/Intelligent/Slothian/Models/Red_Texture.png"
+      ],
+      "EyeHeight": 1.75,
+      "HitBox": {
+        "min": { "x": -0.35, "y": 0, "z": -0.35 },
+        "max": { "x": 0.35, "y": 1.9, "z": 0.35 }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Slothian/Models/Attachments/Eyes.blockymodel",
+          "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Eyes_Brown.png"
+        }
+      ],
+      "attachments": {
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Head_Texture.png"
+            },
+            {
+              "Name": "Scout",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Head_Texture.png"
+            },
+            {
+              "Name": "Monk",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Monk/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Monk/Head_Texture.png"
+            }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Chest_Texture.png"
+            },
+            {
+              "Name": "Scout",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Chest_Texture.png"
+            },
+            {
+              "Name": "Monk",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Monk/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Monk/Chest_Texture.png"
+            }
+          ]
+        },
+        "Legs": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Leg.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Leg_Texture.png"
+            },
+            {
+              "Name": "Scout",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Leg.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Leg_Texture.png"
+            },
+            {
+              "Name": "Monk",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Monk/Leg.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Monk/Leg_Texture.png"
+            },
+            {
+              "Name": "Loincloth",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Villager/Loincloth.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Villager/Loincloth_Texture.png"
+            },
+            {
+              "Name": "Loincloth Dress",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Villager/Loincloth_Dress.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Villager/Loincloth_Dress_Texture.png"
+            }
+          ]
+        },
+        "Hands": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Hand.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Warrior/Hand_Texture.png"
+            },
+            {
+              "Name": "Scout",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Hand.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Hand_Texture.png"
+            }
+          ]
+        },
+        "Hair": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Bun Ribbon - Blond",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon_Blond_Texture.png"
+            },
+            {
+              "Name": "Bun Ribbon - Brown",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon_Brown_Texture.png"
+            },
+            {
+              "Name": "Bun Ribbon - Gray",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon_Gray_Texture.png"
+            },
+            {
+              "Name": "Bun Ribbon - Red",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/BunRibbon_Red_Texture.png"
+            },
+            {
+              "Name": "Sumo Bun - Blond",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun_Blond_Texture.png"
+            },
+            {
+              "Name": "Sumo Bun - Brown",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun_Brown_Texture.png"
+            },
+            {
+              "Name": "Sumo Bun - Gray",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun_Gray_Texture.png"
+            },
+            {
+              "Name": "Sumo Bun - Red",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Haircuts/SumoBun_Red_Texture.png"
+            }
+          ]
+        },
+        "Back": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Scout Scarf Necklace",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Scout_ScarfNecklace.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Scout/Scout_ScarfNecklace_Texture.png"
+            },
+            {
+              "Name": "Scarf Necklace",
+              "Model": "NPC/Intelligent/Slothian/Models/Attachments/Villager/ScarfNecklace.blockymodel",
+              "Texture": "NPC/Intelligent/Slothian/Models/Attachments/Villager/ScarfNecklace_Texture.png"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "healthModifier": 5,
+  "staminaModifier": -5,
+  "manaModifier": 0,
+  "enableAttachmentDiscovery": true,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Nature": 0.75,
+    "Poison": 0.85
+  }
+}

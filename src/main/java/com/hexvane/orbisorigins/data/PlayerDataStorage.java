@@ -77,7 +77,7 @@ public class PlayerDataStorage {
             @Nonnull String speciesId,
             int variantIndex
     ) {
-        setSpeciesSelection(playerId, worldName, speciesId, variantIndex, new HashMap<>());
+        setSpeciesSelection(playerId, worldName, speciesId, variantIndex, new HashMap<>(), null);
     }
 
     public static void setSpeciesSelection(
@@ -87,21 +87,38 @@ public class PlayerDataStorage {
             int variantIndex,
             @Nonnull Map<String, String> attachmentSelections
     ) {
+        setSpeciesSelection(playerId, worldName, speciesId, variantIndex, attachmentSelections, null);
+    }
+
+    public static void setSpeciesSelection(
+            @Nonnull UUID playerId,
+            @Nonnull String worldName,
+            @Nonnull String speciesId,
+            int variantIndex,
+            @Nonnull Map<String, String> attachmentSelections,
+            @javax.annotation.Nullable String textureSelection
+    ) {
         SPECIES_STORAGE.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
-                .put(worldName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true, attachmentSelections));
+                .put(worldName, new PlayerSpeciesData.SpeciesSelection(speciesId, variantIndex, true, attachmentSelections, textureSelection));
         saveSpeciesData();
     }
     
     // ========== First Join Tracking ==========
-    
+    // Tracks whether a player has ever received the species selector (server-wide, not per-world).
+    // Storage still records world name for backwards compatibility with existing save files.
+
+    /**
+     * Returns true if the player has ever received the species selector on this server (in any world).
+     * Used so the selector is given only on first join to the server, not when travelling to other worlds.
+     */
     public static boolean hasReceivedSelector(@Nonnull UUID playerId, @Nonnull String worldName) {
         Map<String, Boolean> worldData = FIRST_JOIN_STORAGE.get(playerId);
         if (worldData == null) {
             return false;
         }
-        return Boolean.TRUE.equals(worldData.get(worldName));
+        return worldData.values().stream().anyMatch(Boolean.TRUE::equals);
     }
-    
+
     public static void setReceivedSelector(@Nonnull UUID playerId, @Nonnull String worldName) {
         FIRST_JOIN_STORAGE.computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
                 .put(worldName, true);
@@ -141,7 +158,7 @@ public class PlayerDataStorage {
                         Map<String, String> attachmentSelections = data.attachmentSelections != null ? 
                             new HashMap<>(data.attachmentSelections) : new HashMap<>();
                         worldData.put(worldEntry.getKey(), 
-                            new PlayerSpeciesData.SpeciesSelection(data.speciesId, data.variantIndex, data.hasChosen, attachmentSelections));
+                            new PlayerSpeciesData.SpeciesSelection(data.speciesId, data.variantIndex, data.hasChosen, attachmentSelections, data.textureSelection));
                     }
                     SPECIES_STORAGE.put(playerId, worldData);
                 }
@@ -167,7 +184,7 @@ public class PlayerDataStorage {
                     PlayerSpeciesData.SpeciesSelection selection = worldEntry.getValue();
                     worldData.put(worldEntry.getKey(), new SpeciesSelectionData(
                         selection.getSpeciesId(), selection.getVariantIndex(), selection.hasChosen(), 
-                        selection.getAttachmentSelections()));
+                        selection.getAttachmentSelections(), selection.getTextureSelection()));
                 }
                 toSave.put(playerEntry.getKey().toString(), worldData);
             }
@@ -245,16 +262,22 @@ public class PlayerDataStorage {
         int variantIndex;
         boolean hasChosen;
         Map<String, String> attachmentSelections;
+        String textureSelection;
         
         SpeciesSelectionData(String speciesId, int variantIndex, boolean hasChosen) {
-            this(speciesId, variantIndex, hasChosen, new HashMap<>());
+            this(speciesId, variantIndex, hasChosen, new HashMap<>(), null);
         }
         
         SpeciesSelectionData(String speciesId, int variantIndex, boolean hasChosen, Map<String, String> attachmentSelections) {
+            this(speciesId, variantIndex, hasChosen, attachmentSelections, null);
+        }
+        
+        SpeciesSelectionData(String speciesId, int variantIndex, boolean hasChosen, Map<String, String> attachmentSelections, String textureSelection) {
             this.speciesId = speciesId;
             this.variantIndex = variantIndex;
             this.hasChosen = hasChosen;
             this.attachmentSelections = attachmentSelections != null ? attachmentSelections : new HashMap<>();
+            this.textureSelection = textureSelection;
         }
     }
 }

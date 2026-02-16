@@ -4,22 +4,967 @@
   "displayNameKey": "species.trork.name",
   "description": "A large, brutish warrior. Much higher health and physical resistance.",
   "descriptionKey": "species.trork.description",
-  "modelBaseName": "Trork_Warrior",
+  "modelBaseName": "Trork",
+  "version": 2,
   "variants": [
-    "Trork_Warrior",
-    "Trork_Shaman",
-    "Trork_Sentry",
-    "Trork_Mauler",
-    "Trork_Hunter",
-    "Trork_Guard",
-    "Trork_Doctor_Witch",
-    "Trork_Chieftain",
-    "Trork_Brawler"
+    {
+      "VariantName": "Trork",
+      "ParentModel": "Trork",
+      "Model": "NPC/Intelligent/Trork/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Trork/Models/Model_Textures/Blue.png",
+        "NPC/Intelligent/Trork/Models/Model_Textures/Blue_Dark.png",
+        "NPC/Intelligent/Trork/Models/Model_Textures/Chieftain.png",
+        "NPC/Intelligent/Trork/Models/Model_Textures/Cyan.png",
+        "NPC/Intelligent/Trork/Models/Model_Textures/Cyan_Dark.png",
+        "NPC/Intelligent/Trork/Models/Model_Textures/Green.png",
+        "NPC/Intelligent/Trork/Models/Model_Textures/Turquoise.png",
+        "NPC/Intelligent/Trork/Models/Model_Textures/Yellow.png"
+      ],
+      "EyeHeight": 1.7,
+      "CrouchOffset": -0.35,
+      "HitBox": {
+        "max": {
+          "x": 0.5,
+          "y": 1.9,
+          "z": 0.5
+        },
+        "min": {
+          "x": -0.5,
+          "y": 0,
+          "z": -0.5
+        }
+      },
+      "defaultAttachments": [
+      ],
+      "attachments": {
+        "Beard": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Single Braided - Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Black.png"
+            },
+            {
+              "Name": "Single Braided - Blond",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Blond.png"
+            },
+            {
+              "Name": "Single Braided - Blond Caramel",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/BlondCaramel.png"
+            },
+            {
+              "Name": "Single Braided - Blond Platinum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/BlondPlatinum.png"
+            },
+            {
+              "Name": "Single Braided - Blond Sand",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/BlondSand.png"
+            },
+            {
+              "Name": "Single Braided - Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Blue.png"
+            },
+            {
+              "Name": "Single Braided - Light Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/BlueLight.png"
+            },
+            {
+              "Name": "Single Braided - Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Brown.png"
+            },
+            {
+              "Name": "Single Braided - Brown Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/BrownDark.png"
+            },
+            {
+              "Name": "Single Braided - Brown Light",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/BrownLight.png"
+            },
+            {
+              "Name": "Single Braided - Bubblegum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Bubblegum.png"
+            },
+            {
+              "Name": "Single Braided - Copper",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Copper.png"
+            },
+            {
+              "Name": "Single Braided - Green",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Green.png"
+            },
+            {
+              "Name": "Single Braided - Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Grey.png"
+            },
+            {
+              "Name": "Single Braided - Grey Ash",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/GreyAsh.png"
+            },
+            {
+              "Name": "Single Braided - Pink",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Pink.png"
+            },
+            {
+              "Name": "Single Braided - Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Purple.png"
+            },
+            {
+              "Name": "Single Braided - Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Red.png"
+            },
+            {
+              "Name": "Single Braided - Red Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/RedDark.png"
+            },
+            {
+              "Name": "Single Braided - Turquoise",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/Turquoise.png"
+            },
+            {
+              "Name": "Single Braided - White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/SingleBraided_Textures/White.png"
+            },
+            {
+              "Name": "Double Braided - Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Black.png"
+            },
+            {
+              "Name": "Double Braided - Blond",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Blond.png"
+            },
+            {
+              "Name": "Double Braided - Blond Caramel",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/BlondCaramel.png"
+            },
+            {
+              "Name": "Double Braided - Blond Platinum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/BlondPlatinum.png"
+            },
+            {
+              "Name": "Double Braided - Blond Sand",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/BlondSand.png"
+            },
+            {
+              "Name": "Double Braided - Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Blue.png"
+            },
+            {
+              "Name": "Double Braided - Light Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Bluelight.png"
+            },
+            {
+              "Name": "Double Braided - Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Brown.png"
+            },
+            {
+              "Name": "Double Braided - Brown Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/BrownDark.png"
+            },
+            {
+              "Name": "Double Braided - Brown Light",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/BrownLight.png"
+            },
+            {
+              "Name": "Double Braided - Bubblegum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Bubblegum.png"
+            },
+            {
+              "Name": "Double Braided - Copper",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Copper.png"
+            },
+            {
+              "Name": "Double Braided - Green",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Green.png"
+            },
+            {
+              "Name": "Double Braided - Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Grey.png"
+            },
+            {
+              "Name": "Double Braided - Grey Ash",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/GreyAsh.png"
+            },
+            {
+              "Name": "Double Braided - Pink",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Pink.png"
+            },
+            {
+              "Name": "Double Braided - Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Purple.png"
+            },
+            {
+              "Name": "Double Braided - Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Red.png"
+            },
+            {
+              "Name": "Double Braided - Red Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/RedDark.png"
+            },
+            {
+              "Name": "Double Braided - Turquoise",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/Turquoise.png"
+            },
+            {
+              "Name": "Double Braided - White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/DoubleBraided_Textures/White.png"
+            },
+            {
+              "Name": "Triple Braided - Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Black.png"
+            },
+            {
+              "Name": "Triple Braided - Blond",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Blond.png"
+            },
+            {
+              "Name": "Triple Braided - Blond Caramel",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/BlondCaramel.png"
+            },
+            {
+              "Name": "Triple Braided - Blond Platinum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/BlondPlatinum.png"
+            },
+            {
+              "Name": "Triple Braided - Blond Sand",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/BlondSand.png"
+            },
+            {
+              "Name": "Triple Braided - Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Blue.png"
+            },
+            {
+              "Name": "Triple Braided - Light Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Bluelight.png"
+            },
+            {
+              "Name": "Triple Braided - Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Brown.png"
+            },
+            {
+              "Name": "Triple Braided - Brown Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/BrownDark.png"
+            },
+            {
+              "Name": "Triple Braided - Brown Light",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/BrownLight.png"
+            },
+            {
+              "Name": "Triple Braided - Bubblegum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Bubblegum.png"
+            },
+            {
+              "Name": "Triple Braided - Copper",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Copper.png"
+            },
+            {
+              "Name": "Triple Braided - Green",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Green.png"
+            },
+            {
+              "Name": "Triple Braided - Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Grey.png"
+            },
+            {
+              "Name": "Triple Braided - Grey Ash",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/GreyAsh.png"
+            },
+            {
+              "Name": "Triple Braided - Pink",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Pink.png"
+            },
+            {
+              "Name": "Triple Braided - Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Purple.png"
+            },
+            {
+              "Name": "Triple Braided - Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Red.png"
+            },
+            {
+              "Name": "Triple Braided - Red Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/RedDark.png"
+            },
+            {
+              "Name": "Triple Braided - Turquoise",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/Turquoise.png"
+            },
+            {
+              "Name": "Triple Braided - White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Beards/TripleBraided_Textures/White.png"
+            }
+          ]
+        },
+        "Eyebrows": {
+          "allowsNone": false,
+          "options": [
+            {
+              "Name": "Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows_Textures/Black.png"
+            },
+            {
+              "Name": "Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows_Textures/Brown.png"
+            },
+            {
+              "Name": "Dark Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows_Textures/Dark_Grey.png"
+            },
+            {
+              "Name": "White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Eyebrows/Eyebrows_Textures/White.png"
+            }
+          ]
+        },
+        "Eyes": {
+          "allowsNone": false,
+          "options": [
+            {
+              "Name": "Orange",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Eyes/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Eyes/Eyes_Textures/Orange.png"
+            },
+            {
+              "Name": "One Eye",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Eyes/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Eyes/Eyes_Textures/One_Eye.png"
+            },
+            {
+              "Name": "Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Eyes/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Eyes/Eyes_Textures/Blue.png"
+            }
+          ]
+        },
+        "Hair": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Braids - Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Black.png"
+            },
+            {
+              "Name": "Braids - Blond",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Blond.png"
+            },
+            {
+              "Name": "Braids - Blond Caramel",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/BlondCaramel.png"
+            },
+            {
+              "Name": "Braids - Blond Platinum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/BlondPlatinum.png"
+            },
+            {
+              "Name": "Braids - Blond Sand",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/BlondSand.png"
+            },
+            {
+              "Name": "Braids - Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Blue.png"
+            },
+            {
+              "Name": "Braids - Light Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/BlueLight.png"
+            },
+            {
+              "Name": "Braids - Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Brown.png"
+            },
+            {
+              "Name": "Braids - Brown Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/BrownDark.png"
+            },
+            {
+              "Name": "Braids - Brown Light",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/BrownLight.png"
+            },
+            {
+              "Name": "Braids - Bubblegum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Bubblegum.png"
+            },
+            {
+              "Name": "Braids - Copper",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Copper.png"
+            },
+            {
+              "Name": "Braids - Dark Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/DarkRed.png"
+            },
+            {
+              "Name": "Braids - Green",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Green.png"
+            },
+            {
+              "Name": "Braids - Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Grey.png"
+            },
+            {
+              "Name": "Braids - Grey Ash",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/GreyAsh.png"
+            },
+            {
+              "Name": "Braids - Pink",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Pink.png"
+            },
+            {
+              "Name": "Braids - Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Purple.png"
+            },
+            {
+              "Name": "Braids - Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Red.png"
+            },
+            {
+              "Name": "Braids - Turquoise",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/Turquoise.png"
+            },
+            {
+              "Name": "Braids - White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Braids_Textures/White.png"
+            },
+            {
+              "Name": "Cross - Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Black.png"
+            },
+            {
+              "Name": "Cross - Blond",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Blond.png"
+            },
+            {
+              "Name": "Cross - Blond Caramel",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/BlondCaramel.png"
+            },
+            {
+              "Name": "Cross - Blond Platinum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/BlondPlatinum.png"
+            },
+            {
+              "Name": "Cross - Blond Sand",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/BlondSand.png"
+            },
+            {
+              "Name": "Cross - Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Blue.png"
+            },
+            {
+              "Name": "Cross - Light Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/BlueLight.png"
+            },
+            {
+              "Name": "Cross - Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Brown.png"
+            },
+            {
+              "Name": "Cross - Brown Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/BrownDark.png"
+            },
+            {
+              "Name": "Cross - Brown Light",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/BrownLight.png"
+            },
+            {
+              "Name": "Cross - Bubblegum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Bubblegum.png"
+            },
+            {
+              "Name": "Cross - Copper",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Copper.png"
+            },
+            {
+              "Name": "Cross - Green",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Green.png"
+            },
+            {
+              "Name": "Cross - Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Grey.png"
+            },
+            {
+              "Name": "Cross - Grey Ash",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/GreyAsh.png"
+            },
+            {
+              "Name": "Cross - Pink",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Pink.png"
+            },
+            {
+              "Name": "Cross - Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Purple.png"
+            },
+            {
+              "Name": "Cross - Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Red.png"
+            },
+            {
+              "Name": "Cross - Red Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/RedDark.png"
+            },
+            {
+              "Name": "Cross - Dark Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Trork_DarkPurple.png"
+            },
+            {
+              "Name": "Cross - Tuluk White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Tuluk_White.png"
+            },
+            {
+              "Name": "Cross - Turquoise",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/Turquoise.png"
+            },
+            {
+              "Name": "Cross - White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Cross_Textures/White.png"
+            },
+            {
+              "Name": "Mohawk - Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Black.png"
+            },
+            {
+              "Name": "Mohawk - Blond",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Blond.png"
+            },
+            {
+              "Name": "Mohawk - Blond Caramel",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/BlondCaramel.png"
+            },
+            {
+              "Name": "Mohawk - Blond Platinum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/BlondPlatinum.png"
+            },
+            {
+              "Name": "Mohawk - Blond Sand",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/BlondSand.png"
+            },
+            {
+              "Name": "Mohawk - Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Blue.png"
+            },
+            {
+              "Name": "Mohawk - Light Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/BlueLight.png"
+            },
+            {
+              "Name": "Mohawk - Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Brown.png"
+            },
+            {
+              "Name": "Mohawk - Brown Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/BrownDark.png"
+            },
+            {
+              "Name": "Mohawk - Brown Light",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/BrownLight.png"
+            },
+            {
+              "Name": "Mohawk - Bubblegum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Bubblegum.png"
+            },
+            {
+              "Name": "Mohawk - Copper",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Copper.png"
+            },
+            {
+              "Name": "Mohawk - Green",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Green.png"
+            },
+            {
+              "Name": "Mohawk - Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Grey.png"
+            },
+            {
+              "Name": "Mohawk - Grey Ash",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/GreyAsh.png"
+            },
+            {
+              "Name": "Mohawk - Pink",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Pink.png"
+            },
+            {
+              "Name": "Mohawk - Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Purple.png"
+            },
+            {
+              "Name": "Mohawk - Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Red.png"
+            },
+            {
+              "Name": "Mohawk - Red Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/RedDark.png"
+            },
+            {
+              "Name": "Mohawk - Turquoise",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/Turquoise.png"
+            },
+            {
+              "Name": "Mohawk - White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Mohawk_Textures/White.png"
+            },
+            {
+              "Name": "Samurai - Black",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Black.png"
+            },
+            {
+              "Name": "Samurai - Blond",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Blond.png"
+            },
+            {
+              "Name": "Samurai - Blond Caramel",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/BlondCaramel.png"
+            },
+            {
+              "Name": "Samurai - Blond Platinum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/BlondPlatinum.png"
+            },
+            {
+              "Name": "Samurai - Blond Sand",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/BlondSand.png"
+            },
+            {
+              "Name": "Samurai - Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Blue.png"
+            },
+            {
+              "Name": "Samurai - Light Blue",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/BlueLight.png"
+            },
+            {
+              "Name": "Samurai - Brown",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Brown.png"
+            },
+            {
+              "Name": "Samurai - Brown Dark",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/BrownDark.png"
+            },
+            {
+              "Name": "Samurai - Brown Light",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/BrownLight.png"
+            },
+            {
+              "Name": "Samurai - Bubblegum",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Bubblegum.png"
+            },
+            {
+              "Name": "Samurai - Copper",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Copper.png"
+            },
+            {
+              "Name": "Samurai - Dark Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/DarkRed.png"
+            },
+            {
+              "Name": "Samurai - Green",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Green.png"
+            },
+            {
+              "Name": "Samurai - Grey",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Grey.png"
+            },
+            {
+              "Name": "Samurai - Grey Ash",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/GreyAsh.png"
+            },
+            {
+              "Name": "Samurai - Pink",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Pink.png"
+            },
+            {
+              "Name": "Samurai - Purple",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Purple.png"
+            },
+            {
+              "Name": "Samurai - Red",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Red.png"
+            },
+            {
+              "Name": "Samurai - Turquoise",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/Turquoise.png"
+            },
+            {
+              "Name": "Samurai - White",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Haircuts/Samurai_Textures/White.png"
+            }
+          ]
+        },
+        "Tusks": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Chieftain",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Chieftain/Tusks.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Chieftain/Tusks_Texture.png"
+            },
+            {
+              "Name": "Small",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Cosmetics/Tusks_Small.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Cosmetics/Tusks_Small_Texture.png"
+            }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Chieftain",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Chieftain/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Chieftain/Chest_Texture.png"
+            },
+            {
+              "Name": "Loin Cloth",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Cosmetics/Loin_Cloth.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Cosmetics/Loin_Cloth_Texture.png"
+            },
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Chest_Texture.png"
+            },
+            {
+              "Name": "Shaman",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Chest_Texture.png"
+            },
+            {
+              "Name": "Sentry",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Sentry/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Sentry/Chest_Texture.png"
+            },
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Chest_Texture.png"
+            }
+          ]
+        },
+        "Neck": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Necklace",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Cosmetics/Necklace.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Cosmetics/Necklace_Texture.png"
+            }
+          ]
+        },
+        "Hands": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Hands.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Hands_Texture.png"
+            },
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Hands.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Hands_Texture.png"
+            },
+            {
+              "Name": "Shaman",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Hands.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Hands_Texture.png"
+            }
+          ]
+        },
+        "Feet": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Feet_Texture.png"
+            },
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Feet_Texture.png"
+            },
+            {
+              "Name": "Shaman",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Feet_Texture.png"
+            }
+          ]
+        },
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Hunter/Head_Texture.png"
+            },
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Warrior/Head_Texture.png"
+            },
+            {
+              "Name": "Shaman",
+              "Model": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Trork/Models/Attachments/Shaman/Head_Texture.png"
+            }
+          ]
+        }
+      }
+    }
   ],
   "healthModifier": 40,
   "staminaModifier": -5,
   "manaModifier": 0,
-  "enableAttachmentDiscovery": true,
+  "enableAttachmentDiscovery": false,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [

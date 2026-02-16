@@ -2,6 +2,64 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [1.3.0] - 2026-02-16
+
+### Added
+
+#### New Species
+- **Tuluk** - Walrus people from the cold coasts. Sturdy and at home in the water. Includes attachments for tusks, beards, winter hats, and jackets. Resistant to cold, physical damage, and water.
+- **Slothian** - Sloth people of the canopy. Laid-back and hardy, with a strong connection to nature. Includes warrior, scout, monk, and villager attachment sets, plus multiple haircut styles. Resistant to nature, poison, and physical damage.
+- **Saurian** - Reptilian people with sharp instincts. Agile and resilient. Includes warrior, rogue, and hunter attachment sets with feather ornaments. Resistant to physical damage and poison, but vulnerable to cold.
+- **Fen Stalker** - A beast of the swamps, at home in water and on land. Resistant to water, poison, and physical damage.
+
+#### Species Selection GUI
+- **Preview rotation controls** - Players can rotate the preview model with "Rotate preview" left/right buttons (15° per click) to view all sides before confirming
+- **Larger species selection window** - GUI height increased from 600 to 900 pixels so the window uses most of the screen height
+
+#### Species with no custom model (`usePlayerModel`)
+- **`usePlayerModel` flag** - Custom species can set `"usePlayerModel": true` (with empty `modelBaseName` and `variants`, or empty `variantsV2` in v2) to have no custom model; the player keeps their default appearance while still getting the species' stats and damage resistances. Allows Orbian-style species without hardcoding the orbian id.
+
+#### Species Variant System (v2)
+- **Version 2 variant format** - Species can now use a richer `variantsV2` format with per-variant model path, parent model, textures, hitbox, eye height, crouch offset, default attachments, and per-slot attachment options
+- **Texture selection per variant** - v2 variants with multiple textures allow players to choose a texture in the species selection UI
+- **Per-variant attachment options** - v2 variants can define different attachment options per slot (e.g., different hair styles per variant)
+- **Default attachments** - v2 variants support `defaultAttachments` to specify initial attachment choices
+
+### Removed
+- **Disabled Void Golem Species** - Model does not work well with player so it has been disabled by default. Can still be used by enabling it again in an override json.
+
+### Fixed
+
+#### First join / species selector
+- **Species selector only on first server join** - The species selector item is now given only the first time a player joins the server (any world), not when they travel to other worlds. First-join tracking is server-wide instead of per-world.
+
+#### Species Selection Preview
+- **Preview removal crash** - Closing the species selection GUI (Confirm or Cancel) while switching variants no longer causes "Invalid entity reference" errors in chunk serialization; preview removal is deferred to the next tick to avoid conflicts with entity store operations
+- **Orphaned preview entity** - Closing the GUI with Escape while switching variants no longer leaves a stray preview entity in the world; a `dismissed` flag prevents pending deferred preview updates from creating new entities after the GUI is closed
+
+### Changed
+- **SpeciesSelectionPage.ui** - Added preview rotation section with label and rotate left/right buttons; increased main container height to 900
+- **SpeciesSelectionPage.java** - Preview rotation state (`previewRotationYawOffset`), rotation applied when creating/updating preview and when clicking rotate buttons; deferred entity rotation updates on world thread
+- **server.lang** - Added `customUI.orbisOriginsSpeciesSelection.rotatePreview` for "Rotate preview" label
+
+#### Technical Details
+- **SpeciesJsonCodec** - Added version parsing (default 1) and v2 variant parsing for ParentModel, Model, Textures, HitBox, defaultAttachments, attachments
+- **SpeciesData** - Added `version`, `variantsV2`, and v2 accessors
+- **ModelUtil** - Added `createModelForV2()` and `applyModelToPlayerV2()` for v2 species configs
+- **SpeciesModelSystem / SpeciesModelMaintenanceSystem** - Branch on v2 and use v2 apply path when applicable
+- **PlayerSpeciesData / PlayerDataStorage** - Added `textureSelection` storage for v2 species
+- **SpeciesRegistry** - `getAvailableAttachments()` supports v2 variants and per-variant attachment options
+- **SpeciesSelectionPage** - Texture selector UI, v2 preview and confirm flow, deferred preview removal with dismissed guard
+- **SPECIES_JSON_GUIDE.md** - Documented v2 variant format and `usePlayerModel` for species with no custom model
+- **SpeciesData / SpeciesJsonCodec** - Added `usePlayerModel`; model application and GUI now use `usesPlayerModel()` instead of checking the orbian id. **orbian.json** - Added explicit `"usePlayerModel": true`
+- **New species JSON files** - Added `tuluk.json`, `slothian.json`, `saurian.json`, and `fen_stalker.json` with full v2 variant format (Fen Stalker has no attachments)
+- **server.lang** - Added language keys for Tuluk, Slothian, Saurian, and Fen Stalker species names and descriptions
+
+### Migration Notes
+
+- **Existing species** - Species using the original `variants` format (v1) continue to work unchanged
+- **v2 adoption** - Add `"version": 2` and `variantsV2` to species JSON to use the new format; see `SPECIES_JSON_GUIDE.md` for details
+
 ## [1.2.0] - 2026-01-25
 
 ### Added

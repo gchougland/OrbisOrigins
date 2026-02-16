@@ -65,29 +65,39 @@ public class OriginsReloadCommand extends CommandBase {
                             continue;
                         }
 
-                        // Get player's selected species
-                        String speciesId = PlayerSpeciesData.getSelectedSpeciesId(ref, store, world);
-                        int variantIndex = PlayerSpeciesData.getSelectedVariantIndex(ref, store, world);
+                        // Use effective species so that removed species fall back to default without breaking
+                        String speciesId = PlayerSpeciesData.getEffectiveSpeciesId(ref, store, world);
+                        int variantIndex = PlayerSpeciesData.getEffectiveVariantIndex(ref, store, world);
 
                         if (speciesId == null) {
                             continue;
                         }
 
-                        SpeciesData species = SpeciesRegistry.getSpecies(speciesId);
+                        SpeciesData species = SpeciesRegistry.getSpeciesOrDefault(speciesId);
                         if (species == null) {
-                            LOGGER.warning("OriginsReloadCommand: Species not found: " + speciesId + " for player " + playerRef.getUuid());
                             continue;
+                        }
+
+                        String storedId = PlayerSpeciesData.getSelectedSpeciesId(ref, store, world);
+                        if (storedId != null && !storedId.equals(speciesId)) {
+                            LOGGER.info("OriginsReloadCommand: Player " + playerRef.getUuid() + " had removed species '" + storedId + "', reapplying as " + speciesId);
                         }
 
                         // Reapply stats
                         SpeciesStatUtil.applySpeciesStats(ref, store, species);
 
                         // Reapply model (if not orbian)
-                        if (!species.getId().equals("orbian")) {
-                            String modelName = species.getModelName(variantIndex);
-                            float eyeHeightModifier = species.getEyeHeightModifier(modelName);
-                            float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
-                            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
+                        if (!species.usesPlayerModel()) {
+                            if (species.isVersion2()) {
+                                java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
+                                String textureSelection = PlayerSpeciesData.getTextureSelection(ref, store, world);
+                                ModelUtil.applyModelToPlayerV2(ref, store, species, variantIndex, textureSelection, attachmentSelections);
+                            } else {
+                                String modelName = species.getModelName(variantIndex);
+                                float eyeHeightModifier = species.getEyeHeightModifier(modelName);
+                                float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
+                                ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
+                            }
                         } else {
                             ModelUtil.resetToPlayerSkin(ref, store);
                         }

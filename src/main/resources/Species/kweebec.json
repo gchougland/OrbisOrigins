@@ -5,19 +5,545 @@
   "description": "A small, agile forest-dwelling creature. Higher stamina and nature resistance.",
   "descriptionKey": "species.kweebec.description",
   "modelBaseName": "Kweebec_Rootling",
+  "version": 2,
   "variants": [
-    "Kweebec_Rootling",
-    "Kweebec_Sapling",
-    "Kweebec_Seedling",
-    "Kweebec_Sapling_Orange",
-    "Kweebec_Sapling_Pink",
-    "Kweebec_Sproutling",
-    "Kweebec_Razorleaf"
+    {
+      "VariantName": "Rootling",
+      "ParentModel": "Kweebec_Rootling",
+      "Model": "NPC/Intelligent/Kweebec_Rootling/Kweebec_Rootling.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Kweebec_Rootling/Kweebec_Rootling.png"
+      ],
+      "EyeHeight": 1.7,
+      "CrouchOffset": -0.2,
+      "HitBox": {
+        "max": {
+          "x": 0.3,
+          "y": 2,
+          "z": 0.3
+        },
+        "min": {
+          "x": -0.3,
+          "y": 0,
+          "z": -0.3
+        }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Kweebec_Rootling/Kweebec_Rootling_Mouth.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Rootling/Kweebec_Mouth.png"
+        },
+        {
+          "Model": "NPC/Intelligent/Kweebec_Rootling/Kweebec_Rootling_Eyes.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Rootling/Kweebec_Eyes.png"
+        }
+      ],
+      "attachments": {
+        "Hair": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Bonsai",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Bonsai.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Bonsai.png"
+            },
+            {
+              "Name": "Moptop",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Moptop.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Moptop.png"
+            },
+            {
+              "Name": "Stump",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Stump.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Stump.png"
+            },
+            {
+              "Name": "Flower",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Flower.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Hair_Flower.png"
+            }
+          ]
+        },
+        "Eyebrows": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Thick",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows_Textures/Kweebec_Young.png"
+            },
+            {
+              "Name": "Sharp",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Eyebrows_Sharp.png"
+            },
+            {
+              "Name": "Thin",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows_Textures/Kweebec_Female.png"
+            },
+            {
+              "Name": "Old",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows_Textures/Kweebec_Old.png"
+            }
+          ]
+        },
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Sungwood",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Headband_Sungwood.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Headband_Sungwood.png"
+            }
+          ]
+        },
+        "Hand": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Cuff",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Cuff.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Cuff.png"
+            },
+            {
+              "Name": "Flatleaf",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Forearm_Flatleaf.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Forearm_Flatleaf.png"
+            },
+            {
+              "Name": "Wristvine",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Wristvine.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Wristvine.png"
+            },
+            {
+              "Name": "Simplecuff",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Simplecuff.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Hand/Kweebec_Rootling_Simplecuff.png"
+            }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Petalwear",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Chest_Petalwear.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Chest_Petalwear.png"
+            },
+            {
+              "Name": "Rootwrap",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Chest_Rootwrap.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Chest_Rootwrap.png"
+            },
+            {
+              "Name": "Vines",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Chest_Vines.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Chest_Vines.png"
+            }
+          ]
+        },
+        "Shoulder": {
+          "allowsNone": true,
+          "options": [
+            { 
+              "Name": "Flatleaf",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Shoulder_Flatleaf.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Shoulder_Flatleaf.png"
+            },
+            {
+              "Name": "Spikeleaf",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Shoulder_Spikeleaf.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Chest/Kweebec_Rootling_Shoulder_Spikeleaf.png"
+            }
+          ]
+        },
+        "Belt": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Petalwear",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Petalwear.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Petalwear.png"
+            },
+            {
+              "Name": "Rootwrap",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Rootwrap.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Rootwrap.png"
+            },
+            {
+              "Name": "Protector",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Protector.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Protector.png"
+            },
+            {
+              "Name": "Leaf",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Leaf.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Belt/Kweebec_Rootling_Belt_Leaf.png"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "VariantName": "Sapling",
+      "ParentModel": "Kweebec_Sapling",
+      "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Orange.png",
+        "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Yellow.png",
+        "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Green.png",
+        "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Brown_Dark.png",
+        "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Brown.png",
+        "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Pink.png",
+        "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Red.png"
+      ],
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Mouth.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Mouth_Textures/Mouth_Texture.png"
+        }
+      ],
+      "attachments": {
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hard Hat",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Razorleaf/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Razorleaf/Head_Hard_Hat_Texture.png"
+            },
+            {
+              "Name": "Razorleaf",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Razorleaf/Head.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Razorleaf/Head_Texture.png"
+            }
+          ]
+        },
+        "Hair": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Leaves Green",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Green.png"
+            },
+            {
+              "Name": "Leaves Oak",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Oak.png"
+            },
+            {
+              "Name": "Leaves Nettle",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Nettle.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Nettle_Texture.png"
+            },
+            {
+              "Name": "Leaves Rock Plant",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_RockPlant.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_RockPlant_Texture.png"
+            },
+            {
+              "Name": "Leaves Fern",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Fern.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Fern_Texture.png"
+            },
+            {
+              "Name": "Leaves Bowl Cut",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_BowlCut.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_BowlCut_Texture.png"
+            },
+            {
+              "Name": "Leaves Spiral",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Spiral.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Spiral_Texture.png"
+            },
+            {
+              "Name": "Leaves Ivy",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Ivy.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Ivy_Texture.png"
+            },
+            {
+              "Name": "Leaves Pigtails",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Pigtails.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Leaves_Pigtails_Texture.png"
+            },
+            {
+              "Name": "Flower Pink",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower_Pink.png"
+            },
+            {
+              "Name": "Flower Crysanthemum",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower_Crysanthemum.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower_Crysanthemum_Texture.png"
+            },
+            {
+              "Name": "Flower Delphinium",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower_Delphinium.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower_Delphinium_Texture.png"
+            },
+            {
+              "Name": "Flower Trifolium",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower_Trifolium.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Haircuts/Flower_Trifolium_Texture.png"
+            }
+          ]
+        },
+        "Beard": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Whiskers",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Beards/Beard_Kweebec.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Beards/Beard_Kweebec_Whiskers_Texture.png"
+            }
+          ]
+        },
+        "Outfit": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Shirt",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Chest/Shirt.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Chest/Shirt_Texture.png"
+            },
+            {
+              "Name": "Dress",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Chest/Dress.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Chest/Dress_Texture.png"
+            },
+            {
+              "Name": "Green Razorleaf",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Razorleaf/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Razorleaf/Chest_Texture.png"
+            },
+            {
+              "Name": "Red Razorleaf",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Old/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Old/Chest_Texture_Red.png"
+            },
+            {
+              "Name": "Christmas Blue",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Chest_Textures/Blue.png"
+            },
+            {
+              "Name": "Christmas Pink",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Chest_Textures/Pink.png"
+            },
+            {
+              "Name": "Christmas Green",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Chest_Textures/Green.png"
+            }
+          ]
+        },
+        "Eyebrows": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Thick",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows_Textures/Kweebec_Young.png"
+            },
+            {
+              "Name": "Thin",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows_Textures/Kweebec_Female.png"
+            },
+            {
+              "Name": "Old",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows_Textures/Kweebec_Old.png"
+            },
+            {
+              "Name": "Sharp",
+              "Model": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Rootling_Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Rootling/Models/Attachments/Head/Kweebec_Eyebrows_Sharp.png"
+            }
+          ]
+        },
+        "Eyes": {
+          "allowsNone": false,
+          "options": [
+            {
+              "Name": "Young Grey",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Young.png"
+            },
+            {
+              "Name": "Young Blue",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Young_Blue.png"
+            },
+            {
+              "Name": "Young Green",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Young_Green.png"
+            },
+            {
+              "Name": "Young Yellow",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Young_Yellow.png"
+            },
+            {
+              "Name": "Adult Grey",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Adult.png"
+            },
+            {
+              "Name": "Adult Blue",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Adult_Blue.png"
+            },
+            {
+              "Name": "Adult Green",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Adult_Green.png"
+            },
+            {
+              "Name": "Adult Yellow",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Adult_Yellow.png"
+            },
+            {
+              "Name": "Female Grey",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Female.png"
+            },
+            {
+              "Name": "Female Blue",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Female_Blue.png"
+            },
+            {
+              "Name": "Female Green",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Female_Green.png"
+            },
+            {
+              "Name": "Female Yellow",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Female_Yellow.png"
+            }
+          ]
+        },
+        "Eyelashes": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Brown",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyelashes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyelashes_Texture/Brown.png"
+            },
+            {
+              "Name": "Black",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyelashes.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyelashes_Texture/Black.png"
+            }
+          ]
+        },
+        "Feet": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Christmas Blue",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Feet_Textures/Blue.png"
+            },
+            {
+              "Name": "Christmas Pink",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Feet_Textures/Pink.png"
+            },
+            {
+              "Name": "Christmas Green",
+              "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Christmas_Elf/Feet_Textures/Green.png"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "VariantName": "Seedling",
+      "ParentModel": "Kweebec_Seedling",
+      "Model": "NPC/Intelligent/Kweebec_Seedling/Models/Model.blockymodel",
+      "EyeHeight": 0.3,
+      "CrouchOffset": -0.05,
+      "HitBox": {
+        "Max": {
+          "X": 0.25,
+          "Y": 0.5,
+          "Z": 0.25
+        },
+        "Min": {
+          "X": -0.25,
+          "Y": 0,
+          "Z": -0.25
+        }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Kweebec_Seedling/Models/Attachments/Cosmetics/Head/Leaf.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Seedling/Models/Attachments/Cosmetics/Head/Leaf_Texture.png"
+        }
+      ]
+    },
+    {
+      "VariantName": "Sproutling",
+      "ParentModel": "Kweebec_Sproutling",
+      "Model": "NPC/Intelligent/Kweebec_Sproutling/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Kweebec_Sproutling/Models/Model_Textures/Blue.png",
+        "NPC/Intelligent/Kweebec_Sproutling/Models/Model_Textures/Lime.png",
+        "NPC/Intelligent/Kweebec_Sproutling/Models/Model_Textures/Green.png"
+      ],
+      "EyeHeight": 0.75,
+      "CrouchOffset": -0.2,
+      "HitBox": {
+        "Max": {
+          "X": 0.25,
+          "Y": 1.1,
+          "Z": 0.25
+        },
+        "Min": {
+          "X": -0.25,
+          "Y": 0,
+          "Z": -0.25
+        }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyebrows_Textures/Kweebec_Young.png"
+        },
+        {
+          "Model": "NPC/Intelligent/Kweebec_Sproutling/Models/Attachments/Cosmetics/Head/Mouth.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Sproutling/Models/Attachments/Cosmetics/Head/Mouth_Texture.png"
+        },
+        {
+          "Model": "NPC/Intelligent/Kweebec_Sproutling/Models/Attachments/Cosmetics/Head/Bud.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Sproutling/Models/Attachments/Cosmetics/Head/Bud_Texture.png"
+        },
+        {
+          "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Sapling/Models/Attachments/Cosmetics/Head/Eyes_Textures/Kweebec_Young.png"
+        },
+        {
+          "Model": "NPC/Intelligent/Kweebec_Sproutling/Models/Attachments/Cosmetics/Chest/Loin_Cloth_Leaves.blockymodel",
+          "Texture": "NPC/Intelligent/Kweebec_Sproutling/Models/Attachments/Cosmetics/Chest/Loin_Cloth_Leaves_Texture.png"
+        }
+      ]
+    }
   ],
   "healthModifier": -5,
   "staminaModifier": 20,
   "manaModifier": 15,
-  "enableAttachmentDiscovery": true,
+  "enableAttachmentDiscovery": false,
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [

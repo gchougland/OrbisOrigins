@@ -1,7 +1,10 @@
 package com.hexvane.orbisorigins.species;
 
+import com.hypixel.hytale.math.shape.Box;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -9,19 +12,24 @@ import javax.annotation.Nullable;
 
 /**
  * Data class representing a playable species with its properties.
+ * Supports version 1 (legacy) and version 2 (new variant/attachment format).
  */
 public class SpeciesData {
+    private final int version;
     private final String id;
     private final String displayName;
     private final String displayNameKey; // Optional language key override
     private final String modelBaseName;
     private final List<String> variants;
+    private final List<SpeciesVariantData> variantsV2;
     private final String description;
     private final String descriptionKey; // Optional language key override
     private final int healthModifier;
     private final int staminaModifier;
     private final int manaModifier;
     private final boolean enabled;
+    /** When true, species has no custom model (uses default player appearance like Orbian). */
+    private final boolean usePlayerModel;
     private final boolean enableAttachmentDiscovery;
     private final Map<String, Map<String, AttachmentOption>> manualAttachments; // attachment type -> option name -> AttachmentOption
     private final Map<String, Float> eyeHeightModifiers; // Per-variant eye height modifiers (model name -> modifier in blocks)
@@ -40,7 +48,7 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances
     ) {
-        this(id, displayName, null, modelBaseName, variants, description, null, healthModifier, staminaModifier, 0, true, false, new HashMap<>(), new HashMap<>(), new HashMap<>(), starterItems, damageResistances);
+        this(1, id, displayName, null, modelBaseName, variants, null, description, null, healthModifier, staminaModifier, 0, true, false, false, new HashMap<>(), new HashMap<>(), new HashMap<>(), starterItems, damageResistances);
     }
 
     public SpeciesData(
@@ -62,17 +70,45 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances
     ) {
+        this(1, id, displayName, displayNameKey, modelBaseName, variants, null, description, descriptionKey, healthModifier, staminaModifier, manaModifier, enabled, false, enableAttachmentDiscovery, manualAttachments, eyeHeightModifiers, hitboxHeightModifiers, starterItems, damageResistances);
+    }
+
+    public SpeciesData(
+            int version,
+            @Nonnull String id,
+            @Nonnull String displayName,
+            @Nullable String displayNameKey,
+            @Nonnull String modelBaseName,
+            @Nonnull List<String> variants,
+            @Nullable List<SpeciesVariantData> variantsV2,
+            @Nonnull String description,
+            @Nullable String descriptionKey,
+            int healthModifier,
+            int staminaModifier,
+            int manaModifier,
+            boolean enabled,
+            boolean usePlayerModel,
+            boolean enableAttachmentDiscovery,
+            @Nonnull Map<String, Map<String, AttachmentOption>> manualAttachments,
+            @Nonnull Map<String, Float> eyeHeightModifiers,
+            @Nonnull Map<String, Float> hitboxHeightModifiers,
+            @Nonnull List<String> starterItems,
+            @Nonnull Map<String, Float> damageResistances
+    ) {
+        this.version = version;
         this.id = id;
         this.displayName = displayName;
         this.displayNameKey = displayNameKey;
         this.modelBaseName = modelBaseName;
-        this.variants = new ArrayList<>(variants);
+        this.variants = variants != null ? new ArrayList<>(variants) : new ArrayList<>();
+        this.variantsV2 = variantsV2 != null ? new ArrayList<>(variantsV2) : new ArrayList<>();
         this.description = description;
         this.descriptionKey = descriptionKey;
         this.healthModifier = healthModifier;
         this.staminaModifier = staminaModifier;
         this.manaModifier = manaModifier;
         this.enabled = enabled;
+        this.usePlayerModel = usePlayerModel;
         this.enableAttachmentDiscovery = enableAttachmentDiscovery;
         // Deep copy manual attachments
         this.manualAttachments = new HashMap<>();
@@ -141,6 +177,14 @@ public class SpeciesData {
     }
 
     /**
+     * Returns whether this species uses the default player model (no custom model/variants).
+     * When true, the player keeps their normal appearance; stats and damage resistances still apply.
+     */
+    public boolean usesPlayerModel() {
+        return usePlayerModel;
+    }
+
+    /**
      * Returns whether attachment discovery is enabled for this species.
      * @return true if discovery is enabled, false otherwise
      */
@@ -201,13 +245,92 @@ public class SpeciesData {
 
     /**
      * Gets the model name for a specific variant index.
+     * For v1: returns the variant model asset ID.
+     * For v2: returns the variant's parent model (for maintenance system comparison).
      * Returns the base model name if variant index is invalid.
      */
     @Nonnull
     public String getModelName(int variantIndex) {
+        if (version == 2) {
+            SpeciesVariantData v = getVariantData(variantIndex);
+            return v != null ? v.getParentModel() : modelBaseName;
+        }
         if (variants.isEmpty() || variantIndex < 0 || variantIndex >= variants.size()) {
             return modelBaseName;
         }
         return variants.get(variantIndex);
+    }
+
+    /**
+     * Returns true if this species uses version 2 format.
+     */
+    public boolean isVersion2() {
+        return version == 2;
+    }
+
+    /**
+     * Gets the version (1 or 2).
+     */
+    public int getVersion() {
+        return version;
+    }
+
+    /**
+     * Gets variant data for v2 species.
+     */
+    @Nullable
+    public SpeciesVariantData getVariantData(int variantIndex) {
+        if (variantsV2.isEmpty() || variantIndex < 0 || variantIndex >= variantsV2.size()) {
+            return null;
+        }
+        return variantsV2.get(variantIndex);
+    }
+
+    /**
+     * Gets the number of variants (works for both v1 and v2).
+     */
+    public int getVariantCount() {
+        return version == 2 ? variantsV2.size() : variants.size();
+    }
+
+    /**
+     * Gets attachment options for a v2 variant slot.
+     * Returns map of option key (Name or "option_N") -> AttachmentOption.
+     */
+    @Nonnull
+    public Map<String, AttachmentOption> getAttachmentOptions(int variantIndex, @Nonnull String slot) {
+        SpeciesVariantData v = getVariantData(variantIndex);
+        if (v == null) return Collections.emptyMap();
+        SpeciesVariantData.AttachmentSlotDef slotDef = v.getAttachments().get(slot);
+        if (slotDef == null) return Collections.emptyMap();
+        Map<String, AttachmentOption> result = new LinkedHashMap<>();
+        int i = 0;
+        for (AttachmentOption opt : slotDef.getOptions()) {
+            String key = opt.getDisplayNameOrDefault(null);
+            if (key == null || key.isEmpty()) key = "option_" + i;
+            result.put(key, opt);
+            i++;
+        }
+        return result;
+    }
+
+    /**
+     * Gets all attachment slot names for a v2 variant.
+     */
+    @Nonnull
+    public List<String> getAttachmentSlotNames(int variantIndex) {
+        SpeciesVariantData v = getVariantData(variantIndex);
+        if (v == null) return Collections.emptyList();
+        return new ArrayList<>(v.getAttachments().keySet());
+    }
+
+    /**
+     * Checks if an attachment slot allows "None" for v2.
+     */
+    public boolean attachmentAllowsNone(int variantIndex, @Nonnull String slot) {
+        SpeciesVariantData v = getVariantData(variantIndex);
+        if (v == null) return false;
+        SpeciesVariantData.AttachmentSlotDef slotDef = v.getAttachments().get(slot);
+        return slotDef != null && slotDef.isAllowsNone();
     }
 }

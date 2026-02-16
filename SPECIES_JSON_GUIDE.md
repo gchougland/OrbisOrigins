@@ -2,6 +2,13 @@
 
 This guide explains how to create custom species JSON files for Orbis Origins.
 
+## Version Compatibility
+
+Species files support two formats. Use the `version` field to specify which format:
+
+- **version 1** (or missing): Legacy format with model names and optional attachment discovery
+- **version 2**: New format with explicit model paths, per-variant attachments, and texture selectors
+
 ## File Location
 
 Place your species JSON files in the plugin's data directory:
@@ -53,13 +60,14 @@ Each species file must be named `{speciesId}.json` and contain the following str
 - **`id`** (string): Unique identifier for the species (used internally, must be unique)
 - **`displayName`** (string): Display name shown in the GUI (fallback if language key fails)
 - **`description`** (string): Description text shown in the GUI (fallback if language key fails)
-- **`modelBaseName`** (string): Base model name (can be empty string for orbian/no model)
-- **`variants`** (array): Array of model variant names (must have at least one entry, or empty array for no variants)
+- **`modelBaseName`** (string): Base model name (can be empty string when using `usePlayerModel`)
+- **`variants`** (array): Array of model variant names (must have at least one entry, or empty array when `usePlayerModel` is true)
 - **`healthModifier`** (integer): Health modifier (can be negative)
 - **`staminaModifier`** (integer): Stamina modifier (can be negative, but total stamina cannot go below 5)
 
 ### Optional Fields
 
+- **`usePlayerModel`** (boolean): When `true`, this species has no custom model—the player keeps their default appearance (like Orbian). Use for species that only change stats and damage resistances. Requires empty `modelBaseName` and empty `variants` (v1), or empty `variantsV2` (v2). Default: `false`; also set automatically when `modelBaseName` and `variants` are both empty in v1.
 - **`manaModifier`** (integer): Mana modifier (can be negative, default: 0)
 - **`enabled`** (boolean): Whether this species should appear in the selection list (default: true). Set to `false` to disable a species without deleting the file.
 - **`enableAttachmentDiscovery`** (boolean): Enables automatic discovery of model attachments from Hytale's model JSON files (default: false). When `true`, the mod will read `RandomAttachmentSets` from the model's JSON definition and make them available for player customization in the UI.
@@ -72,6 +80,27 @@ Each species file must be named `{speciesId}.json` and contain the following str
 - **`hitboxHeightModifiers`** (object): Map of model variant names to hitbox height modifiers (default: empty object `{}`). Each entry maps a variant model name to a float value (in blocks). Positive values increase the bounding box height, negative values decrease it. This affects collision detection and whether the player can fit through gaps. Example: `{ "Kweebec_Rootling": -0.5, "Kweebec_Sapling": -0.3 }` to make small variants fit in 1-block-high gaps.
 - **`starterItems`** (array of strings): List of item IDs to give on species selection (default: empty array)
 - **`damageResistances`** (object): Map of damage type to resistance multiplier (default: empty object)
+
+## Species with no custom model
+
+To create a species that only changes stats and damage resistances (no custom model, like Orbian), set **`usePlayerModel`: true** and leave models/variants empty:
+
+**Version 1 example:**
+```json
+{
+  "id": "my_human_variant",
+  "displayName": "Human Variant",
+  "description": "Same appearance, different stats.",
+  "modelBaseName": "",
+  "variants": [],
+  "usePlayerModel": true,
+  "healthModifier": 10,
+  "staminaModifier": 0,
+  "damageResistances": {}
+}
+```
+
+**Version 2:** Set `"version": 2`, `"usePlayerModel": true`, and `"variants": []` (empty array). The player keeps their default appearance; stats and resistances still apply.
 
 ## Model Variants
 
@@ -98,9 +127,76 @@ Uses the `modelNamespace` field (or "base" as default).
 ```
 Allows per-variant namespace specification. Mix string and object formats as needed.
 
+## Version 2 Format (New Variant/Attachment System)
+
+When `"version": 2` is set, variants are objects with explicit model paths and per-variant configuration. The model JSON file (ParentModel) is used as a base for animations, camera, and other properties when not overridden.
+
+### Version 2 Variant Structure
+
+```json
+{
+  "version": 2,
+  "variants": [
+    {
+      "VariantName": "Rootling",
+      "ParentModel": "Kweebec_Rootling",
+      "Model": "NPC/Intelligent/Kweebec_Rootling/Kweebec_Rootling.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Kweebec_Rootling/Kweebec_Rootling.png"
+      ],
+      "EyeHeight": 1.7,
+      "CrouchOffset": -0.2,
+      "HitBox": {
+        "min": { "x": -0.3, "y": 0, "z": -0.3 },
+        "max": { "x": 0.3, "y": 2, "z": 0.3 }
+      },
+      "defaultAttachments": [
+        { "Model": "path/to/model.blockymodel", "Texture": "path/to/texture.png" }
+      ],
+      "attachments": {
+        "Hair": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Bonsai",
+              "Model": "path/to/hair_model.blockymodel",
+              "Texture": "path/to/hair_texture.png"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+```
+
+### Version 2 Variant Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `VariantName` | string | No | Display name (default: "Unknown") |
+| `ParentModel` | string | Yes | Model JSON asset ID for base config (animations, etc.) |
+| `Model` | string | Yes | Blockymodel path for the actual 3D model |
+| `Textures` | array | No | List of texture paths for the texture selector (manually configured) |
+| `EyeHeight` | float | No | Override; else from ParentModel |
+| `CrouchOffset` | float | No | Override; else from ParentModel |
+| `HitBox` | object | No | Override `{min:{x,y,z}, max:{x,y,z}}`; else from ParentModel |
+| `defaultAttachments` | array | No | Always-applied attachments; `{Model, Texture}` per entry |
+| `attachments` | object | No | Selectable attachment slots (see below) |
+
+### Version 2 Attachment Slots
+
+Each slot (e.g., "Hair", "Outfit") has:
+- **allowsNone** (boolean): Whether "None" is a valid selection
+- **options** (array): `{Name, Model, Texture}` per option; **Name** is the human-readable label shown in the UI
+
+### Version 2 Texture Selector
+
+When a variant has multiple entries in `Textures`, a texture selector appears in the species selection GUI. Players can cycle through the configured texture options. The selected texture is saved with the species selection.
+
 ## Models from Other Mods
 
-You can reference models from other mods by using the object format with a namespace:
+You can reference models from other mods by using the object format with a namespace (v1):
 
 ```json
 "variants": [

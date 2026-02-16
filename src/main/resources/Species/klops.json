@@ -4,21 +4,216 @@
   "displayNameKey": "species.klops.name",
   "description": "A small, industrious creature known for mining and trading. Slightly higher stamina and minor physical resistance.",
   "descriptionKey": "species.klops.description",
-  "modelBaseName": "Klops_Merchant",
+  "modelBaseName": "Klops",
+  "version": 2,
   "variants": [
-    "Klops_Merchant",
-    "Klops_Miner",
-    "Klops_Gentleman"
+    {
+      "VariantName": "Klops",
+      "ParentModel": "Klops",
+      "Model": "NPC/Intelligent/Klops/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Klops/Models/Model_default.png",
+        "NPC/Intelligent/Klops/Models/Model_Orange.png"
+      ],
+      "EyeHeight": 1.4,
+      "CrouchOffset": -0.2,
+      "HitBox": {
+        "max": {
+          "x": 0.3,
+          "y": 1.5,
+          "z": 0.3
+        },
+        "min": {
+          "x": -0.3,
+          "y": 0,
+          "z": -0.3
+        }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Tail/Tail.blockymodel",
+          "Texture": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Tail/Tail_Default.png"
+        }
+      ],
+      "attachments": {
+        "Eyebrows": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Black",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Head/Eyebrows/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Head/Eyebrows/Eyebrows_Black.png"
+            },
+            {
+              "Name": "White",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Head/Eyebrows/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Head/Eyebrows/Eyebrows_White.png"
+            }
+          ]
+        },
+        "Tail": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Fluff",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Tail/Tail.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Cosmetics/Tail/Tail_Default.png"
+            }
+          ]
+        },
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Tophat - Blue",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Hat.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Hat_Blue.png"
+            },
+            {
+              "Name": "Tophat - Purple",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Hat.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Hat_Purple.png"
+            },
+            {
+              "Name": "Hair - Black",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Hair.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Hair_Black.png"
+            },
+            {
+              "Name": "Hair - White",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Miner/Hair-Miner.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Miner/Hair-Miner_Texture.png"
+            },
+            {
+              "Name": "Hat - Red",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Hat.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Hat_Texture.png"
+            },
+            {
+              "Name": "Helmet",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Miner/Helmet.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Miner/Helmet_Texture.png"
+            }
+          ]
+        },
+        "Clothes": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Robe - Blue",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Robe.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Robe_Blue.png"
+            },
+            {
+              "Name": "Robe - Purple",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Robe.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Robe_Purple.png"
+            },
+            {
+              "Name": "Tunic - Brown",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Tunic.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Tunic_Brown.png"
+            }
+          ]
+        },
+        "Hands": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Gloves",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Miner/Gloves.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Miner/Gloves_Texture.png"
+            }
+          ]
+        },
+        "Shoes": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Black",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Shoes.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Shoes_Texture.png"
+            },
+            {
+              "Name": "Brown",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Shoes.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Shoes_Texture.png"
+            },
+            {
+              "Name": "Muddy",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Miner/Shoes.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Miner/Shoes_Texture.png"
+            }
+          ]
+        },
+        "Glasses": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Monocle",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Monocle.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Monocle_Texture.png"
+            },
+            {
+              "Name": "Glasses - Blue",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Glasses.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Glasses_Blue.png"
+            },
+            {
+              "Name": "Glasses - Brown",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Glasses.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Glasses_default.png"
+            },
+            {
+              "Name": "Goggles",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Miner/Goggles.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Miner/Goggles_Texture.png"
+            }
+          ]
+        },
+        "Pipe": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Pipe",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Pipe.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Gentleman/Pipe_Texture.png"
+            }
+          ]
+        },
+        "Bag": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Backpack",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Backpack.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Backpack_Texture.png"
+            },
+            {
+              "Name": "Bag - Side",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Bag_Side.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Merchant/Bag_Side_Texture.png"
+            }
+          ]
+        },
+        "Straps": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Straps",
+              "Model": "NPC/Intelligent/Klops/Models/Attachments/Miner/Straps.blockymodel",
+              "Texture": "NPC/Intelligent/Klops/Models/Attachments/Miner/Straps_Texture.png"
+            }
+          ]
+        }
+      }
+    }
   ],
   "healthModifier": 5,
   "staminaModifier": 10,
   "manaModifier": 0,
   "enableAttachmentDiscovery": true,
-  "eyeHeightModifiers": {
-    "Klops_Merchant": 0.1,
-    "Klops_Miner": 0.1,
-    "Klops_Gentleman": 0.1
-  },
+  "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [
     "Weapon_Staff_Onion",

@@ -1,0 +1,439 @@
+{
+  "id": "undead",
+  "displayName": "Undead",
+  "displayNameKey": "species.undead.name",
+  "description": "A reanimated corpse. Immune to poison, and physical resistance. Vulnerable to fire.",
+  "descriptionKey": "species.undead.description",
+  "modelBaseName": "Zombie",
+  "version": 2,
+  "variants": [
+    {
+      "VariantName": "Zombie",
+      "ParentModel": "Zombie",
+      "Model": "NPC/Undead/Zombie/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Undead/Zombie/Models/Zombie.png",
+        "NPC/Undead/Zombie/Models/Zombie_Brown.png",
+        "NPC/Undead/Zombie/Models/Zombie_Burnt.png",
+        "NPC/Undead/Zombie/Models/Zombie_Frost.png",
+        "NPC/Undead/Zombie/Models/Zombie_Moldy.png",
+        "NPC/Undead/Zombie/Models/Zombie_Pale.png",
+        "NPC/Undead/Zombie/Models/Zombie_Sand.png"
+      ],
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Eyes.blockymodel",
+          "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Eyes_Blue.png"
+        }
+      ],
+      "attachments": {
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hoodie",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Hoodie.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Hoodie_Texture.png"
+            },
+            {
+              "Name": "Maid Cap",
+              "Model": "Cosmetics/Head/MaidCap.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/MaidCap_Texture.png"
+            },
+            {
+              "Name": "Monk Cap",
+              "Model": "Cosmetics/Head/Hood.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Hood_Texture/Monk_Cap.png"
+            },
+            {
+              "Name": "Bangs - Long Black",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Bangs_Long.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Bangs_Long_Black.png"
+            },
+            {
+              "Name": "Bangs - Long White",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Bangs_Long.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Bangs_Long_White.png"
+            },
+            {
+              "Name": "Goatee - Black",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Goatee.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Goatee_Black.png"
+            },
+            {
+              "Name": "Bandage - Heavy Black",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Head_Bandage.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Heavy_Bandage_Black.png"
+            },
+            {
+              "Name": "Bandage - Light Black",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Head_Bandage.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Light_Bandage_Black.png"
+            },
+            {
+              "Name": "Long Oily - Blond",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Long_Oily.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Long_Oily_Blond.png"
+            },
+            {
+              "Name": "Spiky Werewolf",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Spiky_Werewolf.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Spiky_Werewolf_Texture.png"
+            },
+            {
+              "Name": "Oily Wicks",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Wicks_Oily.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Haircuts/Wicks_Oily_Texture.png"
+            }
+          ]
+        },
+        "Teeth": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Large",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Head/Teeth_Large.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Head/Teeth_Large_Texture.png"
+            }
+          ]
+        },
+        "Back": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Torn Cape",
+              "Model": "NPC/Undead/Zombie/Models/Attachments/Back/Torn_Cape.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Back/Torn_Cape_Texture.png"
+            }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Tunic",
+              "Model": "Cosmetics/Overtops/Tunic.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Tunic_Textures/Ragged_Apprentice_Tunic.png"
+            },
+            {
+              "Name": "Maid Dress",
+              "Model": "Cosmetics/Overtops/Dress_Long_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Long_Sleeve_Asymetrical_Texture/Maid_Dress.png"
+            },
+            {
+              "Name": "Monk Robe",
+              "Model": "Cosmetics/Overtops/LongDress_Long_Sleeve.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/LongDress_Long_Sleeve_Texture/Monk_Robe.png"
+            },
+            {
+              "Name": "Tramp Tunic",
+              "Model": "Cosmetics/Overtops/Overtops_Short_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Overtop_Short_Sleeve_Textures/Tramp_Tunic.png"
+            },
+            {
+              "Name": "Tramp Dress",
+              "Model": "Cosmetics/Overtops/Dress.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Textures/Tramp_Dress.png"
+            },
+            {
+              "Name": "Torn Top",
+              "Model": "Cosmetics/Undertops/Top.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Top_Textures/Torn_Top.png"
+            },
+            {
+              "Name": "Ragged Trench Coat",
+              "Model": "Cosmetics/Overtops/TrenchCoat_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/TrenchCoat_Asymetrical_Textures/Ragged_TrenchCoat.png"
+            },
+            {
+              "Name": "Villager Dress - Blue",
+              "Model": "Cosmetics/Overtops/Dress_Long_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Long_Sleeve_Asymetrical_Texture/Villager_Dress_Greyscale.png"
+            },
+            {
+              "Name": "Villager Dress - Brown",
+              "Model": "Cosmetics/Overtops/Dress_Long_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Long_Sleeve_Asymetrical_Texture/Villager_Dress_Greyscale.png"
+            },
+            {
+              "Name": "Villager Dress - Yellow",
+              "Model": "Cosmetics/Overtops/Dress_Long_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Long_Sleeve_Asymetrical_Texture/Villager_Dress_Greyscale.png"
+            },
+            {
+              "Name": "Blouse - Blue",
+              "Model": "Cosmetics/Overtops/Dress_Long_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Long_Sleeve_Asymetrical_Texture/Blouse_Greyscale.png"
+            },
+            {
+              "Name": "Blouse - Brown",
+              "Model": "Cosmetics/Overtops/Dress_Long_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Long_Sleeve_Asymetrical_Texture/Blouse_Greyscale.png"
+            },
+            {
+              "Name": "Blouse - Yellow",
+              "Model": "Cosmetics/Overtops/Dress_Long_Sleeve_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Long_Sleeve_Asymetrical_Texture/Blouse_Greyscale.png"
+            },
+            {
+              "Name": "Ragged Dress - Blue",
+              "Model": "Cosmetics/Overtops/Dress.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Textures/Ragged_Dress_Greyscale.png"
+            },
+            {
+              "Name": "Ragged Dress - Brown",
+              "Model": "Cosmetics/Overtops/Dress.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Textures/Ragged_Dress_Greyscale.png"
+            },
+            {
+              "Name": "Ragged Dress - Yellow",
+              "Model": "Cosmetics/Overtops/Dress.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/Dress_Textures/Ragged_Dress_Greyscale.png"
+            },
+            {
+              "Name": "Villager Shirt - Blue",
+              "Model": "Cosmetics/Overtops/SleevedDresswJersey.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/SleevedDresswJersey_Textures/Villager_Ragged_Shirt_Greyscale.png"
+            },
+            {
+              "Name": "Villager Shirt - Brown",
+              "Model": "Cosmetics/Overtops/SleevedDresswJersey.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/SleevedDresswJersey_Textures/Villager_Ragged_Shirt_Greyscale.png"
+            },
+            {
+              "Name": "Villager Shirt - Yellow",
+              "Model": "Cosmetics/Overtops/SleevedDresswJersey.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Chest/SleevedDresswJersey_Textures/Villager_Ragged_Shirt_Greyscale.png"
+            }
+          ]
+        },
+        "Shoes": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Single Sock",
+              "Model": "Cosmetics/Shoes/Single_Sock.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Shoes/Single_Sock_Texture.png"
+            },
+            {
+              "Name": "Single Boot",
+              "Model": "Cosmetics/Shoes/Single_Boot.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Shoes/Boots_Leather_Textures/Worned_Boot.png"
+            }
+          ]
+        },
+        "Legs": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Brown Trousers",
+              "Model": "Cosmetics/Pants/Pants_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Legs/Pants_Asymetrical_Textures/Brown_Trousers.png"
+            },
+            {
+              "Name": "Dark Trousers",
+              "Model": "Cosmetics/Pants/Pants_Asymetrical.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Legs/Pants_Asymetrical_Textures/Dark_Trousers.png"
+            },
+            {
+              "Name": "Brown Short",
+              "Model": "Cosmetics/Pants/Shorty_Slim.blockymodel",
+              "Texture": "NPC/Undead/Zombie/Models/Attachments/Legs/Shorty_Slim_Textures/Brown_Short.png"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "VariantName": "Skeleton",
+      "ParentModel": "Skeleton",
+      "Model": "NPC/Undead/Skeleton/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Undead/Skeleton/Models/Model_Textures/White.png",
+        "NPC/Undead/Skeleton/Models/Model_Textures/Burnt.png",
+        "NPC/Undead/Skeleton/Models/Model_Textures/Burnt_Black.png",
+        "NPC/Undead/Skeleton/Models/Model_Textures/Frost.png",
+        "NPC/Undead/Skeleton/Models/Model_Textures/Sand.png"
+      ],
+      "EyeHeight": 1.6,
+      "CrouchOffset": -0.4,
+      "HitBox": {
+        "max": { "x": 0.3, "y": 1.8, "z": 0.3 },
+        "min": { "x": -0.3, "y": 0, "z": -0.3 }
+      },
+      "defaultAttachments": [
+      ],
+      "attachments": {
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Archer - Green", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head_Texture/Green.png" },
+            { "Name": "Archer - Blue", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head_Texture/Blue.png" },
+            { "Name": "Archer - Purple", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head_Texture/Purple.png" },
+            { "Name": "Archer - Brown", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head_Texture/Brown.png" },
+            { "Name": "Archer - Red", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head_Texture/Red.png" },
+            { "Name": "Archer Head Band", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head_Band.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archer/Head_Band_Texture.png" },
+            { "Name": "Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Head_Texture.png" },
+            { "Name": "Soldier - Rusty", "Model": "NPC/Undead/Skeleton/Models/Attachments/Soldier/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Soldier/Head_Rusty.png" },
+            { "Name": "Burnt Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Head_Texture.png" },
+            { "Name": "Burnt Archer Helm", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Archer_Helm.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Archer_Helm_Texture.png" },
+            { "Name": "Burnt Alchemist", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Head_Texture.png" },
+            { "Name": "Burnt Knight", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Knight/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Knight/Head_Texture.png" },
+            { "Name": "Burnt Lancer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Lancer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Lancer/Head_Texture.png" },
+            { "Name": "Burnt Gunner", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Gunner/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Gunner/Head_Texture.png" },
+            { "Name": "Burnt Wizard", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Head_Texture.png" },
+            { "Name": "Frost Soldier", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Head_Texture.png" },
+            { "Name": "Frost Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Head_Texture.png" },
+            { "Name": "Sand Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archer/Head_Texture.png" },
+            { "Name": "Sand Archer Dark", "Model": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archer/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archer/Head_Texture_Dark.png" },
+            { "Name": "Sand Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archmage/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archmage/Head_Texture.png" },
+            { "Name": "Incandescent Footman", "Model": "NPC/Undead/Skeleton/Models/Attachments/Incandescent_Footman/Head.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Incandescent_Footman/Head_Texture.png" },
+            { "Name": "Head Band", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Band.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Band_Texture.png" },
+            { "Name": "Head Band Dark", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Band.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Band_Texture_Dark.png" }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Chest_Texture.png" },
+            { "Name": "Soldier Rusty", "Model": "NPC/Undead/Skeleton/Models/Attachments/Soldier/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Soldier/Chest_Rusty.png" },
+            { "Name": "Burnt Alchemist", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Chest_Texture.png" },
+            { "Name": "Burnt Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Chest_Texture.png" },
+            { "Name": "Burnt Knight", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Knight/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Knight/Chest_Texture.png" },
+            { "Name": "Burnt Wizard", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Chest_Texture.png" },
+            { "Name": "Frost Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Chest_Texture.png" },
+            { "Name": "Frost Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Chest_Texture.png" },
+            { "Name": "Frost Soldier", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Chest_Texture.png" },
+            { "Name": "Sand Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archmage/Chest.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archmage/Chest_Texture.png" },
+            { "Name": "Tunic Torn - Green", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Textures/Tunic_Torn_Green.png" },
+            { "Name": "Tunic Torn - Green Bright", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Textures/Tunic_Torn_Green_Bright.png" },
+            { "Name": "Tunic Torn - Brown", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Textures/Tunic_Torn_Brown.png" },
+            { "Name": "Tunic Torn - Blue", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Textures/Tunic_Torn_Blue.png" },
+            { "Name": "Tunic Torn - Red", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Textures/Tunic_Torn_Red.png" },
+            { "Name": "Tunic Torn - Purple", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Textures/Tunic_Torn_Purple.png" },
+            { "Name": "Tunic Torn Long - Green", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Long.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Long_Textures/Tunic_Torn_Long_Green.png" },
+            { "Name": "Tunic Torn Long - Purple", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Long.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Long_Textures/Tunic_Torn_Long_Purple.png" },
+            { "Name": "Tunic Torn Long - Violet", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Long.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Tunic_Torn_Long_Textures/Tunic_Torn_Long_Violet.png" },
+            { "Name": "Rag Small Torn - Beige", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Rag_Small_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Rag_Small_Torn_Textures/Rag_Small_Torn_Beige.png" },
+            { "Name": "Rag Small Torn - Brown", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Rag_Small_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Rag_Small_Torn_Textures/Rag_Small_Torn_Brown.png" },
+            { "Name": "Rag Small Torn - Incandescent", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Rag_Small_Torn.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Chest/Rag_Small_Torn_Textures/Rag_Small_Torn_Incandescent.png" }
+          ]
+        },
+        "Legs": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archer/Legs.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archer/Legs_Texture.png" },
+            { "Name": "Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Legs.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Legs_Texture.png" },
+            { "Name": "Burnt Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Legs.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Archer/Legs_Texture.png" },
+            { "Name": "Sand Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archmage/Leg.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Sand_Archmage/Leg_Texture.png" },
+            { "Name": "Incandescent Footman", "Model": "NPC/Undead/Skeleton/Models/Attachments/Incandescent_Footman/Leg.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Incandescent_Footman/Leg_Texture.png" },
+            { "Name": "Pants Large - Grey Blue Torn", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Pants_Large.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Pants_Large_Textures/GreyBlue_Torn.png" },
+            { "Name": "Pants Large - Beige Torn", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Pants_Large.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Pants_Large_Textures/Beige_Torn.png" },
+            { "Name": "Pants Large - Apprentice Zombie", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Pants_Large.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Pants_Large_Textures/Apprentice_Zombie.png" },
+            { "Name": "Leg Band", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Band.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Band_Texture.png" },
+            { "Name": "Leg Band Dark", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Band.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Legs/Band_Texture_Dark.png" }
+          ]
+        },
+        "Feet": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Burnt Alchemist", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Feet.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Feet_Texture.png" },
+            { "Name": "Burnt Alchemist Boots", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Boots.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Boots_Texture.png" },
+            { "Name": "Burnt Wizard", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Feet.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Feet_Texture.png" },
+            { "Name": "Frost Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Feet.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Feet_Texture.png" },
+            { "Name": "Frost Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Feet.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Feet_Texture.png" },
+            { "Name": "Frost Soldier", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Feet.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Feet_Texture.png" },
+            { "Name": "Rotten Leather Boots", "Model": "Cosmetics/Shoes/BootsBasic.blockymodel", "Texture": "Cosmetics/Shoes/BootsBasic_Textures/Rotten_Leather.png" },
+            { "Name": "Scavenger Leather Boots", "Model": "Cosmetics/Shoes/BootsBasic.blockymodel", "Texture": "Cosmetics/Shoes/BootsBasic_Textures/Scavenger_Leather.png" }
+          ]
+        },
+        "Hands": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Hands.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Hands_Texture.png" },
+            { "Name": "Burnt Alchemist", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Hands.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Hands_Texture.png" },
+            { "Name": "Burnt Alchemist Gloves", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Gloves.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Gloves_Texture.png" },
+            { "Name": "Frost Archer", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Hands.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Hands_Texture.png" },
+            { "Name": "Frost Archmage", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Hands.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Hands_Texture.png" },
+            { "Name": "Frost Soldier", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Hands.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Soldier/Hands_Texture.png" }
+          ]
+        },
+        "Back": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Archmage Cape", "Model": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Cape.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Archmage/Cape_Texture.png" },
+            { "Name": "Burnt Lancer Cape", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Lancer/Cape.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Lancer/Cape_Texture.png" },
+            { "Name": "Burnt Lancer Cape Burnt", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Lancer/Cape.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Lancer/Cape_Burnt.png" },
+            { "Name": "Burnt Wizard Cape", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Cape.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Cape_Texture.png" },
+            { "Name": "Frost Archmage Cape", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Cape.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archmage/Cape_Texture.png" },
+            { "Name": "Frost Archer Shoulders", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Shoulders.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Shoulders_Texture.png" },
+            { "Name": "Frost Archer Quiver", "Model": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Quiver.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Frost_Archer/Quiver_Texture.png" },
+            { "Name": "Quiver", "Model": "Items/Back/Quiver.blockymodel", "Texture": "Items/Back/Quiver_Texture.png" },
+            { "Name": "Axe Stuck", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Back/Axe_Stuck.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Back/Axe_Stuck_Texture.png" }
+          ]
+        },
+        "Belt": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Burnt Alchemist", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Belt.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Alchemist/Belt_Texture.png" },
+            { "Name": "Burnt Wizard", "Model": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Belt.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Burnt_Wizard/Belt_Texture.png" }
+          ]
+        },
+        "Hair": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Pointy Dirty - Grey", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Pointy_Dirty.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Pointy_Dirty_Grey.png" },
+            { "Name": "Pointy Dirty", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Pointy_Dirty.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Pointy_Dirty_Texture.png" },
+            { "Name": "Frozen Spikes", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Frozen_Spikes.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Frozen_Spikes_Texture.png" },
+            { "Name": "Frozen Sharp Peak", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Frozen_SharpPeak.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Frozen_Spikes_Texture.png" },
+            { "Name": "Old Long", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Old_Long.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Haircuts/Old_Long_Texture.png" }
+          ]
+        },
+        "Beard": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Dry Undead - White", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Dry_Undead.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Dry_Undead_White.png" },
+            { "Name": "Dry Undead - Grey Blue", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Dry_Undead.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Dry_Undead_Grey_Blue.png" },
+            { "Name": "Dry Undead - Grey Brown", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Dry_Undead.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Dry_Undead_Grey_Brown.png" },
+            { "Name": "Emir Undead", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Emir_Undead.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Emir_Undead_Texture.png" },
+            { "Name": "Frost Undead", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Frost_Undead.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Beards/Frost_Undead_Texture.png" }
+          ]
+        },
+        "Eyebrows": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Bushy - Blue", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyebrows/Bushy.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyebrows/Bushy_Blue.png" },
+            { "Name": "Long Sharp - Grey", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyebrows/Long_Sharp.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyebrows/Long_Sharp_Grey.png" }
+          ]
+        },
+        "Eyes": {
+          "allowsNone": false,
+          "options": [
+            { "Name": "Blue", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyes/Eyes.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyes/Eyes_Blue.png" },
+            { "Name": "Red", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyes/Eyes.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Head/Eyes/Eyes_Red.png" }
+          ]
+        },
+        "Arms": {
+          "allowsNone": true,
+          "options": [
+            { "Name": "Band", "Model": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Arms/Band.blockymodel", "Texture": "NPC/Undead/Skeleton/Models/Attachments/Cosmetics/Arms/Band_Texture.png" }
+          ]
+        }
+      }
+    }
+  ],
+  "healthModifier": 10,
+  "staminaModifier": -5,
+  "manaModifier": 0,
+  "enableAttachmentDiscovery": true,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [
+    "Weapon_Club_Zombie_Leg"
+  ],
+  "damageResistances": {
+    "Poison": 0.0,
+    "Physical": 0.9,
+    "Fire": 1.3
+  }
+}

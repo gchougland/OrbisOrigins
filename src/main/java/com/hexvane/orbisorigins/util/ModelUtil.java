@@ -2,14 +2,22 @@ package com.hexvane.orbisorigins.util;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.math.shape.Box;
 import com.hypixel.hytale.server.core.asset.type.model.config.Model;
 import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
+import com.hypixel.hytale.server.core.asset.type.model.config.ModelAttachment;
 import com.hypixel.hytale.server.core.cosmetics.CosmeticsModule;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.component.ModelComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.PlayerSkinComponent;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hexvane.orbisorigins.species.AttachmentOption;
+import com.hexvane.orbisorigins.species.SpeciesData;
+import com.hexvane.orbisorigins.species.SpeciesVariantData;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
@@ -191,6 +199,95 @@ public class ModelUtil {
         
         store.putComponent(playerRef, ModelComponent.getComponentType(), new ModelComponent(modelToApply));
         LOGGER.fine("ModelUtil: Applied model to player: " + modelName);
+    }
+
+    /**
+     * Creates a Model for v2 species variant (used for both apply and preview).
+     * Returns null if parent asset or variant not found.
+     */
+    @Nullable
+    public static Model createModelForV2(
+            @Nonnull SpeciesData species,
+            int variantIndex,
+            @Nullable String textureSelection,
+            @Nullable Map<String, String> attachmentSelections
+    ) {
+        SpeciesVariantData variant = species.getVariantData(variantIndex);
+        if (variant == null) return null;
+        ModelAsset parentAsset = ModelAsset.getAssetMap().getAsset(variant.getParentModel());
+        if (parentAsset == null) return null;
+
+        List<String> textures = variant.getTextures();
+        String texture = textureSelection;
+        if (texture == null || texture.isEmpty() || !textures.contains(texture)) {
+            texture = textures.isEmpty() ? parentAsset.getTexture() : textures.get(0);
+        }
+        float eyeHeight = variant.getEyeHeight() != null ? variant.getEyeHeight() : parentAsset.getEyeHeight();
+        float crouchOffset = variant.getCrouchOffset() != null ? variant.getCrouchOffset() : parentAsset.getCrouchOffset();
+        Box boundingBox = variant.getHitBox() != null ? variant.getHitBox() : parentAsset.getBoundingBox();
+
+        List<ModelAttachment> allAttachments = new ArrayList<>();
+        for (SpeciesVariantData.DefaultAttachmentDef def : variant.getDefaultAttachments()) {
+            allAttachments.add(new ModelAttachment(def.getModel(), def.getTexture(), null, null, 1.0));
+        }
+        if (attachmentSelections != null) {
+            for (Map.Entry<String, String> entry : attachmentSelections.entrySet()) {
+                String slot = entry.getKey();
+                String selected = entry.getValue();
+                if (selected == null || selected.isEmpty() || "null".equals(selected)) continue;
+                Map<String, AttachmentOption> options = species.getAttachmentOptions(variantIndex, slot);
+                AttachmentOption opt = options.get(selected);
+                if (opt != null) {
+                    allAttachments.add(new ModelAttachment(opt.getModel(), opt.getTexture(), null, null, 1.0));
+                }
+            }
+        }
+        ModelAttachment[] attachmentsArray = allAttachments.toArray(new ModelAttachment[0]);
+        Map<String, String> attachmentMap = attachmentSelections != null ? new HashMap<>(attachmentSelections) : new HashMap<>();
+
+        return new Model(
+                variant.getParentModel(),
+                1.0f,
+                attachmentMap,
+                attachmentsArray,
+                boundingBox,
+                variant.getModel(),
+                texture,
+                parentAsset.getGradientSet(),
+                parentAsset.getGradientId(),
+                eyeHeight,
+                crouchOffset,
+                parentAsset.getAnimationSetMap(),
+                parentAsset.getCamera(),
+                parentAsset.getLight(),
+                parentAsset.getParticles(),
+                parentAsset.getTrails(),
+                parentAsset.getPhysicsValues(),
+                parentAsset.getDetailBoxes(),
+                parentAsset.getPhobia(),
+                parentAsset.getPhobiaModelAssetId()
+        );
+    }
+
+    /**
+     * Applies a v2 species model to a player entity.
+     * Uses variant config: model path, texture selection, defaultAttachments, and selectable attachments.
+     */
+    public static void applyModelToPlayerV2(
+            @Nonnull Ref<EntityStore> playerRef,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull SpeciesData species,
+            int variantIndex,
+            @Nullable String textureSelection,
+            @Nullable Map<String, String> attachmentSelections
+    ) {
+        Model model = createModelForV2(species, variantIndex, textureSelection, attachmentSelections);
+        if (model == null) {
+            LOGGER.warning("ModelUtil: Failed to create v2 model for species " + species.getId() + " variant " + variantIndex);
+            return;
+        }
+        store.putComponent(playerRef, ModelComponent.getComponentType(), new ModelComponent(model));
+        LOGGER.fine("ModelUtil: Applied v2 model to player for species " + species.getId());
     }
 
     /**

@@ -41,9 +41,6 @@ public class SpeciesStatUtil {
         int healthStatIndex = EntityStatType.getAssetMap().getIndex("Health");
         int staminaStatIndex = EntityStatType.getAssetMap().getIndex("Stamina");
         int manaStatIndex = EntityStatType.getAssetMap().getIndex("Mana");
-        
-        LOGGER.info("applySpeciesStats: Health index=" + healthStatIndex + ", Stamina index=" + staminaStatIndex + ", Mana index=" + manaStatIndex);
-        LOGGER.info("applySpeciesStats: Applying modifiers - Health: " + species.getHealthModifier() + ", Stamina: " + species.getStaminaModifier() + ", Mana: " + species.getManaModifier());
 
         // Always remove previous modifiers first to ensure clean state
         // Use Predictable.SELF to ensure changes sync to the client
@@ -60,7 +57,6 @@ public class SpeciesStatUtil {
             );
             entityStatMapComponent.putModifier(EntityStatMap.Predictable.SELF, healthStatIndex, HEALTH_MODIFIER_KEY, healthModifier);
             entityStatMapComponent.maximizeStatValue(EntityStatMap.Predictable.SELF, healthStatIndex);
-            LOGGER.info("applySpeciesStats: Applied health modifier: " + species.getHealthModifier());
         }
 
         // Apply stamina modifier if non-zero
@@ -72,7 +68,6 @@ public class SpeciesStatUtil {
             );
             entityStatMapComponent.putModifier(EntityStatMap.Predictable.SELF, staminaStatIndex, STAMINA_MODIFIER_KEY, staminaModifier);
             entityStatMapComponent.maximizeStatValue(EntityStatMap.Predictable.SELF, staminaStatIndex);
-            LOGGER.info("applySpeciesStats: Applied stamina modifier: " + species.getStaminaModifier());
         }
 
         // Apply mana modifier if non-zero
@@ -84,7 +79,6 @@ public class SpeciesStatUtil {
             );
             entityStatMapComponent.putModifier(EntityStatMap.Predictable.SELF, manaStatIndex, MANA_MODIFIER_KEY, manaModifier);
             entityStatMapComponent.maximizeStatValue(EntityStatMap.Predictable.SELF, manaStatIndex);
-            LOGGER.info("applySpeciesStats: Applied mana modifier: " + species.getManaModifier());
         }
         
         // Component changes are automatically tracked by the ECS system - no need to putComponent

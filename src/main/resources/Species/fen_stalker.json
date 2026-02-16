@@ -1,0 +1,39 @@
+{
+  "id": "fen_stalker",
+  "displayName": "Fen Stalker",
+  "displayNameKey": "species.fen_stalker.name",
+  "description": "A beast of the swamps. At home in water and on land.",
+  "descriptionKey": "species.fen_stalker.description",
+  "modelBaseName": "Fen_Stalker",
+  "version": 2,
+  "variants": [
+    {
+      "VariantName": "Fen Stalker",
+      "ParentModel": "Fen_Stalker",
+      "Model": "NPC/Swimming_Beast/Fen_Stalker/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Swimming_Beast/Fen_Stalker/Models/Texture.png"
+      ],
+      "EyeHeight": 1.35,
+      "CrouchOffset": -0.2,
+      "HitBox": {
+        "min": { "x": -0.45, "y": 0, "z": -0.45 },
+        "max": { "x": 0.45, "y": 1.6, "z": 0.45 }
+      },
+      "defaultAttachments": [],
+      "attachments": {}
+    }
+  ],
+  "healthModifier": 0,
+  "staminaModifier": 0,
+  "manaModifier": 0,
+  "enableAttachmentDiscovery": false,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Water": 0.7,
+    "Poison": 0.85,
+    "Physical": 0.9
+  }
+}

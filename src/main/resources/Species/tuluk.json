@@ -1,0 +1,88 @@
+{
+  "id": "tuluk",
+  "displayName": "Tuluk",
+  "displayNameKey": "species.tuluk.name",
+  "description": "Walrus people from the cold coasts. Sturdy and at home in the water.",
+  "descriptionKey": "species.tuluk.description",
+  "modelBaseName": "Tuluk",
+  "version": 2,
+  "variants": [
+    {
+      "VariantName": "Tuluk",
+      "ParentModel": "Tuluk",
+      "Model": "NPC/Intelligent/Tuluk/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Tuluk/Models/Model_Brown.png"
+      ],
+      "EyeHeight": 1.6,
+      "HitBox": {
+        "min": { "x": -0.75, "y": 0, "z": -0.75 },
+        "max": { "x": 0.75, "y": 1.8, "z": 0.75 }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Tuluk/Models/Attachments/Eyes/Eyes_Tuluk.blockymodel",
+          "Texture": "NPC/Intelligent/Tuluk/Models/Attachments/Eyes/Eyes_Tuluk_Texture_Brown.png"
+        }
+      ],
+      "attachments": {
+        "Beard": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Braided Grey",
+              "Model": "NPC/Intelligent/Tuluk/Models/Attachments/Beard/Braided.blockymodel",
+              "Texture": "NPC/Intelligent/Tuluk/Models/Attachments/Beard/Braided_Grey.png"
+            },
+            {
+              "Name": "Moustache Grey",
+              "Model": "NPC/Intelligent/Tuluk/Models/Attachments/Beard/Moustache.blockymodel",
+              "Texture": "NPC/Intelligent/Tuluk/Models/Attachments/Beard/Moustache_Grey.png"
+            }
+          ]
+        },
+        "Tusks": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Big Ring Gold",
+              "Model": "NPC/Intelligent/Tuluk/Models/Attachments/Tusks/Big_Ring.blockymodel",
+              "Texture": "NPC/Intelligent/Tuluk/Models/Attachments/Tusks/Big_Ring_Gold.png"
+            }
+          ]
+        },
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Winter Hat",
+              "Model": "NPC/Intelligent/Tuluk/Models/Attachments/Hat/Winter.blockymodel",
+              "Texture": "NPC/Intelligent/Tuluk/Models/Attachments/Hat/Winter_Texture.png"
+            }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Jacket",
+              "Model": "NPC/Intelligent/Tuluk/Models/Attachments/Chest/Jacket.blockymodel",
+              "Texture": "NPC/Intelligent/Tuluk/Models/Attachments/Chest/Jacket_Texture.png"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "healthModifier": 5,
+  "staminaModifier": 0,
+  "manaModifier": 0,
+  "enableAttachmentDiscovery": true,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Cold": 0.6,
+    "Water": 0.8
+  }
+}

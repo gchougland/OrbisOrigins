@@ -85,13 +85,13 @@ public class SpeciesDamageResistanceSystem extends DamageEventSystem {
             return;
         }
 
-        // Get player's selected species
-        String speciesId = PlayerSpeciesData.getSelectedSpeciesId(targetRef, store, world);
+        // Use effective species so that removed species fall back to default without breaking
+        String speciesId = PlayerSpeciesData.getEffectiveSpeciesId(targetRef, store, world);
         if (speciesId == null) {
             return;
         }
 
-        SpeciesData species = SpeciesRegistry.getSpecies(speciesId);
+        SpeciesData species = SpeciesRegistry.getSpeciesOrDefault(speciesId);
         if (species == null) {
             return;
         }

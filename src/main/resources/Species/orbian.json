@@ -6,6 +6,7 @@
   "descriptionKey": "species.orbian.description",
   "modelBaseName": "",
   "variants": [],
+  "usePlayerModel": true,
   "healthModifier": 0,
   "staminaModifier": 0,
   "manaModifier": 0,

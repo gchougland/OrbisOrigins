@@ -50,10 +50,14 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
     private String selectedSpeciesId;
     private final Map<String, Integer> variantIndices = new HashMap<>(); // species ID -> variant index
     private final Map<String, Map<String, String>> attachmentSelections = new HashMap<>(); // species ID -> attachment type -> selected option name
+    private final Map<String, String> textureSelections = new HashMap<>(); // species ID -> selected texture path (v2 only)
     @Nullable
     private Ref<EntityStore> modelPreview;
     private Vector3d previewPosition;
     private Vector3f previewRotation;
+    /** Yaw offset in radians for rotating the preview model so the player can see all sides. */
+    private float previewRotationYawOffset;
+    private volatile boolean dismissed;
 
     public SpeciesSelectionPage(@Nonnull PlayerRef playerRef, @Nonnull World world) {
         super(playerRef, CustomPageLifetime.CanDismissOrCloseThroughInteraction, SpeciesEventData.CODEC);
@@ -86,6 +90,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         if (selectedSpeciesId != null) {
             updateDescription(commandBuilder);
             updateVariantControls(commandBuilder);
+            updateTextureSelector(ref, store, commandBuilder, eventBuilder);
             updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
         }
         
@@ -129,6 +134,20 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
                 false
         );
         
+        eventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#RotatePreviewLeft",
+                EventData.of("Action", "RotatePreviewLeft"),
+                false
+        );
+        
+        eventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#RotatePreviewRight",
+                EventData.of("Action", "RotatePreviewRight"),
+                false
+        );
+        
         // Attachment selector events are registered dynamically in updateAttachmentSelectors
     }
 
@@ -167,14 +186,34 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
                         cycleAttachment(ref, store, data.attachmentType, 1);
                     }
                     break;
+                case "PreviousTexture":
+                    cycleTexture(ref, store, -1);
+                    break;
+                case "NextTexture":
+                    cycleTexture(ref, store, 1);
+                    break;
+                case "RotatePreviewLeft":
+                    rotatePreview(ref, store, 1);
+                    break;
+                case "RotatePreviewRight":
+                    rotatePreview(ref, store, -1);
+                    break;
             }
         }
     }
 
     @Override
     public void onDismiss(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store) {
+        this.dismissed = true;
         if (this.modelPreview != null && this.modelPreview.isValid()) {
-            store.removeEntity(this.modelPreview, RemoveReason.REMOVE);
+            Ref<EntityStore> toRemove = this.modelPreview;
+            this.modelPreview = null;
+            Store<EntityStore> storeRef = store;
+            world.execute(() -> {
+                if (toRemove.isValid()) {
+                    storeRef.removeEntity(toRemove, RemoveReason.REMOVE);
+                }
+            });
         }
     }
 
@@ -220,6 +259,17 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         if (!variantIndices.containsKey(speciesId)) {
             variantIndices.put(speciesId, 0);
         }
+        if (!attachmentSelections.containsKey(speciesId)) {
+            attachmentSelections.put(speciesId, new HashMap<>());
+        }
+        // Initialize texture selection for v2 species
+        SpeciesData species = SpeciesRegistry.getSpecies(speciesId);
+        if (species != null && species.isVersion2()) {
+            com.hexvane.orbisorigins.species.SpeciesVariantData v = species.getVariantData(variantIndices.get(speciesId));
+            if (v != null && !v.getTextures().isEmpty() && !textureSelections.containsKey(speciesId)) {
+                textureSelections.put(speciesId, v.getTextures().get(0));
+            }
+        }
         
         UICommandBuilder commandBuilder = new UICommandBuilder();
         UIEventBuilder eventBuilder = new UIEventBuilder();
@@ -230,6 +280,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         // Update description and variant controls
         updateDescription(commandBuilder);
         updateVariantControls(commandBuilder);
+        updateTextureSelector(ref, store, commandBuilder, eventBuilder);
         updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
         
         // Schedule preview entity update for next tick (can't modify store during event handling)
@@ -345,6 +396,9 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
     }
 
     private void createPreviewEntity(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store) {
+        if (dismissed) {
+            return;
+        }
         if (selectedSpeciesId == null) {
             java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName()).warning("createPreviewEntity: selectedSpeciesId is null");
             return;
@@ -357,7 +411,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
         
         // Skip preview for orbian (no model)
-        if (species.getId().equals("orbian")) {
+        if (species.usesPlayerModel()) {
             if (modelPreview != null && modelPreview.isValid()) {
                 store.removeEntity(modelPreview, RemoveReason.REMOVE);
                 modelPreview = null;
@@ -366,47 +420,46 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
         
         int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
-        String modelName = species.getModelName(variantIndex);
-        
-        // Get attachment selections for preview
         Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
+        String textureSelectionForSpecies = textureSelections.get(selectedSpeciesId);
         
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName());
-        logger.info("createPreviewEntity: Creating preview for model: " + modelName);
-        
-        // Get base model
-        com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset modelAsset = 
-            com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset.getAssetMap().getAsset(modelName);
-        if (modelAsset == null) {
-            logger.warning("createPreviewEntity: Model asset not found: " + modelName);
-            return;
-        }
-        
-        com.hypixel.hytale.server.core.asset.type.model.config.Model baseModel = ModelUtil.getModel(modelName);
-        if (baseModel == null) {
-            logger.warning("createPreviewEntity: Failed to get model: " + modelName);
-            return;
-        }
-        
-        // Build attachment map for preview
-        Map<String, String> attachmentMap = new HashMap<>();
-        if (baseModel.getRandomAttachmentIds() != null) {
-            attachmentMap.putAll(baseModel.getRandomAttachmentIds());
-        }
-        for (Map.Entry<String, String> entry : attachmentSelectionsForSpecies.entrySet()) {
-            String attachmentType = entry.getKey();
-            String selectedOption = entry.getValue();
-            if (selectedOption != null && !selectedOption.isEmpty() && !"null".equals(selectedOption)) {
-                attachmentMap.put(attachmentType, selectedOption);
-            } else {
-                attachmentMap.remove(attachmentType);
+        com.hypixel.hytale.server.core.asset.type.model.config.Model model;
+        if (species.isVersion2()) {
+            model = ModelUtil.createModelForV2(species, variantIndex, textureSelectionForSpecies, attachmentSelectionsForSpecies);
+            if (model == null) {
+                logger.warning("createPreviewEntity: Failed to create v2 model");
+                return;
             }
-        }
-        
-        // Create model with selected attachments
-        com.hypixel.hytale.server.core.asset.type.model.config.Model model = 
-            com.hypixel.hytale.server.core.asset.type.model.config.Model.createScaledModel(
+        } else {
+            String modelName = species.getModelName(variantIndex);
+            com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset modelAsset = 
+                com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset.getAssetMap().getAsset(modelName);
+            if (modelAsset == null) {
+                logger.warning("createPreviewEntity: Model asset not found: " + modelName);
+                return;
+            }
+            com.hypixel.hytale.server.core.asset.type.model.config.Model baseModel = ModelUtil.getModel(modelName);
+            if (baseModel == null) {
+                logger.warning("createPreviewEntity: Failed to get model: " + modelName);
+                return;
+            }
+            Map<String, String> attachmentMap = new HashMap<>();
+            if (baseModel.getRandomAttachmentIds() != null) {
+                attachmentMap.putAll(baseModel.getRandomAttachmentIds());
+            }
+            for (Map.Entry<String, String> entry : attachmentSelectionsForSpecies.entrySet()) {
+                String attachmentType = entry.getKey();
+                String selectedOption = entry.getValue();
+                if (selectedOption != null && !selectedOption.isEmpty() && !"null".equals(selectedOption)) {
+                    attachmentMap.put(attachmentType, selectedOption);
+                } else {
+                    attachmentMap.remove(attachmentType);
+                }
+            }
+            model = com.hypixel.hytale.server.core.asset.type.model.config.Model.createScaledModel(
                 modelAsset, baseModel.getScale(), attachmentMap);
+        }
         
         TransformComponent transformComponent = store.getComponent(ref, TransformComponent.getComponentType());
         if (transformComponent == null) {
@@ -444,16 +497,16 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             previewPosition.setY(playerPosition.y);
         }
         
-        // Make entity face player
+        // Make entity face player, then apply rotation offset so player can spin the preview
         Vector3d relativePos = playerPosition.clone().subtract(previewPosition);
         relativePos.setY(0.0);
         Vector3f previewRot = Vector3f.lookAt(relativePos);
+        previewRot = new Vector3f(previewRot.getPitch(), previewRot.getYaw() + previewRotationYawOffset, previewRot.getRoll());
         
         Vector3d spawnPosition = previewPosition;
         
         if (modelPreview == null || !modelPreview.isValid()) {
             // Create new preview entity
-            logger.info("createPreviewEntity: Creating new preview entity at " + spawnPosition);
             Holder<EntityStore> holder = store.getRegistry().newHolder();
             holder.addComponent(NetworkId.getComponentType(), new NetworkId(store.getExternalData().takeNextNetworkId()));
             holder.addComponent(EntityStore.REGISTRY.getNonSerializedComponentType(), NonSerialized.get());
@@ -464,15 +517,37 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             this.modelPreview = store.addEntity(holder, AddReason.SPAWN);
             this.previewPosition = spawnPosition;
             this.previewRotation = previewRot;
-            logger.info("createPreviewEntity: Preview entity created with ref: " + (modelPreview != null ? modelPreview.isValid() : "null"));
         } else {
             // Update existing preview model and position
-            logger.info("createPreviewEntity: Updating existing preview entity");
             store.putComponent(modelPreview, ModelComponent.getComponentType(), new ModelComponent(model));
             store.putComponent(modelPreview, TransformComponent.getComponentType(), new TransformComponent(spawnPosition, previewRot));
             store.putComponent(modelPreview, HeadRotation.getComponentType(), new HeadRotation(previewRot));
             this.previewPosition = spawnPosition;
             this.previewRotation = previewRot;
+        }
+    }
+
+    private static final float ROTATE_PREVIEW_STEP_RADIANS = (float) (Math.PI / 12); // 15 degrees per click
+
+    private void rotatePreview(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, int direction) {
+        if (dismissed) {
+            return;
+        }
+        previewRotationYawOffset += direction * ROTATE_PREVIEW_STEP_RADIANS;
+        if (previewRotation != null) {
+            float newYaw = previewRotation.getYaw() + direction * ROTATE_PREVIEW_STEP_RADIANS;
+            this.previewRotation = new Vector3f(previewRotation.getPitch(), newYaw, previewRotation.getRoll());
+            Ref<EntityStore> previewRef = this.modelPreview;
+            Vector3d pos = this.previewPosition;
+            Vector3f rot = this.previewRotation;
+            Store<EntityStore> storeRef = store;
+            world.execute(() -> {
+                if (dismissed || previewRef == null || !previewRef.isValid()) {
+                    return;
+                }
+                storeRef.putComponent(previewRef, TransformComponent.getComponentType(), new TransformComponent(pos, rot));
+                storeRef.putComponent(previewRef, HeadRotation.getComponentType(), new HeadRotation(rot));
+            });
         }
     }
 
@@ -482,16 +557,16 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         SpeciesData species = SpeciesRegistry.getSpecies(selectedSpeciesId);
         if (species == null) return;
         
-        List<String> variants = species.getVariants();
-        if (variants.isEmpty()) return;
+        int variantCount = species.getVariantCount();
+        if (variantCount == 0) return;
         
         int currentIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
         int newIndex = currentIndex + direction;
         
         // Wrap around
         if (newIndex < 0) {
-            newIndex = variants.size() - 1;
-        } else if (newIndex >= variants.size()) {
+            newIndex = variantCount - 1;
+        } else if (newIndex >= variantCount) {
             newIndex = 0;
         }
         
@@ -500,6 +575,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         UICommandBuilder commandBuilder = new UICommandBuilder();
         UIEventBuilder eventBuilder = new UIEventBuilder();
         updateVariantControls(commandBuilder);
+        updateTextureSelector(ref, store, commandBuilder, eventBuilder);
         updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
         
         // Schedule preview entity update for next tick (can't modify store during event handling)
@@ -520,12 +596,19 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         SpeciesData species = SpeciesRegistry.getSpecies(selectedSpeciesId);
         if (species == null) return;
         
-        List<String> variants = species.getVariants();
+        int variantCount = species.getVariantCount();
         int currentIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
         
         // Show variant label if there are multiple variants
-        if (variants.size() > 1) {
-            commandBuilder.set("#VariantLabel.Text", String.format("Variant %d / %d", currentIndex + 1, variants.size()));
+        if (variantCount > 1) {
+            String label;
+            if (species.isVersion2()) {
+                com.hexvane.orbisorigins.species.SpeciesVariantData v = species.getVariantData(currentIndex);
+                label = v != null ? v.getVariantName() : String.format("Variant %d / %d", currentIndex + 1, variantCount);
+            } else {
+                label = String.format("Variant %d / %d", currentIndex + 1, variantCount);
+            }
+            commandBuilder.set("#VariantLabel.Text", label);
             commandBuilder.set("#LeftArrow.Visible", true);
             commandBuilder.set("#RightArrow.Visible", true);
         } else {
@@ -533,6 +616,43 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             commandBuilder.set("#LeftArrow.Visible", false);
             commandBuilder.set("#RightArrow.Visible", false);
         }
+    }
+
+    private void updateTextureSelector(
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull UICommandBuilder commandBuilder,
+            @Nonnull UIEventBuilder eventBuilder
+    ) {
+        // Texture selector is added as first item in #AttachmentSelectors when v2 has multiple textures
+        // Handled in updateAttachmentSelectors
+    }
+
+    private void cycleTexture(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, int direction) {
+        if (selectedSpeciesId == null) return;
+        SpeciesData species = SpeciesRegistry.getSpecies(selectedSpeciesId);
+        if (species == null || !species.isVersion2()) return;
+        int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
+        com.hexvane.orbisorigins.species.SpeciesVariantData variant = species.getVariantData(variantIndex);
+        if (variant == null || variant.getTextures().size() <= 1) return;
+        java.util.List<String> textures = variant.getTextures();
+        String current = textureSelections.getOrDefault(selectedSpeciesId, textures.get(0));
+        int idx = textures.indexOf(current);
+        if (idx < 0) idx = 0;
+        int newIdx = idx + direction;
+        if (newIdx < 0) newIdx = textures.size() - 1;
+        else if (newIdx >= textures.size()) newIdx = 0;
+        textureSelections.put(selectedSpeciesId, textures.get(newIdx));
+        UICommandBuilder commandBuilder = new UICommandBuilder();
+        UIEventBuilder eventBuilder = new UIEventBuilder();
+        updateAttachmentSelectors(ref, store, commandBuilder, eventBuilder);
+        world.execute(() -> {
+            Ref<EntityStore> playerRef = this.playerRef.getReference();
+            if (playerRef != null && playerRef.isValid()) {
+                createPreviewEntity(playerRef, playerRef.getStore());
+            }
+        });
+        this.sendUpdate(commandBuilder, eventBuilder, false);
     }
 
     private void updateAttachmentSelectors(
@@ -553,48 +673,70 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
 
         // Skip orbian (no model, no attachments)
-        if (species.getId().equals("orbian")) {
+        if (species.usesPlayerModel()) {
             commandBuilder.set("#AttachmentSelectors.Visible", false);
             return;
         }
 
         // Get current variant to discover attachments for
         int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
-        String modelName = species.getModelName(variantIndex);
+        String modelName = species.isVersion2() ? null : species.getModelName(variantIndex);
 
         // Get available attachments for this species/variant
         Map<String, Map<String, AttachmentOption>> availableAttachments = 
-            SpeciesRegistry.getAvailableAttachments(species, modelName);
+            SpeciesRegistry.getAvailableAttachments(species, variantIndex, modelName);
 
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName());
-        logger.info("SpeciesSelectionPage.updateAttachmentSelectors: Available attachments for " + modelName + ": " + availableAttachments.size() + " types");
         
         // Count non-empty attachment types
         int nonEmptyTypes = 0;
         for (Map.Entry<String, Map<String, AttachmentOption>> entry : availableAttachments.entrySet()) {
             if (!entry.getValue().isEmpty()) {
                 nonEmptyTypes++;
-                logger.info("SpeciesSelectionPage.updateAttachmentSelectors: Attachment type '" + entry.getKey() + "' has " + entry.getValue().size() + " options");
             }
         }
 
-        if (nonEmptyTypes == 0) {
-            logger.info("SpeciesSelectionPage.updateAttachmentSelectors: No attachments available (empty or none found), hiding selectors");
+        boolean hasTextureSelector = species.isVersion2() && species.getVariantData(variantIndex) != null
+            && species.getVariantData(variantIndex).getTextures().size() > 1;
+        if (nonEmptyTypes == 0 && !hasTextureSelector) {
             commandBuilder.set("#AttachmentSelectors.Visible", false);
             return;
         }
-        
-        logger.info("SpeciesSelectionPage.updateAttachmentSelectors: Found " + nonEmptyTypes + " attachment types with options, showing selectors");
 
         // Show attachment selectors
         commandBuilder.set("#AttachmentSelectors.Visible", true);
         commandBuilder.clear("#AttachmentSelectors");
 
+        int attachmentIndex = 0;
+        // For v2 with multiple textures, add texture selector as first item
+        if (species.isVersion2()) {
+            com.hexvane.orbisorigins.species.SpeciesVariantData variant = species.getVariantData(variantIndex);
+            if (variant != null && variant.getTextures().size() > 1) {
+                java.util.List<String> textures = variant.getTextures();
+                String currentTex = textureSelections.getOrDefault(selectedSpeciesId, textures.get(0));
+                if (!textures.contains(currentTex)) {
+                    currentTex = textures.get(0);
+                    textureSelections.put(selectedSpeciesId, currentTex);
+                }
+                String displayName = currentTex.substring(Math.max(0, currentTex.lastIndexOf('/') + 1)).replace(".png", "");
+                String selectorPrefix = "#AttachmentSelectors[" + attachmentIndex + "]";
+                commandBuilder.append("#AttachmentSelectors", "Pages/AttachmentSelector.ui");
+                commandBuilder.set(selectorPrefix + " #AttachmentTypeLabel.Text", "Texture:");
+                commandBuilder.set(selectorPrefix + " #AttachmentLabel.Text", displayName);
+                commandBuilder.set(selectorPrefix + " #AttachmentLeftArrow.Visible", true);
+                commandBuilder.set(selectorPrefix + " #AttachmentRightArrow.Visible", true);
+                eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, selectorPrefix + " #AttachmentLeftArrow",
+                    EventData.of("Action", "PreviousTexture"), false);
+                eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, selectorPrefix + " #AttachmentRightArrow",
+                    EventData.of("Action", "NextTexture"), false);
+                attachmentIndex++;
+            }
+        }
+
         // Get or initialize attachment selections for this species
         Map<String, String> selections = attachmentSelections.computeIfAbsent(selectedSpeciesId, k -> new HashMap<>());
 
         // Build a selector for each attachment type
-        int attachmentIndex = 0;
         for (Map.Entry<String, Map<String, AttachmentOption>> attachmentTypeEntry : availableAttachments.entrySet()) {
             String attachmentType = attachmentTypeEntry.getKey();
             Map<String, AttachmentOption> options = attachmentTypeEntry.getValue();
@@ -679,15 +821,15 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         if (species == null) return;
 
         // Skip orbian
-        if (species.getId().equals("orbian")) return;
+        if (species.usesPlayerModel()) return;
 
         // Get current variant
         int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
-        String modelName = species.getModelName(variantIndex);
+        String modelName = species.isVersion2() ? null : species.getModelName(variantIndex);
 
         // Get available attachments
         Map<String, Map<String, AttachmentOption>> availableAttachments = 
-            SpeciesRegistry.getAvailableAttachments(species, modelName);
+            SpeciesRegistry.getAvailableAttachments(species, variantIndex, modelName);
 
         Map<String, AttachmentOption> options = availableAttachments.get(attachmentType);
         if (options == null || options.isEmpty()) return;
@@ -749,20 +891,22 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
         
         int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
+        Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
+        String textureSelectionForSpecies = textureSelections.get(selectedSpeciesId);
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName());
-        logger.info("confirmSelection: Applying species " + selectedSpeciesId + " variant " + variantIndex);
         
         // Apply model (if not orbian)
-        if (!species.getId().equals("orbian")) {
-            String modelName = species.getModelName(variantIndex);
-            float eyeHeightModifier = species.getEyeHeightModifier(modelName);
-            float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
-            Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
-            logger.info("confirmSelection: Applying model: " + modelName);
-            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelectionsForSpecies);
+        if (!species.usesPlayerModel()) {
+            if (species.isVersion2()) {
+                ModelUtil.applyModelToPlayerV2(ref, store, species, variantIndex, textureSelectionForSpecies, attachmentSelectionsForSpecies);
+            } else {
+                String modelName = species.getModelName(variantIndex);
+                float eyeHeightModifier = species.getEyeHeightModifier(modelName);
+                float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
+                ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelectionsForSpecies);
+            }
         } else {
             // Reset to player skin for orbian
-            logger.info("confirmSelection: Resetting to player skin");
             ModelUtil.resetToPlayerSkin(ref, store);
         }
         
@@ -775,18 +919,22 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             playerComponent.getInventory().getCombinedHotbarFirst().addItemStack(itemStack);
         }
         
-        // Get attachment selections for this species
-        Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
-        
-        // Store choice with attachment selections
-        PlayerSpeciesData.setSpeciesSelection(ref, store, world, selectedSpeciesId, variantIndex, attachmentSelectionsForSpecies);
+        // Store choice with attachment selections and texture selection
+        PlayerSpeciesData.setSpeciesSelection(ref, store, world, selectedSpeciesId, variantIndex, attachmentSelectionsForSpecies, textureSelectionForSpecies);
         
         // Consume item from inventory
         consumeSelectorItem(playerComponent);
         
-        // Clean up preview
+        // Clean up preview - defer to next tick to avoid race with ChunkSavingSystems during serialization
         if (modelPreview != null && modelPreview.isValid()) {
-            store.removeEntity(modelPreview, RemoveReason.REMOVE);
+            Ref<EntityStore> toRemove = modelPreview;
+            modelPreview = null;
+            Store<EntityStore> storeRef = store;
+            world.execute(() -> {
+                if (toRemove.isValid()) {
+                    storeRef.removeEntity(toRemove, RemoveReason.REMOVE);
+                }
+            });
         }
         
         // Close GUI

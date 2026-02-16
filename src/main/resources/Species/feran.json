@@ -4,27 +4,221 @@
   "displayNameKey": "species.feran.name",
   "description": "A balanced fennec fox species. Moderate health and stamina. Resistant to fire and lava.",
   "descriptionKey": "species.feran.description",
-  "modelBaseName": "Feran_Civilian",
+  "modelBaseName": "Feran",
+  "version": 2,
   "variants": [
-    "Feran_Cub",
-    "Feran_Civilian",
-    "Feran_Burrower",
-    "Feran_Sharptooth",
-    "Feran_Longtooth",
-    "Feran_Windwalker"
+    {
+      "VariantName": "Feran",
+      "ParentModel": "Feran",
+      "Model": "NPC/Intelligent/Feran/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Feran/Models/Model_Foxy.png",
+        "NPC/Intelligent/Feran/Models/Model_Ginger.png",
+        "NPC/Intelligent/Feran/Models/Model_White.png"
+      ],
+      "EyeHeight": 1.5,
+      "CrouchOffset": -0.2,
+      "HitBox": {
+        "Max": {
+          "X": 0.3,
+          "Y": 1.8,
+          "Z": 0.3
+        },
+        "Min": {
+          "X": -0.3,
+          "Y": 0,
+          "Z": -0.3
+        }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Feran/Models/Attachments/Head/Eyes.blockymodel",
+          "Texture": "NPC/Intelligent/Feran/Models/Attachments/Head/Eyes_Green_Dark.png"
+        }
+      ],
+      "attachments": {
+        "Eyebrows": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Beige",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Head/Eyebrows_Beige.png"
+            },
+            {
+              "Name": "Bushy",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Head/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Head/Eyebrows_Beige_Bushy.png"
+            }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Poncho - Beige",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Poncho.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Poncho_Beige.png"
+            },
+            {
+              "Name": "Poncho - Brown",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Poncho.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Poncho_Brown.png"
+            },
+            {
+              "Name": "Side Fur",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Side_Fur.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Side_Fur_Texture.png"
+            },
+            {
+              "Name": "Assassin Poncho",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Burrower/Assassin_Poncho.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Burrower/Assassin_Poncho_Beige.png"
+            },
+            {
+              "Name": "Bone Chest",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Bone_Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Bone_Chest_Texture.png"
+            },
+            {
+              "Name": "Chest Ribs",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Chest_Ribs.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Chest_Ribs_Texture.png"
+            },
+            {
+              "Name": "Windwalker Chest",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Windwalker/Chest.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Windwalker/Chest_Texture.png"
+            }
+          ]
+        },
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Top Fur",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Top_Fur.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Top_Fur_Texture.png"
+            },
+            {
+              "Name": "Skull Hoodie",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Burrower/Skull_Hoodie.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Burrower/Skull_Hoodie_Brown.png"
+            },
+            {
+              "Name": "Skull Head",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Skull_Head.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Skull_Head_Texture.png"
+            },
+            {
+              "Name": "Longtooth Skull Head",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Skull_Longtooth_Head.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Sharptooth/Skull_Longtooth_Head_Texture.png"
+            },
+            {
+              "Name": "Windwalker Skull Head",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Windwalker/Skull_head.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Windwalker/Skull_head_Texture.png"
+            }
+          ]
+        },
+        "Hands": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Slave Bracer",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Slave_Bracer_Hands.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Slave_Bracer_Hands_Texture.png"
+            }
+          ]
+        },
+        "Feet": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Slave Bracer",
+              "Model": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Slave_Bracer_Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Feran/Models/Attachments/Cosmetics/Slave_Bracer_Feet_Texture.png"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "VariantName": "Feran Cub",
+      "ParentModel": "Feran_Cub",
+      "Model": "NPC/Intelligent/Feran_Cub/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Feran_Cub/Models/Texture.png"
+      ],
+      "EyeHeight": 0.8,
+      "CrouchOffset": -0.2,
+      "HitBox": {
+        "max": {
+          "x": 0.3,
+          "y": 0.8,
+          "z": 0.3
+        },
+        "min": {
+          "x": -0.3,
+          "y": 0,
+          "z": -0.3
+        }
+      },
+      "defaultAttachments": [
+        {
+          "Model": "NPC/Intelligent/Feran_Cub/Models/Attachments/Eyes.blockymodel",
+          "Texture": "NPC/Intelligent/Feran_Cub/Models/Attachments/Eyes_Green_Dark.png"
+        },
+        {
+          "Model": "NPC/Intelligent/Feran_Cub/Models/Attachments/Top_Fur.blockymodel",
+          "Texture": "NPC/Intelligent/Feran_Cub/Models/Attachments/Top_Fur_Texture.png"
+        }
+      ],
+      "attachments": {
+        "Eyebrows": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Beige",
+              "Model": "NPC/Intelligent/Feran_Cub/Models/Attachments/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Feran_Cub/Models/Attachments/Eyebrows_Beige.png"
+            },
+            {
+              "Name": "Bushy",
+              "Model": "NPC/Intelligent/Feran_Cub/Models/Attachments/Eyebrows.blockymodel",
+              "Texture": "NPC/Intelligent/Feran_Cub/Models/Attachments/Eyebrows_Beige_Bushy.png"
+            }
+          ]
+        },
+        "Hands": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Slave Bracer",
+              "Model": "NPC/Intelligent/Feran_Cub/Models/Attachments/Slave_Bracer_Hands.blockymodel",
+              "Texture": "NPC/Intelligent/Feran_Cub/Models/Attachments/Slave_Bracer_Hands_Texture.png"
+            }
+          ]
+        },
+        "Feet": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Slave Bracer",
+              "Model": "NPC/Intelligent/Feran_Cub/Models/Attachments/Slave_Bracer_Feet.blockymodel",
+              "Texture": "NPC/Intelligent/Feran_Cub/Models/Attachments/Slave_Bracer_Feet_Texture.png"
+            }
+          ]
+        }
+      }
+    }
   ],
   "healthModifier": 10,
   "staminaModifier": 10,
   "manaModifier": 5,
   "enableAttachmentDiscovery": true,
-  "eyeHeightModifiers": {
-    "Feran_Cub": -0.7,
-    "Feran_Civilian": 0.0,
-    "Feran_Burrower": 0.0,
-    "Feran_Sharptooth": 0.0,
-    "Feran_Longtooth": 0.0,
-    "Feran_Windwalker": 0.0
-  },
+  "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {
     "Feran_Cub": -1.0,
     "Feran_Civilian": 0.0,

@@ -1,7 +1,7 @@
 $C = "../Common.ui";
 
 $C.@DecoratedContainer {
-  Anchor: (Left: 10, Width: 650, Height: 600);
+  Anchor: (Left: 10, Width: 650, Height: 900);
 
   #Title {
     Group {
@@ -120,6 +120,53 @@ $C.@DecoratedContainer {
             
             Group {
               Anchor: (Width: 24, Height: 24);
+              Background: "../Arrow-Right.png";
+            }
+          }
+        }
+      }
+
+      // Preview rotation controls
+      Group #PreviewRotationContainer {
+        LayoutMode: Left;
+        Padding: (Top: 15, Bottom: 10);
+        Anchor: (Height: 50);
+
+        Label #PreviewRotationLabel {
+          Style: (RenderBold: true);
+          Text: %server.customUI.orbisOriginsSpeciesSelection.rotatePreview;
+          Padding: (Right: 15);
+        }
+
+        Button #RotatePreviewLeft {
+          Anchor: (Width: 120, Height: 40);
+          Style: $C.@DefaultButtonStyle;
+          
+          Group {
+            LayoutMode: MiddleCenter;
+            Anchor: (Full: 0);
+            
+            Group {
+              Anchor: (Width: 20, Height: 20);
+              Background: "../Arrow-Left.png";
+            }
+          }
+        }
+
+        Group {
+          Anchor: (Width: 10);
+        }
+
+        Button #RotatePreviewRight {
+          Anchor: (Width: 120, Height: 40);
+          Style: $C.@DefaultButtonStyle;
+          
+          Group {
+            LayoutMode: MiddleCenter;
+            Anchor: (Full: 0);
+            
+            Group {
+              Anchor: (Width: 20, Height: 20);
               Background: "../Arrow-Right.png";
             }
           }

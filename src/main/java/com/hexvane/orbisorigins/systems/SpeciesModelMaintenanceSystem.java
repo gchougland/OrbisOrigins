@@ -72,21 +72,21 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             return;
         }
 
-        // Get player's selected species
-        String speciesId = PlayerSpeciesData.getSelectedSpeciesId(ref, store, world);
-        int variantIndex = PlayerSpeciesData.getSelectedVariantIndex(ref, store, world);
+        // Use effective species so that removed species fall back to default without breaking
+        String speciesId = PlayerSpeciesData.getEffectiveSpeciesId(ref, store, world);
+        int variantIndex = PlayerSpeciesData.getEffectiveVariantIndex(ref, store, world);
 
         if (speciesId == null) {
             return;
         }
 
-        SpeciesData species = SpeciesRegistry.getSpecies(speciesId);
+        SpeciesData species = SpeciesRegistry.getSpeciesOrDefault(speciesId);
         if (species == null) {
             return;
         }
 
         // Skip orbian (no model to maintain)
-        if (species.getId().equals("orbian")) {
+        if (species.usesPlayerModel()) {
             return;
         }
 
@@ -115,15 +115,19 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             final String finalSpeciesId = speciesId;
             final int finalVariantIndex = variantIndex;
             java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
+            String textureSelection = PlayerSpeciesData.getTextureSelection(ref, store, world);
             world.execute(() -> {
                 if (ref.isValid()) {
-                    SpeciesData speciesToApply = SpeciesRegistry.getSpecies(finalSpeciesId);
-                    if (speciesToApply != null && !speciesToApply.getId().equals("orbian")) {
-                        String modelName = speciesToApply.getModelName(finalVariantIndex);
-                        float eyeHeightModifier = speciesToApply.getEyeHeightModifier(modelName);
-                        float hitboxHeightModifier = speciesToApply.getHitboxHeightModifier(modelName);
-                        ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
-                        LOGGER.info("SpeciesModelMaintenanceSystem: Re-applied model (was wrong/missing): " + modelName);
+                    SpeciesData speciesToApply = SpeciesRegistry.getSpeciesOrDefault(finalSpeciesId);
+                    if (speciesToApply != null && !speciesToApply.usesPlayerModel()) {
+                        if (speciesToApply.isVersion2()) {
+                            ModelUtil.applyModelToPlayerV2(ref, store, speciesToApply, finalVariantIndex, textureSelection, attachmentSelections);
+                        } else {
+                            String modelName = speciesToApply.getModelName(finalVariantIndex);
+                            float eyeHeightModifier = speciesToApply.getEyeHeightModifier(modelName);
+                            float hitboxHeightModifier = speciesToApply.getHitboxHeightModifier(modelName);
+                            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
+                        }
                     }
                 }
             });

@@ -76,28 +76,30 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
             return;
         }
 
-        // Get player's selected species
-        String speciesId = PlayerSpeciesData.getSelectedSpeciesId(ref, store, world);
-        int variantIndex = PlayerSpeciesData.getSelectedVariantIndex(ref, store, world);
+        // Use effective species so that removed species fall back to default without breaking
+        String effectiveSpeciesId = PlayerSpeciesData.getEffectiveSpeciesId(ref, store, world);
+        int variantIndex = PlayerSpeciesData.getEffectiveVariantIndex(ref, store, world);
 
-        if (speciesId == null) {
+        if (effectiveSpeciesId == null) {
             return;
         }
 
-        SpeciesData species = SpeciesRegistry.getSpecies(speciesId);
+        SpeciesData species = SpeciesRegistry.getSpeciesOrDefault(effectiveSpeciesId);
         if (species == null) {
-            LOGGER.warning("SpeciesModelSystem: Species not found: " + speciesId);
             return;
         }
 
-        LOGGER.info("SpeciesModelSystem: Re-applying species " + speciesId + " variant " + variantIndex + " for spawned player");
+        String storedId = PlayerSpeciesData.getSelectedSpeciesId(ref, store, world);
+        if (storedId != null && !storedId.equals(effectiveSpeciesId)) {
+            LOGGER.info("SpeciesModelSystem: Player's species '" + storedId + "' no longer available, using default: " + effectiveSpeciesId);
+        }
 
         // Apply stats immediately
         SpeciesStatUtil.applySpeciesStats(ref, store, species);
 
         // Defer model application - the maintenance system will handle ensuring it's correct
         // We still apply it here with a delay, but the maintenance system is the real safety net
-        final String finalSpeciesId = speciesId;
+        final String finalSpeciesId = effectiveSpeciesId;
         final int finalVariantIndex = variantIndex;
         if (world != null) {
             // Apply after 5 ticks - maintenance system will catch it if something resets it
@@ -119,7 +121,7 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
     }
     
     private void applyModel(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull String speciesId, int variantIndex) {
-        SpeciesData species = SpeciesRegistry.getSpecies(speciesId);
+        SpeciesData species = SpeciesRegistry.getSpeciesOrDefault(speciesId);
         if (species == null) {
             return;
         }
@@ -130,16 +132,20 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
         }
         
         // Apply model (if not orbian)
-        if (!species.getId().equals("orbian")) {
-            String modelName = species.getModelName(variantIndex);
-            float eyeHeightModifier = species.getEyeHeightModifier(modelName);
-            float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
-            java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
-            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
-            LOGGER.info("SpeciesModelSystem: Re-applied model: " + modelName + " (eyeHeightModifier: " + eyeHeightModifier + ", hitboxHeightModifier: " + hitboxHeightModifier + ")");
+        if (!species.usesPlayerModel()) {
+            if (species.isVersion2()) {
+                java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
+                String textureSelection = PlayerSpeciesData.getTextureSelection(ref, store, world);
+                ModelUtil.applyModelToPlayerV2(ref, store, species, variantIndex, textureSelection, attachmentSelections);
+            } else {
+                String modelName = species.getModelName(variantIndex);
+                float eyeHeightModifier = species.getEyeHeightModifier(modelName);
+                float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
+                java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
+                ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
+            }
         } else {
             ModelUtil.resetToPlayerSkin(ref, store);
-            LOGGER.info("SpeciesModelSystem: Reset to player skin");
         }
     }
 

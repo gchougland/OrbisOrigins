@@ -1,0 +1,126 @@
+{
+  "id": "saurian",
+  "displayName": "Saurian",
+  "displayNameKey": "species.saurian.name",
+  "description": "Reptilian people with sharp instincts. Agile and resilient.",
+  "descriptionKey": "species.saurian.description",
+  "modelBaseName": "Saurian",
+  "version": 2,
+  "variants": [
+    {
+      "VariantName": "Saurian",
+      "ParentModel": "Saurian",
+      "Model": "NPC/Intelligent/Saurian/Models/Model.blockymodel",
+      "Textures": [
+        "NPC/Intelligent/Saurian/Models/Green.png",
+        "NPC/Intelligent/Saurian/Models/Orange.png",
+        "NPC/Intelligent/Saurian/Models/Purple.png"
+      ],
+      "EyeHeight": 1.7,
+      "HitBox": {
+        "min": { "x": -0.65, "y": 0, "z": -0.65 },
+        "max": { "x": 0.65, "y": 1.9, "z": 0.65 }
+      },
+      "defaultAttachments": [],
+      "attachments": {
+        "Head": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hunter Helm",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Helm.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Helm_Texture.png"
+            },
+            {
+              "Name": "Rogue Hood",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Rogue/Hood.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Rogue/Hood_Texture.png"
+            }
+          ]
+        },
+        "Chest": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Warrior - Brown",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Warrior/Chest_Armor.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Warrior/Chest_Armor_Brown_Texture.png"
+            },
+            {
+              "Name": "Warrior",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Warrior/Chest_Armor.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Warrior/Chest_Armor_Texture.png"
+            },
+            {
+              "Name": "Rogue",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Rogue/Chest_Armor.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Rogue/Chest_Armor_Texture.png"
+            }
+          ]
+        },
+        "Arms": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Warrior Bracers",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Warrior/Bracers.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Warrior/Chest_Armor_Brown_Texture.png"
+            },
+            {
+              "Name": "Hunter Arm",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Arm.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Arm_Texture.png"
+            }
+          ]
+        },
+        "Legs": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Hunter",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Legs.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Legs_Texture.png"
+            }
+          ]
+        },
+        "Back": {
+          "allowsNone": true,
+          "options": [
+            {
+              "Name": "Feathers Ornament - Blue",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament_Texture/Blue.png"
+            },
+            {
+              "Name": "Feathers Ornament - Purple",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament_Texture/Purple.png"
+            },
+            {
+              "Name": "Feathers Ornament - Red",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament_Texture/Red.png"
+            },
+            {
+              "Name": "Feathers Ornament - Yellow",
+              "Model": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament.blockymodel",
+              "Texture": "NPC/Intelligent/Saurian/Models/Attachments/Hunter/Feathers_Ornament_Texture/Yellow.png"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "healthModifier": 0,
+  "staminaModifier": 5,
+  "manaModifier": 0,
+  "enableAttachmentDiscovery": true,
+  "eyeHeightModifiers": {},
+  "hitboxHeightModifiers": {},
+  "starterItems": [],
+  "damageResistances": {
+    "Physical": 0.85,
+    "Poison": 0.8,
+    "Cold": 1.25
+  }
+}
