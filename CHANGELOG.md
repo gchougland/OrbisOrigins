@@ -2,6 +2,12 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [1.3.1] - 2026-02-18
+
+### Fixed
+
+- **Hytale Model API compatibility** - Updated `ModelUtil` for the latest Hytale update. The `Model` constructor now requires `sittingOffset` and `sleepingOffset` parameters; both `applyModelToPlayer` (with modifiers) and `createModelForV2` now pass these values.
+
 ## [1.3.0] - 2026-02-16
 
 ### Added

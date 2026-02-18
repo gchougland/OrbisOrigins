@@ -181,6 +181,8 @@ public class ModelUtil {
                     baseModel.getGradientId(),
                     newEyeHeight, // Modified eye height (or original)
                     baseModel.getCrouchOffset(),
+                    baseModel.getSittingOffset(),
+                    baseModel.getSleepingOffset(),
                     baseModel.getAnimationSetMap(),
                     baseModel.getCamera(),
                     baseModel.getLight(),
@@ -257,6 +259,8 @@ public class ModelUtil {
                 parentAsset.getGradientId(),
                 eyeHeight,
                 crouchOffset,
+                parentAsset.getSittingOffset(),
+                parentAsset.getSleepingOffset(),
                 parentAsset.getAnimationSetMap(),
                 parentAsset.getCamera(),
                 parentAsset.getLight(),
