@@ -72,6 +72,11 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             return;
         }
 
+        // Skip re-apply if player has chosen to hide their species model
+        if (PlayerSpeciesData.getSpeciesModelHidden(ref, store)) {
+            return;
+        }
+
         // Use effective species so that removed species fall back to default without breaking
         String speciesId = PlayerSpeciesData.getEffectiveSpeciesId(ref, store, world);
         int variantIndex = PlayerSpeciesData.getEffectiveVariantIndex(ref, store, world);

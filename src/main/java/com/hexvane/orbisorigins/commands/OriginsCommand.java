@@ -12,5 +12,6 @@ public class OriginsCommand extends AbstractCommandCollection {
     public OriginsCommand(@Nonnull OrbisOriginsPlugin plugin) {
         super("origins", "Orbis Origins commands");
         this.addSubCommand(new OriginsReloadCommand(plugin));
+        this.addSubCommand(new OriginsHideModelCommand());
     }
 }

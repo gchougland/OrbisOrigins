@@ -93,8 +93,7 @@ public class PlayerSpeciesData {
         if (playerId == null) {
             return null;
         }
-        String worldName = world.getName();
-        return PlayerDataStorage.getSpeciesSelection(playerId, worldName);
+        return PlayerDataStorage.getSpeciesSelection(playerId);
     }
 
     public static void setSpeciesSelection(
@@ -131,8 +130,7 @@ public class PlayerSpeciesData {
         if (playerId == null) {
             return;
         }
-        String worldName = world.getName();
-        PlayerDataStorage.setSpeciesSelection(playerId, worldName, speciesId, variantIndex, attachmentSelections, textureSelection);
+        PlayerDataStorage.setSpeciesSelection(playerId, speciesId, variantIndex, attachmentSelections, textureSelection);
     }
 
     @Nullable
@@ -157,8 +155,7 @@ public class PlayerSpeciesData {
         if (playerId == null) {
             return false;
         }
-        String worldName = world.getName();
-        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId, worldName);
+        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId);
         return selection != null && selection.hasChosen();
     }
 
@@ -223,8 +220,7 @@ public class PlayerSpeciesData {
         if (playerId == null) {
             return null;
         }
-        String worldName = world.getName();
-        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId, worldName);
+        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId);
         return selection != null ? selection.getSpeciesId() : null;
     }
 
@@ -233,8 +229,25 @@ public class PlayerSpeciesData {
         if (playerId == null) {
             return 0;
         }
-        String worldName = world.getName();
-        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId, worldName);
+        SpeciesSelection selection = PlayerDataStorage.getSpeciesSelection(playerId);
         return selection != null ? selection.getVariantIndex() : 0;
+    }
+
+    /**
+     * Returns whether the player has chosen to hide their species model (show default skin instead).
+     */
+    public static boolean getSpeciesModelHidden(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store) {
+        UUID playerId = getPlayerUuid(ref, store);
+        return playerId != null && PlayerDataStorage.getSpeciesModelHidden(playerId);
+    }
+
+    /**
+     * Sets whether the player's species model is hidden. Persisted so it survives relog.
+     */
+    public static void setSpeciesModelHidden(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, boolean hidden) {
+        UUID playerId = getPlayerUuid(ref, store);
+        if (playerId != null) {
+            PlayerDataStorage.setSpeciesModelHidden(playerId, hidden);
+        }
     }
 }

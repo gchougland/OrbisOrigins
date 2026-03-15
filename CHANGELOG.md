@@ -2,6 +2,19 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [1.4.0] - Unreleased
+
+### Added
+
+- **Config file** - Orbis Origins now supports a `config.json` file in the mod's data directory (e.g. `mods/hexvane_OrbisOrigins/config.json`). If the file does not exist, defaults are used and the mod runs as before.
+  - **GiveSpeciesSelectorOnFirstJoin** (default: `true`) - When `false`, the species selector item is not given to players on their first join. Use this if you hand out the selector another way or use a different flow.
+  - **AllowCraftingSpeciesSelector** (default: `true`) - When `false`, the recipe for the species selector item is disabled so it cannot be crafted at benches. The item can still be given by other means (e.g. first join if enabled, or commands).
+- **Hide species model command** - `/origins hidemodel [hide|show]` lets any player hide or show their species appearance without permission. With no argument it toggles. Hiding switches the player to their default skin; the choice is saved in `species_model_hidden.json` and persists across relogs. Use `/origins hidemodel show` to show the species model again.
+
+### Fixed
+
+- **Species persistence across worlds** - Player species selection now persists across worlds on servers. Previously, species was stored per world (player → world name → selection), so a choice made in one world was not visible in another. Storage is now one selection per player (server-wide). Existing `player_species_data.json` files are migrated on load by taking one world's selection per player; the next save writes the new format.
+
 ## [1.3.1] - 2026-02-18
 
 ### Fixed

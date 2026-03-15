@@ -31,13 +31,13 @@ public class OriginsReloadCommand extends CommandBase {
 
     @Override
     protected void executeSync(@Nonnull CommandContext context) {
-        context.sendMessage(Message.raw("§a[Orbis Origins] Reloading species files..."));
+        context.sendMessage(Message.raw("[Orbis Origins] Reloading species files..."));
 
         try {
             // Reload species registry
             SpeciesRegistry.initialize(plugin.getDataDirectory());
             int speciesCount = SpeciesRegistry.getAllSpecies().size();
-            context.sendMessage(Message.raw("§a[Orbis Origins] Loaded " + speciesCount + " species"));
+            context.sendMessage(Message.raw("[Orbis Origins] Loaded " + speciesCount + " species"));
 
             // Reapply species to all online players
             // We need to execute on each world's thread, so we'll collect the work and execute it
@@ -109,12 +109,12 @@ public class OriginsReloadCommand extends CommandBase {
                 });
             }
 
-            context.sendMessage(Message.raw("§a[Orbis Origins] Reload complete! Species will be reapplied to players on their world threads."));
+            context.sendMessage(Message.raw("[Orbis Origins] Reload complete! Species will be reapplied to players on their world threads."));
             LOGGER.info("OriginsReloadCommand: Reloaded species registry, queued player updates for all worlds");
         } catch (Exception e) {
             LOGGER.severe("OriginsReloadCommand: Error during reload: " + e.getMessage());
             e.printStackTrace();
-            context.sendMessage(Message.raw("§c[Orbis Origins] Error during reload: " + e.getMessage()));
+            context.sendMessage(Message.raw("[Orbis Origins] Error during reload: " + e.getMessage()));
         }
     }
 }
