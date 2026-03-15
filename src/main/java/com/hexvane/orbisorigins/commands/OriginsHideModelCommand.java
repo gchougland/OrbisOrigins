@@ -100,7 +100,8 @@ public class OriginsHideModelCommand extends AbstractPlayerCommand {
             String modelName = species.getModelName(variantIndex);
             float eyeHeightModifier = species.getEyeHeightModifier(modelName);
             float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
-            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
+            float scale = species.getModelScale(variantIndex);
+            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections, scale);
         }
         context.sendMessage(Message.raw("[Orbis Origins] Species model shown."));
     }

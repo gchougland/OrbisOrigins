@@ -95,8 +95,9 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             return;
         }
 
-        // Get expected model name
+        // Get expected model name and scale
         String expectedModelName = species.getModelName(variantIndex);
+        float expectedScale = species.getModelScale(variantIndex);
         
         // Check if model component exists and matches expected model
         ModelComponent modelComponent = store.getComponent(ref, ModelComponent.getComponentType());
@@ -106,11 +107,14 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
             // Model component is missing
             needsReapply = true;
         } else {
-            // Check if the current model matches the expected model
+            // Check if the current model matches the expected model and scale
             Model currentModel = modelComponent.getModel();
             String currentModelAssetId = currentModel.getModelAssetId();
             if (!expectedModelName.equals(currentModelAssetId)) {
                 // Model doesn't match - it was reset
+                needsReapply = true;
+            } else if (Math.abs(currentModel.getScale() - expectedScale) > 1e-5f) {
+                // Scale differs (e.g. config changed)
                 needsReapply = true;
             }
         }
@@ -131,7 +135,8 @@ public class SpeciesModelMaintenanceSystem extends EntityTickingSystem<EntitySto
                             String modelName = speciesToApply.getModelName(finalVariantIndex);
                             float eyeHeightModifier = speciesToApply.getEyeHeightModifier(modelName);
                             float hitboxHeightModifier = speciesToApply.getHitboxHeightModifier(modelName);
-                            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
+                            float scale = speciesToApply.getModelScale(finalVariantIndex);
+                            ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections, scale);
                         }
                     }
                 }

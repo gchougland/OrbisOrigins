@@ -36,6 +36,10 @@ public class SpeciesData {
     private final Map<String, Float> hitboxHeightModifiers; // Per-variant hitbox height modifiers (model name -> modifier in blocks)
     private final List<String> starterItems;
     private final Map<String, Float> damageResistances; // damage type -> resistance multiplier (0.0 = immune, 1.0 = no resistance, 0.5 = 50% reduction)
+    /** Player model scale; 1.0 = default size. */
+    private final float modelScale;
+    /** Blocks to raise player position when sleeping; 0 = no raise. */
+    private final float sleepingRaiseHeight;
 
     public SpeciesData(
             @Nonnull String id,
@@ -48,7 +52,7 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances
     ) {
-        this(1, id, displayName, null, modelBaseName, variants, null, description, null, healthModifier, staminaModifier, 0, true, false, false, new HashMap<>(), new HashMap<>(), new HashMap<>(), starterItems, damageResistances);
+        this(1, id, displayName, null, modelBaseName, variants, null, description, null, healthModifier, staminaModifier, 0, true, false, false, new HashMap<>(), new HashMap<>(), new HashMap<>(), starterItems, damageResistances, 1.0f, 0f);
     }
 
     public SpeciesData(
@@ -70,7 +74,7 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances
     ) {
-        this(1, id, displayName, displayNameKey, modelBaseName, variants, null, description, descriptionKey, healthModifier, staminaModifier, manaModifier, enabled, false, enableAttachmentDiscovery, manualAttachments, eyeHeightModifiers, hitboxHeightModifiers, starterItems, damageResistances);
+        this(1, id, displayName, displayNameKey, modelBaseName, variants, null, description, descriptionKey, healthModifier, staminaModifier, manaModifier, enabled, false, enableAttachmentDiscovery, manualAttachments, eyeHeightModifiers, hitboxHeightModifiers, starterItems, damageResistances, 1.0f, 0f);
     }
 
     public SpeciesData(
@@ -93,7 +97,9 @@ public class SpeciesData {
             @Nonnull Map<String, Float> eyeHeightModifiers,
             @Nonnull Map<String, Float> hitboxHeightModifiers,
             @Nonnull List<String> starterItems,
-            @Nonnull Map<String, Float> damageResistances
+            @Nonnull Map<String, Float> damageResistances,
+            float modelScale,
+            float sleepingRaiseHeight
     ) {
         this.version = version;
         this.id = id;
@@ -119,6 +125,8 @@ public class SpeciesData {
         this.hitboxHeightModifiers = new HashMap<>(hitboxHeightModifiers);
         this.starterItems = new ArrayList<>(starterItems);
         this.damageResistances = new HashMap<>(damageResistances);
+        this.modelScale = modelScale;
+        this.sleepingRaiseHeight = sleepingRaiseHeight;
     }
 
     @Nonnull
@@ -223,6 +231,50 @@ public class SpeciesData {
      */
     public float getHitboxHeightModifier(@Nonnull String modelName) {
         return hitboxHeightModifiers.getOrDefault(modelName, 0.0f);
+    }
+
+    /**
+     * Gets the species-level player model scale (1.0 = default size).
+     */
+    public float getModelScale() {
+        return modelScale;
+    }
+
+    /**
+     * Gets the effective model scale for a variant.
+     * For v2: returns the variant's scale if set, otherwise the species modelScale.
+     * For v1: returns the species modelScale.
+     */
+    public float getModelScale(int variantIndex) {
+        if (version == 2) {
+            SpeciesVariantData v = getVariantData(variantIndex);
+            if (v != null && v.getScale() != null) {
+                return v.getScale();
+            }
+        }
+        return modelScale;
+    }
+
+    /**
+     * Gets the species-level sleeping raise height (blocks to raise position when sleeping).
+     */
+    public float getSleepingRaiseHeight() {
+        return sleepingRaiseHeight;
+    }
+
+    /**
+     * Gets the effective sleeping raise height for a variant.
+     * For v2: returns the variant's override if set, otherwise the species sleepingRaiseHeight.
+     * For v1: returns the species sleepingRaiseHeight.
+     */
+    public float getSleepingRaiseHeight(int variantIndex) {
+        if (version == 2) {
+            SpeciesVariantData v = getVariantData(variantIndex);
+            if (v != null && v.getSleepingRaiseHeight() != null) {
+                return v.getSleepingRaiseHeight();
+            }
+        }
+        return sleepingRaiseHeight;
     }
 
     @Nonnull

@@ -78,6 +78,8 @@ Each species file must be named `{speciesId}.json` and contain the following str
 - **`modelNamespace`** (string): Namespace/mod identifier for models (default: `"base"` for base game)
 - **`eyeHeightModifiers`** (object): Map of model variant names to eye height modifiers (default: empty object `{}`). Each entry maps a variant model name to a float value (in blocks). Positive values raise the camera/view height, negative values lower it. This affects where the player looks from, not the physical model height. Example: `{ "Kweebec_Rootling": -0.2, "Kweebec_Sapling": -0.15 }`
 - **`hitboxHeightModifiers`** (object): Map of model variant names to hitbox height modifiers (default: empty object `{}`). Each entry maps a variant model name to a float value (in blocks). Positive values increase the bounding box height, negative values decrease it. This affects collision detection and whether the player can fit through gaps. Example: `{ "Kweebec_Rootling": -0.5, "Kweebec_Sapling": -0.3 }` to make small variants fit in 1-block-high gaps.
+- **`modelScale`** (float): Player model scale; `1.0` = default size. Values &gt; 1 make the model larger (e.g. giants), values &lt; 1 make it smaller (e.g. fairies). Must be greater than 0. Scale affects the rendered model, hitbox, and eye height. Default: `1.0`. Example: `0.6` for a small fairy, `1.5` for a giant.
+- **`sleepingRaiseHeight`** (float): Number of blocks to raise the player's world position when they are sleeping. Prevents species from clipping into the ground while lying down. Default: `0`. Example: `0.2` or `0.5`. For v2, individual variants can override with `SleepingRaiseHeight`.
 - **`starterItems`** (array of strings): List of item IDs to give on species selection (default: empty array)
 - **`damageResistances`** (object): Map of damage type to resistance multiplier (default: empty object)
 
@@ -181,6 +183,10 @@ When `"version": 2` is set, variants are objects with explicit model paths and p
 | `EyeHeight` | float | No | Override; else from ParentModel |
 | `CrouchOffset` | float | No | Override; else from ParentModel |
 | `HitBox` | object | No | Override `{min:{x,y,z}, max:{x,y,z}}`; else from ParentModel |
+| `Scale` | float | No | Per-variant model scale; overrides species `modelScale` for this variant. Must be &gt; 0. |
+| `SittingOffset` | float | No | Override for sitting pose; else from ParentModel. Affects **camera/eye height** and sitting hitbox only, not world position. |
+| `SleepingOffset` | float | No | Override for sleeping pose; else from ParentModel. Affects **camera/eye height** and sleeping hitbox only, not world position. To raise the player physically when sleeping, use species `sleepingRaiseHeight` or variant `SleepingRaiseHeight`. |
+| `SleepingRaiseHeight` | float | No | Blocks to raise the player's world position when sleeping; overrides species `sleepingRaiseHeight`. Use when variants have very different sizes. |
 | `defaultAttachments` | array | No | Always-applied attachments; `{Model, Texture}` per entry |
 | `attachments` | object | No | Selectable attachment slots (see below) |
 

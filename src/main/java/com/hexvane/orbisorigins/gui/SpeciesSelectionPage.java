@@ -457,8 +457,9 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
                     attachmentMap.remove(attachmentType);
                 }
             }
+            float scale = species.getModelScale(variantIndex);
             model = com.hypixel.hytale.server.core.asset.type.model.config.Model.createScaledModel(
-                modelAsset, baseModel.getScale(), attachmentMap);
+                modelAsset, scale, attachmentMap);
         }
         
         TransformComponent transformComponent = store.getComponent(ref, TransformComponent.getComponentType());

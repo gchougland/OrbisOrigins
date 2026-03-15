@@ -24,6 +24,14 @@ public class SpeciesVariantData {
     private final Box hitBox;
     private final List<DefaultAttachmentDef> defaultAttachments;
     private final Map<String, AttachmentSlotDef> attachments;
+    /** Optional scale for this variant; null = use species modelScale. */
+    private final Float scale;
+    /** Optional sitting offset; null = use parent model. */
+    private final Float sittingOffset;
+    /** Optional sleeping offset; null = use parent model. */
+    private final Float sleepingOffset;
+    /** Optional blocks to raise player when sleeping; null = use species sleepingRaiseHeight. */
+    private final Float sleepingRaiseHeight;
 
     public SpeciesVariantData(
             @Nonnull String variantName,
@@ -36,6 +44,56 @@ public class SpeciesVariantData {
             @Nonnull List<DefaultAttachmentDef> defaultAttachments,
             @Nonnull Map<String, AttachmentSlotDef> attachments
     ) {
+        this(variantName, parentModel, model, textures, eyeHeight, crouchOffset, hitBox, defaultAttachments, attachments, null, null, null, null);
+    }
+
+    public SpeciesVariantData(
+            @Nonnull String variantName,
+            @Nonnull String parentModel,
+            @Nonnull String model,
+            @Nonnull List<String> textures,
+            @Nullable Float eyeHeight,
+            @Nullable Float crouchOffset,
+            @Nullable Box hitBox,
+            @Nonnull List<DefaultAttachmentDef> defaultAttachments,
+            @Nonnull Map<String, AttachmentSlotDef> attachments,
+            @Nullable Float scale
+    ) {
+        this(variantName, parentModel, model, textures, eyeHeight, crouchOffset, hitBox, defaultAttachments, attachments, scale, null, null, null);
+    }
+
+    public SpeciesVariantData(
+            @Nonnull String variantName,
+            @Nonnull String parentModel,
+            @Nonnull String model,
+            @Nonnull List<String> textures,
+            @Nullable Float eyeHeight,
+            @Nullable Float crouchOffset,
+            @Nullable Box hitBox,
+            @Nonnull List<DefaultAttachmentDef> defaultAttachments,
+            @Nonnull Map<String, AttachmentSlotDef> attachments,
+            @Nullable Float scale,
+            @Nullable Float sittingOffset,
+            @Nullable Float sleepingOffset
+    ) {
+        this(variantName, parentModel, model, textures, eyeHeight, crouchOffset, hitBox, defaultAttachments, attachments, scale, sittingOffset, sleepingOffset, null);
+    }
+
+    public SpeciesVariantData(
+            @Nonnull String variantName,
+            @Nonnull String parentModel,
+            @Nonnull String model,
+            @Nonnull List<String> textures,
+            @Nullable Float eyeHeight,
+            @Nullable Float crouchOffset,
+            @Nullable Box hitBox,
+            @Nonnull List<DefaultAttachmentDef> defaultAttachments,
+            @Nonnull Map<String, AttachmentSlotDef> attachments,
+            @Nullable Float scale,
+            @Nullable Float sittingOffset,
+            @Nullable Float sleepingOffset,
+            @Nullable Float sleepingRaiseHeight
+    ) {
         this.variantName = variantName;
         this.parentModel = parentModel;
         this.model = model;
@@ -45,6 +103,10 @@ public class SpeciesVariantData {
         this.hitBox = hitBox;
         this.defaultAttachments = new ArrayList<>(defaultAttachments);
         this.attachments = new HashMap<>(attachments);
+        this.scale = scale;
+        this.sittingOffset = sittingOffset;
+        this.sleepingOffset = sleepingOffset;
+        this.sleepingRaiseHeight = sleepingRaiseHeight;
     }
 
     @Nonnull
@@ -80,6 +142,42 @@ public class SpeciesVariantData {
     @Nullable
     public Box getHitBox() {
         return hitBox;
+    }
+
+    /**
+     * Gets the optional model scale for this variant.
+     * When null, the species-level modelScale is used.
+     */
+    @Nullable
+    public Float getScale() {
+        return scale;
+    }
+
+    /**
+     * Gets the optional sitting offset for this variant.
+     * When null, the parent model's value is used.
+     */
+    @Nullable
+    public Float getSittingOffset() {
+        return sittingOffset;
+    }
+
+    /**
+     * Gets the optional sleeping offset for this variant.
+     * When null, the parent model's value is used.
+     */
+    @Nullable
+    public Float getSleepingOffset() {
+        return sleepingOffset;
+    }
+
+    /**
+     * Gets the optional sleeping raise height (blocks to raise position when sleeping).
+     * When null, the species sleepingRaiseHeight is used.
+     */
+    @Nullable
+    public Float getSleepingRaiseHeight() {
+        return sleepingRaiseHeight;
     }
 
     @Nonnull

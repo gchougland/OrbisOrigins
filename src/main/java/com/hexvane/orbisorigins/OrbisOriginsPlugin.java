@@ -15,6 +15,7 @@ import com.hexvane.orbisorigins.systems.FirstJoinSystem;
 import com.hexvane.orbisorigins.systems.SpeciesDamageResistanceSystem;
 import com.hexvane.orbisorigins.systems.SpeciesModelSystem;
 import com.hexvane.orbisorigins.systems.SpeciesModelMaintenanceSystem;
+import com.hexvane.orbisorigins.systems.SpeciesSleepingRaiseSystem;
 import com.hexvane.orbisorigins.commands.OriginsCommand;
 import com.hypixel.hytale.component.query.Query;
 import java.nio.file.Files;
@@ -91,6 +92,10 @@ public class OrbisOriginsPlugin extends JavaPlugin {
         SpeciesModelMaintenanceSystem maintenanceSystem = new SpeciesModelMaintenanceSystem();
         this.getEntityStoreRegistry().registerSystem(maintenanceSystem);
         LOGGER.atInfo().log("Registered Orbis Origins species model maintenance system");
+
+        // Register sleeping raise system (raises player position when sleeping to prevent clipping)
+        this.getEntityStoreRegistry().registerSystem(new SpeciesSleepingRaiseSystem());
+        LOGGER.atInfo().log("Registered Orbis Origins species sleeping raise system");
         
         // Register damage resistance system
         SpeciesDamageResistanceSystem damageResistanceSystem = new SpeciesDamageResistanceSystem();

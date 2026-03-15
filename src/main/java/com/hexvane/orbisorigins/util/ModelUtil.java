@@ -114,6 +114,25 @@ public class ModelUtil {
             float hitboxHeightModifier,
             @Nullable Map<String, String> attachmentSelections
     ) {
+        applyModelToPlayer(playerRef, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections, 1.0f);
+    }
+
+    /**
+     * Applies a model to a player entity with modifiers, attachment selections, and scale.
+     * @param eyeHeightModifier Additive modifier to the model's base eye height (in blocks)
+     * @param hitboxHeightModifier Additive modifier to the bounding box height (in blocks, modifies max.y)
+     * @param attachmentSelections Map of attachment type -> selected option name (null to use random)
+     * @param scale Player model scale (1.0 = default size)
+     */
+    public static void applyModelToPlayer(
+            @Nonnull Ref<EntityStore> playerRef,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull String modelName,
+            float eyeHeightModifier,
+            float hitboxHeightModifier,
+            @Nullable Map<String, String> attachmentSelections,
+            float scale
+    ) {
         ModelAsset modelAsset = ModelAsset.getAssetMap().getAsset(modelName);
         if (modelAsset == null) {
             LOGGER.warning("ModelUtil: Model asset not found: " + modelName);
@@ -132,8 +151,8 @@ public class ModelUtil {
             LOGGER.fine("ModelUtil: Using random attachments");
         }
         
-        // Get base model properties (we'll create the model with correct attachments)
-        Model baseModel = Model.createScaledModel(modelAsset, 1.0f, attachmentMap);
+        // Get base model properties (we'll create the model with correct attachments and scale)
+        Model baseModel = Model.createScaledModel(modelAsset, scale, attachmentMap);
         if (baseModel == null) {
             LOGGER.warning("ModelUtil: Failed to create model: " + modelName);
             return;
@@ -219,6 +238,8 @@ public class ModelUtil {
         ModelAsset parentAsset = ModelAsset.getAssetMap().getAsset(variant.getParentModel());
         if (parentAsset == null) return null;
 
+        float scale = variant.getScale() != null ? variant.getScale() : species.getModelScale();
+
         List<String> textures = variant.getTextures();
         String texture = textureSelection;
         if (texture == null || texture.isEmpty() || !textures.contains(texture)) {
@@ -227,6 +248,20 @@ public class ModelUtil {
         float eyeHeight = variant.getEyeHeight() != null ? variant.getEyeHeight() : parentAsset.getEyeHeight();
         float crouchOffset = variant.getCrouchOffset() != null ? variant.getCrouchOffset() : parentAsset.getCrouchOffset();
         Box boundingBox = variant.getHitBox() != null ? variant.getHitBox() : parentAsset.getBoundingBox();
+
+        if (scale != 1.0f && boundingBox != null) {
+            boundingBox = boundingBox.clone().scale(scale);
+        }
+        if (scale != 1.0f) {
+            eyeHeight *= scale;
+            crouchOffset *= scale;
+        }
+        float sittingOffset = variant.getSittingOffset() != null ? variant.getSittingOffset() : parentAsset.getSittingOffset();
+        float sleepingOffset = variant.getSleepingOffset() != null ? variant.getSleepingOffset() : parentAsset.getSleepingOffset();
+        if (scale != 1.0f) {
+            sittingOffset *= scale;
+            sleepingOffset *= scale;
+        }
 
         List<ModelAttachment> allAttachments = new ArrayList<>();
         for (SpeciesVariantData.DefaultAttachmentDef def : variant.getDefaultAttachments()) {
@@ -249,7 +284,7 @@ public class ModelUtil {
 
         return new Model(
                 variant.getParentModel(),
-                1.0f,
+                scale,
                 attachmentMap,
                 attachmentsArray,
                 boundingBox,
@@ -259,8 +294,8 @@ public class ModelUtil {
                 parentAsset.getGradientId(),
                 eyeHeight,
                 crouchOffset,
-                parentAsset.getSittingOffset(),
-                parentAsset.getSleepingOffset(),
+                sittingOffset,
+                sleepingOffset,
                 parentAsset.getAnimationSetMap(),
                 parentAsset.getCamera(),
                 parentAsset.getLight(),

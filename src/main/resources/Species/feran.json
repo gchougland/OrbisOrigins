@@ -153,6 +153,7 @@
       ],
       "EyeHeight": 0.8,
       "CrouchOffset": -0.2,
+      "SleepingRaiseHeight": 0.5,
       "HitBox": {
         "max": {
           "x": 0.3,

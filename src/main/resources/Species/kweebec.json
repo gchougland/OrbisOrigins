@@ -189,6 +189,7 @@
     {
       "VariantName": "Sapling",
       "ParentModel": "Kweebec_Sapling",
+      "SleepingRaiseHeight": 0.5,
       "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Model.blockymodel",
       "Textures": [
         "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Orange.png",
@@ -474,6 +475,8 @@
       "Model": "NPC/Intelligent/Kweebec_Seedling/Models/Model.blockymodel",
       "EyeHeight": 0.3,
       "CrouchOffset": -0.05,
+      "SleepingOffset": 1.0,
+      "SleepingRaiseHeight": 0.75,
       "HitBox": {
         "Max": {
           "X": 0.25,
@@ -504,6 +507,8 @@
       ],
       "EyeHeight": 0.75,
       "CrouchOffset": -0.2,
+      "SleepingOffset": 1.0,
+      "SleepingRaiseHeight": 0.45,
       "HitBox": {
         "Max": {
           "X": 0.25,

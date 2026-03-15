@@ -96,7 +96,8 @@ public class OriginsReloadCommand extends CommandBase {
                                 String modelName = species.getModelName(variantIndex);
                                 float eyeHeightModifier = species.getEyeHeightModifier(modelName);
                                 float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
-                                ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier);
+                                float scale = species.getModelScale(variantIndex);
+                                ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, null, scale);
                             }
                         } else {
                             ModelUtil.resetToPlayerSkin(ref, store);

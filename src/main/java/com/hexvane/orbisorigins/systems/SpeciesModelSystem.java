@@ -142,7 +142,8 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
                 float eyeHeightModifier = species.getEyeHeightModifier(modelName);
                 float hitboxHeightModifier = species.getHitboxHeightModifier(modelName);
                 java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
-                ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections);
+                float scale = species.getModelScale(variantIndex);
+                ModelUtil.applyModelToPlayer(ref, store, modelName, eyeHeightModifier, hitboxHeightModifier, attachmentSelections, scale);
             }
         } else {
             ModelUtil.resetToPlayerSkin(ref, store);

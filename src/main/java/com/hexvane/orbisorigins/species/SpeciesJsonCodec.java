@@ -60,6 +60,8 @@ public class SpeciesJsonCodec {
         Map<String, Float> hitboxHeightModifiers; // Per-variant hitbox height modifiers (v1 only)
         List<String> starterItems;
         Map<String, Float> damageResistances;
+        Float modelScale;
+        Float sleepingRaiseHeight;
 
         @Nonnull
         SpeciesData toSpeciesData() {
@@ -124,6 +126,8 @@ public class SpeciesJsonCodec {
                     || (variantList.isEmpty() && (modelBaseName == null || modelBaseName.isEmpty()));
             boolean isAttachmentDiscoveryEnabled = enableAttachmentDiscovery != null ? enableAttachmentDiscovery : false;
             Map<String, Map<String, AttachmentOption>> manualAttachments = parseManualAttachments(attachments);
+            float scale = resolveAndValidateModelScale(modelScale, "modelScale");
+            float sleepingRaise = (sleepingRaiseHeight != null) ? sleepingRaiseHeight : 0f;
 
             return new SpeciesData(
                     ver,
@@ -145,7 +149,9 @@ public class SpeciesJsonCodec {
                     eyeHeightMods,
                     hitboxHeightMods,
                     items,
-                    resistances
+                    resistances,
+                    scale,
+                    sleepingRaise
             );
         }
 
@@ -176,6 +182,8 @@ public class SpeciesJsonCodec {
             List<String> items = starterItems != null ? starterItems : new ArrayList<>();
             Map<String, Float> resistances = damageResistances != null ? damageResistances : new HashMap<>();
             boolean isEnabled = enabled != null ? enabled : true;
+            float scale = resolveAndValidateModelScale(modelScale, "modelScale");
+            float sleepingRaise = (sleepingRaiseHeight != null) ? sleepingRaiseHeight : 0f;
 
             return new SpeciesData(
                     ver,
@@ -197,8 +205,18 @@ public class SpeciesJsonCodec {
                     Collections.emptyMap(),
                     Collections.emptyMap(),
                     items,
-                    resistances
+                    resistances,
+                    scale,
+                    sleepingRaise
             );
+        }
+
+        private static float resolveAndValidateModelScale(@Nullable Float value, @Nonnull String fieldName) {
+            float scale = (value != null) ? value : 1.0f;
+            if (scale <= 0.0f) {
+                throw new JsonParseException(fieldName + " must be greater than 0 (got " + scale + ")");
+            }
+            return scale;
         }
 
         @Nonnull
@@ -216,6 +234,13 @@ public class SpeciesJsonCodec {
             Float eyeHeight = getFloat(variantMap, "EyeHeight");
             Float crouchOffset = getFloat(variantMap, "CrouchOffset");
             Box hitBox = parseHitBox(variantMap.get("HitBox"));
+            Float variantScale = getFloat(variantMap, "Scale");
+            if (variantScale != null && variantScale <= 0.0f) {
+                throw new JsonParseException("Variant Scale must be greater than 0 (got " + variantScale + ")");
+            }
+            Float sittingOffset = getFloat(variantMap, "SittingOffset");
+            Float sleepingOffset = getFloat(variantMap, "SleepingOffset");
+            Float variantSleepingRaiseHeight = getFloat(variantMap, "SleepingRaiseHeight");
 
             List<SpeciesVariantData.DefaultAttachmentDef> defaultAttachments = parseDefaultAttachments(variantMap.get("defaultAttachments"));
             Map<String, SpeciesVariantData.AttachmentSlotDef> attachments = parseV2Attachments(variantMap.get("attachments"));
@@ -229,7 +254,11 @@ public class SpeciesJsonCodec {
                     crouchOffset,
                     hitBox,
                     defaultAttachments,
-                    attachments
+                    attachments,
+                    variantScale,
+                    sittingOffset,
+                    sleepingOffset,
+                    variantSleepingRaiseHeight
             );
         }
 
@@ -480,6 +509,16 @@ public class SpeciesJsonCodec {
             if (jsonObject.has("damageResistances")) {
                 data.damageResistances = context.deserialize(jsonObject.get("damageResistances"), 
                         new com.nimbusds.jose.shaded.gson.reflect.TypeToken<Map<String, Float>>(){}.getType());
+            }
+
+            // Deserialize model scale (optional)
+            if (jsonObject.has("modelScale")) {
+                data.modelScale = jsonObject.get("modelScale").getAsFloat();
+            }
+
+            // Deserialize sleeping raise height (optional)
+            if (jsonObject.has("sleepingRaiseHeight")) {
+                data.sleepingRaiseHeight = jsonObject.get("sleepingRaiseHeight").getAsFloat();
             }
 
             return data;

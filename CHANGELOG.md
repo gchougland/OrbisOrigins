@@ -10,6 +10,8 @@ All notable changes to Orbis Origins will be documented in this file.
   - **GiveSpeciesSelectorOnFirstJoin** (default: `true`) - When `false`, the species selector item is not given to players on their first join. Use this if you hand out the selector another way or use a different flow.
   - **AllowCraftingSpeciesSelector** (default: `true`) - When `false`, the recipe for the species selector item is disabled so it cannot be crafted at benches. The item can still be given by other means (e.g. first join if enabled, or commands).
 - **Hide species model command** - `/origins hidemodel [hide|show]` lets any player hide or show their species appearance without permission. With no argument it toggles. Hiding switches the player to their default skin; the choice is saved in `species_model_hidden.json` and persists across relogs. Use `/origins hidemodel show` to show the species model again.
+- **Species model scale** - Species can set `modelScale` in their JSON (default `1.0`) to scale the player model; values &gt; 1 make the model larger, values &lt; 1 make it smaller. Scale affects the rendered model, hitbox, and eye height. v2 variants can override with `Scale` per variant. See `SPECIES_JSON_GUIDE.md`.
+- **Sleeping raise height** - Species can set `sleepingRaiseHeight` (blocks) in their JSON to raise the player's position when they sleep in a bed, preventing models that clip into the ground from suffocating. v2 variants can override with `SleepingRaiseHeight`. The mod raises both the server position and sends a corrected mount packet so the client draws the sleeping model at the raised height. See `SPECIES_JSON_GUIDE.md`.
 
 ### Fixed
 
