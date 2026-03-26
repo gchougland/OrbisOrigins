@@ -118,6 +118,18 @@
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],
+  "abilities": [
+    {
+      "id": "strength",
+      "value": 0.2,
+      "condition": "target_health_below",
+      "metadata": { "enemyHealthThreshold": 0.5 },
+      "name": "Predator’s Instinct",
+      "description": "Deal more damage to enemies that are already injured."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Physical": 0.85,
     "Poison": 0.8,

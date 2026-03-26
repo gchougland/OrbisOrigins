@@ -199,6 +199,18 @@
     "Weapon_Shortbow_Crude",
     "Weapon_Spear_Scrap"
   ],
+  "abilities": [
+    {
+      "id": "stamina_regen",
+      "value": 3,
+      "condition": "in_zone",
+      "metadata": { "zones": [12, 13, 14, 15, 16, 17, 18, 19, 20] },
+      "name": "Hardened Wanderer",
+      "description": "Stamina regenerates faster in harsh zone 3 regions."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Magic": 0.85
   }

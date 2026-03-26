@@ -2,7 +2,54 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
-## [1.4.0] - Unreleased
+## [2.1.0] - 3/26/2026
+
+### Added
+
+- **Species JSON command hooks** - Species files can define optional `selectCommands` and `deselectCommands` arrays of server command strings. Each line is executed **with console permissions** (not the player’s permissions). Placeholders `{player}` and `{username}` are replaced with the selecting player’s username.
+  - **`selectCommands`** - Run when the player **confirms** this species in the species selection GUI (after model, stats, starter items, save, and AbilityAPI hooks).
+  - **`deselectCommands`** - Run when the player **leaves** this species for a **different** species, **before** the new species is applied (undo-style grants, etc.).
+  - **Order** - When switching from species A to B: A’s `deselectCommands` run first (in list order), then the normal Orbis apply sequence, then B’s `selectCommands` (in list order). First-time selection only runs `selectCommands` for the chosen species. Re-confirming the **same** species ID runs neither list.
+  - **Scope** - Hooks run only on GUI confirm; they do **not** run on world join, respawn, or `/origins reload`. See `SPECIES_JSON_GUIDE.md`.
+
+### Compatibility
+
+- **Hytale Update 4** - This release updates Orbis Origins for **Hytale Update 4**.
+
+## [2.0.0] - 3/18/2026
+
+### Added
+
+- **AbilityAPI integration for species** - Orbis Origins now integrates with the `AbilityAPI` mod to grant gameplay abilities based on the selected species. When `hexvane:AbilityAPI` is present:
+  - Species JSON files can define an `abilities` array, where each entry specifies:
+    - `id` (string) - Ability ID from AbilityAPI, e.g. `stamina_regen`, `waterbreathing`, `swim_speed`, `strength`, `item_magnet`, `health_regen`
+    - `value` (number, optional) - Ability value (numeric abilities use a double; omitted means a binary TRUE)
+    - `condition` (string, optional) - Ability condition ID matching `AbilityConditionSpec.TYPE_*`, e.g. `in_zone`, `in_sunlight`, `health_below`, `target_health_below`
+    - `metadata` (object, optional) - Condition parameters (e.g. `{"zones": [7,8,9]}`, `{"healthThreshold": 0.5}`, `{"enemyHealthThreshold": 0.5}`)
+    - `name` / `description` (strings, optional) - Player-facing text shown in the species selector GUI
+  - On species selection, the plugin:
+    - Clears abilities previously granted by the old species
+    - Grants all abilities defined for the newly selected species
+    - Re-applies stats and movement via AbilityAPI so effects take effect immediately
+- **Species abilities in selection GUI** - The species selection page now shows an **Abilities** section in the description panel. Each configured species ability is listed as:
+  - `- <Name>: <Description>` on wrapped lines so long descriptions remain fully readable.
+
+### Technical Details
+
+- **Ability bridge API** - Added `AbilityApiBridge` in Orbis Origins which calls into AbilityAPI via a new public facade:
+  - `AbilityService.setAbility(UUID, String, Object)`
+  - `AbilityService.setConditions(UUID, String, List<AbilityConditionSpec>)`
+  - `AbilityService.removeAbility(UUID, String)`
+  - `AbilityService.applyForPlayer(Ref<EntityStore>, ComponentAccessor<EntityStore>, World)`
+  - All calls are gated behind `PluginManager` checks so Orbis Origins runs normally when AbilityAPI is not installed.
+- **AbilityAPI facade** - Added `com.hexvane.abilityapi.api.AbilityService` in AbilityAPI as the stable entrypoint for external mods; wraps `PlayerAbilityStorage` and `AbilityStatService`.
+- **JSON codec & species data** - `SpeciesJsonCodec` and `SpeciesData` now parse and expose a `List<SpeciesAbilityConfig>` from the `abilities` array, including IDs, values, conditions, metadata, and GUI name/description.
+- **Species switching semantics** - When a player selects a new species, Orbis Origins:
+  - Looks up the previously stored species ID for that player
+  - Removes all abilities granted by the previous species
+  - Grants abilities for the new species and reapplies stats/movement through AbilityAPI
+
+## [1.4.0] - 3/15/2026
 
 ### Added
 

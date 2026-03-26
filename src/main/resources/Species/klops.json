@@ -214,12 +214,21 @@
   "manaModifier": 0,
   "enableAttachmentDiscovery": true,
   "eyeHeightModifiers": {},
-  "sleepingRaiseHeight": 0.35,
   "hitboxHeightModifiers": {},
   "starterItems": [
     "Weapon_Staff_Onion",
     "Weapon_Axe_Crude"
   ],
+  "abilities": [
+    {
+      "id": "mining_haste",
+      "value": 3,
+      "name": "Tunnel Expert",
+      "description": "Mines blocks faster than other species."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Physical": 0.9
   }

@@ -974,6 +974,20 @@
     "Armor_Trork_Legs",
     "Weapon_Sword_Stone_Trork"
   ],
+  "abilities": [
+    {
+      "id": "strength",
+      "value": 0.2,
+      "condition": "health_below",
+      "metadata": {
+        "healthThreshold": 0.5
+      },
+      "name": "Berserker Fury",
+      "description": "Deal 20% more damage when below 50% health."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Physical": 0.75
   }

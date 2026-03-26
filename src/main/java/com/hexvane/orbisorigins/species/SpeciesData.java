@@ -40,6 +40,12 @@ public class SpeciesData {
     private final float modelScale;
     /** Blocks to raise player position when sleeping; 0 = no raise. */
     private final float sleepingRaiseHeight;
+    /** AbilityAPI-backed abilities granted by this species, parsed from JSON. */
+    private final List<SpeciesAbilityConfig> abilities;
+    /** Server commands run when the player confirms this species (GUI only). */
+    private final List<String> selectCommands;
+    /** Server commands run when the player leaves this species for another (GUI only). */
+    private final List<String> deselectCommands;
 
     public SpeciesData(
             @Nonnull String id,
@@ -52,7 +58,7 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances
     ) {
-        this(1, id, displayName, null, modelBaseName, variants, null, description, null, healthModifier, staminaModifier, 0, true, false, false, new HashMap<>(), new HashMap<>(), new HashMap<>(), starterItems, damageResistances, 1.0f, 0f);
+        this(1, id, displayName, null, modelBaseName, variants, null, description, null, healthModifier, staminaModifier, 0, true, false, false, new HashMap<>(), new HashMap<>(), new HashMap<>(), starterItems, damageResistances, 1.0f, 0f, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
     }
 
     public SpeciesData(
@@ -74,7 +80,7 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances
     ) {
-        this(1, id, displayName, displayNameKey, modelBaseName, variants, null, description, descriptionKey, healthModifier, staminaModifier, manaModifier, enabled, false, enableAttachmentDiscovery, manualAttachments, eyeHeightModifiers, hitboxHeightModifiers, starterItems, damageResistances, 1.0f, 0f);
+        this(1, id, displayName, displayNameKey, modelBaseName, variants, null, description, descriptionKey, healthModifier, staminaModifier, manaModifier, enabled, false, enableAttachmentDiscovery, manualAttachments, eyeHeightModifiers, hitboxHeightModifiers, starterItems, damageResistances, 1.0f, 0f, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
     }
 
     public SpeciesData(
@@ -99,7 +105,10 @@ public class SpeciesData {
             @Nonnull List<String> starterItems,
             @Nonnull Map<String, Float> damageResistances,
             float modelScale,
-            float sleepingRaiseHeight
+            float sleepingRaiseHeight,
+            @Nonnull List<SpeciesAbilityConfig> abilities,
+            @Nonnull List<String> selectCommands,
+            @Nonnull List<String> deselectCommands
     ) {
         this.version = version;
         this.id = id;
@@ -127,6 +136,9 @@ public class SpeciesData {
         this.damageResistances = new HashMap<>(damageResistances);
         this.modelScale = modelScale;
         this.sleepingRaiseHeight = sleepingRaiseHeight;
+        this.abilities = new ArrayList<>(abilities);
+        this.selectCommands = new ArrayList<>(selectCommands);
+        this.deselectCommands = new ArrayList<>(deselectCommands);
     }
 
     @Nonnull
@@ -253,6 +265,30 @@ public class SpeciesData {
             }
         }
         return modelScale;
+    }
+
+    /**
+     * Returns the list of abilities configured for this species.
+     */
+    @Nonnull
+    public List<SpeciesAbilityConfig> getAbilities() {
+        return new ArrayList<>(abilities);
+    }
+
+    /**
+     * Server command lines to run when this species is chosen (species selection GUI confirm only).
+     */
+    @Nonnull
+    public List<String> getSelectCommands() {
+        return new ArrayList<>(selectCommands);
+    }
+
+    /**
+     * Server command lines to run when the player leaves this species for another (GUI confirm only).
+     */
+    @Nonnull
+    public List<String> getDeselectCommands() {
+        return new ArrayList<>(deselectCommands);
     }
 
     /**

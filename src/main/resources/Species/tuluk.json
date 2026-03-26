@@ -81,6 +81,21 @@
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],
+  "abilities": [
+    {
+      "id": "waterbreathing",
+      "name": "Tideborn",
+      "description": "Can breathe underwater indefinitely."
+    },
+    {
+      "id": "swim_speed",
+      "value": 1.5,
+      "name": "Powerful Swimmer",
+      "description": "Moves faster while swimming."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Cold": 0.6,
     "Water": 0.8

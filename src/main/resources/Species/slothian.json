@@ -184,6 +184,15 @@
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],
+  "abilities": [
+    {
+      "id": "wall_climb",
+      "name": "Canopy Climber",
+      "description": "Can climb vertical surfaces like a sloth."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Nature": 0.75,
     "Poison": 0.85

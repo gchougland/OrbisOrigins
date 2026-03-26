@@ -31,6 +31,21 @@
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],
+  "abilities": [
+    {
+      "id": "waterbreathing",
+      "name": "Swamp Lungs",
+      "description": "Can breathe underwater in swamps and rivers."
+    },
+    {
+      "id": "swim_speed",
+      "value": 1.5,
+      "name": "Marsh Strider",
+      "description": "Glides quickly through water."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Water": 0.7,
     "Poison": 0.85,

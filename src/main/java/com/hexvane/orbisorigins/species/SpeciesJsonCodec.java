@@ -9,6 +9,7 @@ import com.nimbusds.jose.shaded.gson.JsonDeserializer;
 import com.nimbusds.jose.shaded.gson.JsonElement;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import com.nimbusds.jose.shaded.gson.JsonParseException;
+import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +63,9 @@ public class SpeciesJsonCodec {
         Map<String, Float> damageResistances;
         Float modelScale;
         Float sleepingRaiseHeight;
+        List<AbilityJsonData> abilities;
+        List<String> selectCommands;
+        List<String> deselectCommands;
 
         @Nonnull
         SpeciesData toSpeciesData() {
@@ -128,6 +132,9 @@ public class SpeciesJsonCodec {
             Map<String, Map<String, AttachmentOption>> manualAttachments = parseManualAttachments(attachments);
             float scale = resolveAndValidateModelScale(modelScale, "modelScale");
             float sleepingRaise = (sleepingRaiseHeight != null) ? sleepingRaiseHeight : 0f;
+            List<SpeciesAbilityConfig> abilityConfigs = convertAbilities();
+            List<String> selectCmds = selectCommands != null ? selectCommands : new ArrayList<>();
+            List<String> deselectCmds = deselectCommands != null ? deselectCommands : new ArrayList<>();
 
             return new SpeciesData(
                     ver,
@@ -151,7 +158,10 @@ public class SpeciesJsonCodec {
                     items,
                     resistances,
                     scale,
-                    sleepingRaise
+                    sleepingRaise,
+                    abilityConfigs,
+                    selectCmds,
+                    deselectCmds
             );
         }
 
@@ -184,6 +194,9 @@ public class SpeciesJsonCodec {
             boolean isEnabled = enabled != null ? enabled : true;
             float scale = resolveAndValidateModelScale(modelScale, "modelScale");
             float sleepingRaise = (sleepingRaiseHeight != null) ? sleepingRaiseHeight : 0f;
+            List<SpeciesAbilityConfig> abilityConfigs = convertAbilities();
+            List<String> selectCmds = selectCommands != null ? selectCommands : new ArrayList<>();
+            List<String> deselectCmds = deselectCommands != null ? deselectCommands : new ArrayList<>();
 
             return new SpeciesData(
                     ver,
@@ -207,8 +220,34 @@ public class SpeciesJsonCodec {
                     items,
                     resistances,
                     scale,
-                    sleepingRaise
+                    sleepingRaise,
+                    abilityConfigs,
+                    selectCmds,
+                    deselectCmds
             );
+        }
+
+        @Nonnull
+        private List<SpeciesAbilityConfig> convertAbilities() {
+            List<SpeciesAbilityConfig> result = new ArrayList<>();
+            if (abilities == null || abilities.isEmpty()) {
+                return result;
+            }
+            for (AbilityJsonData ability : abilities) {
+                if (ability == null || ability.id == null || ability.id.isEmpty()) {
+                    continue;
+                }
+                Map<String, Object> meta = ability.metadata != null ? ability.metadata : new HashMap<>();
+                result.add(new SpeciesAbilityConfig(
+                        ability.id,
+                        ability.value,
+                        ability.condition,
+                        meta,
+                        ability.name,
+                        ability.description
+                ));
+            }
+            return result;
         }
 
         private static float resolveAndValidateModelScale(@Nullable Float value, @Nonnull String fieldName) {
@@ -454,6 +493,18 @@ public class SpeciesJsonCodec {
     }
 
     /**
+     * Raw JSON shape for one ability entry inside the species {@code abilities} array.
+     */
+    private static class AbilityJsonData {
+        String id;
+        Float value;
+        String condition;
+        Map<String, Object> metadata;
+        String name;
+        String description;
+    }
+
+    /**
      * Custom deserializer for SpeciesJsonData.
      */
     private static class SpeciesDeserializer implements JsonDeserializer<SpeciesJsonData> {
@@ -508,7 +559,13 @@ public class SpeciesJsonCodec {
             // Deserialize damage resistances
             if (jsonObject.has("damageResistances")) {
                 data.damageResistances = context.deserialize(jsonObject.get("damageResistances"), 
-                        new com.nimbusds.jose.shaded.gson.reflect.TypeToken<Map<String, Float>>(){}.getType());
+                        new TypeToken<Map<String, Float>>(){}.getType());
+            }
+
+            // Deserialize abilities array (AbilityAPI-backed species abilities)
+            if (jsonObject.has("abilities")) {
+                data.abilities = context.deserialize(jsonObject.get("abilities"),
+                        new TypeToken<List<AbilityJsonData>>(){}.getType());
             }
 
             // Deserialize model scale (optional)
@@ -519,6 +576,13 @@ public class SpeciesJsonCodec {
             // Deserialize sleeping raise height (optional)
             if (jsonObject.has("sleepingRaiseHeight")) {
                 data.sleepingRaiseHeight = jsonObject.get("sleepingRaiseHeight").getAsFloat();
+            }
+
+            if (jsonObject.has("selectCommands")) {
+                data.selectCommands = context.deserialize(jsonObject.get("selectCommands"), List.class);
+            }
+            if (jsonObject.has("deselectCommands")) {
+                data.deselectCommands = context.deserialize(jsonObject.get("deselectCommands"), List.class);
             }
 
             return data;

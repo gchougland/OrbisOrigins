@@ -81,7 +81,15 @@ Each species file must be named `{speciesId}.json` and contain the following str
 - **`modelScale`** (float): Player model scale; `1.0` = default size. Values &gt; 1 make the model larger (e.g. giants), values &lt; 1 make it smaller (e.g. fairies). Must be greater than 0. Scale affects the rendered model, hitbox, and eye height. Default: `1.0`. Example: `0.6` for a small fairy, `1.5` for a giant.
 - **`sleepingRaiseHeight`** (float): Number of blocks to raise the player's world position when they are sleeping. Prevents species from clipping into the ground while lying down. Default: `0`. Example: `0.2` or `0.5`. For v2, individual variants can override with `SleepingRaiseHeight`.
 - **`starterItems`** (array of strings): List of item IDs to give on species selection (default: empty array)
-- **`damageResistances`** (object): Map of damage type to resistance multiplier (default: empty object)
+- **`selectCommands`** (array of strings): Optional server commands to run **with console permissions** (full access, same as typing in the server console—not the selecting player’s permissions) when they **confirm** this species in the species selection GUI (after model, stats, starter items, save, and AbilityAPI hooks). Default: empty array. Commands run in list order. A leading `/` is optional. Use placeholders `{player}` or `{username}` anywhere in a line to insert the selecting player’s username when a command must target them (e.g. `give {player} SomeItem`).
+- **`deselectCommands`** (array of strings): Optional server commands to run **with console permissions** when they **leave** this species and choose a **different** species in the GUI. Default: empty array. Executed **before** the new species is applied, in list order. Same formatting rules as `selectCommands`.
+
+**Command hook behavior**
+
+- When switching from species **A** to **B**: **A’s `deselectCommands`** run first, then the normal Orbis apply sequence (model, stats, starter items, persist, abilities), then **B’s `selectCommands`**.
+- **First selection** (no prior species): only **`selectCommands`** for the chosen species run; `deselectCommands` are not used.
+- **Re-confirming the same species** (same ID as before): neither list runs (avoids accidental double grant/revoke).
+- These hooks run only when confirming in the **species selection GUI**. They do **not** run on world join, respawn, or `/origins reload`.
 
 ## Species with no custom model
 

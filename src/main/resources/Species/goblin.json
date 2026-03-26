@@ -657,6 +657,16 @@
     "Weapon_Club_Scrap",
     "Weapon_Shield_Scrap"
   ],
+  "abilities": [
+    {
+      "id": "item_magnet",
+      "value": 2.0,
+      "name": "Scavenger’s Pull",
+      "description": "Pulls nearby dropped items in from a greater distance."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Poison": 0.75
   }

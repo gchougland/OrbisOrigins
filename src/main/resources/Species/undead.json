@@ -431,6 +431,15 @@
   "starterItems": [
     "Weapon_Club_Zombie_Leg"
   ],
+  "abilities": [
+    {
+      "id": "second_chance",
+      "name": "Second Chance",
+      "description": "Once every few minutes, fatal damage instead restores you to low health."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Poison": 0.0,
     "Physical": 0.9,

@@ -31,10 +31,13 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.TargetUtil;
 import com.hexvane.orbisorigins.data.PlayerSpeciesData;
+import com.hexvane.orbisorigins.OrbisOriginsPlugin;
+import com.hexvane.orbisorigins.ability.AbilityApiBridge;
 import com.hexvane.orbisorigins.species.AttachmentOption;
 import com.hexvane.orbisorigins.species.SpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesRegistry;
 import com.hexvane.orbisorigins.util.ModelUtil;
+import com.hexvane.orbisorigins.util.SpeciesCommandUtil;
 import com.hexvane.orbisorigins.util.SpeciesStatUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -300,31 +303,18 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         
         SpeciesData species = SpeciesRegistry.getSpecies(selectedSpeciesId);
         if (species == null) return;
+
+        java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName())
+                .info("updateDescription: species=" + species.getId()
+                        + ", abilities=" + species.getAbilities().size());
         
         commandBuilder.set("#SpeciesName.Text", species.getDisplayName());
         
         // Build full description with buffs/debuffs
         StringBuilder descriptionText = new StringBuilder();
-        
-        // Manually wrap description text (split into lines of ~25 characters)
-        String description = species.getDescription();
-        String[] words = description.split(" ");
-        StringBuilder currentLine = new StringBuilder();
-        for (String word : words) {
-            if (currentLine.length() + word.length() + 1 > 25) {
-                if (currentLine.length() > 0) {
-                    descriptionText.append(currentLine.toString().trim()).append("\n");
-                    currentLine = new StringBuilder();
-                }
-            }
-            if (currentLine.length() > 0) {
-                currentLine.append(" ");
-            }
-            currentLine.append(word);
-        }
-        if (currentLine.length() > 0) {
-            descriptionText.append(currentLine.toString().trim());
-        }
+
+        // Manually wrap base description text (split into lines of ~25 characters)
+        appendWrappedLine(descriptionText, species.getDescription(), 25);
         
         descriptionText.append("\n\n");
         
@@ -383,6 +373,27 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             }
         }
         
+        // Abilities (for GUI info text)
+        var abilities = species.getAbilities();
+        if (!abilities.isEmpty()) {
+            descriptionText.append("\nAbilities:\n");
+            for (var ability : abilities) {
+                if (ability == null) continue;
+                String abilityName = ability.getName();
+                String abilityDesc = ability.getDescription();
+                if (abilityName == null || abilityName.isEmpty()) {
+                    continue;
+                }
+                // First line: ability name (and optional first part of description)
+                StringBuilder lineBuilder = new StringBuilder();
+                lineBuilder.append("  - ").append(abilityName);
+                if (abilityDesc != null && !abilityDesc.isEmpty()) {
+                    lineBuilder.append(": ").append(abilityDesc);
+                }
+                appendWrappedLine(descriptionText, lineBuilder.toString(), 32);
+            }
+        }
+
         // Starter items
         List<String> starterItems = species.getStarterItems();
         if (!starterItems.isEmpty()) {
@@ -393,6 +404,43 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
         
         commandBuilder.set("#SpeciesDescription.Text", descriptionText.toString());
+    }
+
+    /**
+     * Appends the given text to the builder, wrapped at the specified column width.
+     * Preserves existing newlines in the input as hard breaks.
+     */
+    private static void appendWrappedLine(@Nonnull StringBuilder out, @Nonnull String text, int maxWidth) {
+        String[] existingLines = text.split("\\r?\\n");
+        for (int i = 0; i < existingLines.length; i++) {
+            String line = existingLines[i].trim();
+            if (line.isEmpty()) {
+                out.append("\n");
+                continue;
+            }
+            String[] words = line.split(" ");
+            StringBuilder current = new StringBuilder();
+            for (String word : words) {
+                if (current.length() == 0) {
+                    current.append(word);
+                } else if (current.length() + 1 + word.length() <= maxWidth) {
+                    current.append(" ").append(word);
+                } else {
+                    out.append(current.toString()).append("\n");
+                    current.setLength(0);
+                    current.append(word);
+                }
+            }
+            if (current.length() > 0) {
+                out.append(current.toString());
+            }
+            if (i < existingLines.length - 1) {
+                out.append("\n");
+            }
+        }
+        if (out.length() == 0 || out.charAt(out.length() - 1) != '\n') {
+            out.append("\n");
+        }
     }
 
     private void createPreviewEntity(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store) {
@@ -894,8 +942,16 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         int variantIndex = variantIndices.getOrDefault(selectedSpeciesId, 0);
         Map<String, String> attachmentSelectionsForSpecies = attachmentSelections.getOrDefault(selectedSpeciesId, new HashMap<>());
         String textureSelectionForSpecies = textureSelections.get(selectedSpeciesId);
-        java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName());
-        
+
+        String previousSpeciesId = PlayerSpeciesData.getSelectedSpeciesId(ref, store, world);
+        boolean sameSpecies = previousSpeciesId != null && previousSpeciesId.equals(selectedSpeciesId);
+        if (!sameSpecies && previousSpeciesId != null && !previousSpeciesId.isEmpty()) {
+            SpeciesData previousSpecies = SpeciesRegistry.getSpecies(previousSpeciesId);
+            if (previousSpecies != null) {
+                SpeciesCommandUtil.runSpeciesCommands(playerComponent, previousSpecies.getDeselectCommands());
+            }
+        }
+
         // Apply model (if not orbian)
         if (!species.usesPlayerModel()) {
             if (species.isVersion2()) {
@@ -922,7 +978,38 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         
         // Store choice with attachment selections and texture selection
         PlayerSpeciesData.setSpeciesSelection(ref, store, world, selectedSpeciesId, variantIndex, attachmentSelectionsForSpecies, textureSelectionForSpecies);
-        
+
+        // Apply AbilityAPI-backed abilities if integration is available
+        OrbisOriginsPlugin plugin = OrbisOriginsPlugin.getInstance();
+        boolean abilityApiPresent = plugin != null && plugin.isAbilityApiPresent();
+        java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName())
+                .info("confirmSelection: species=" + species.getId()
+                        + ", abilities=" + species.getAbilities().size()
+                        + ", abilityApiPresent=" + abilityApiPresent);
+        if (abilityApiPresent) {
+            PlayerRef playerRefComponent = store.getComponent(ref, PlayerRef.getComponentType());
+            if (playerRefComponent != null) {
+                try {
+                    // Clear abilities from previous species selection, if any.
+                    if (previousSpeciesId != null && !previousSpeciesId.isEmpty()) {
+                        SpeciesData previousSpecies = SpeciesRegistry.getSpecies(previousSpeciesId);
+                        if (previousSpecies != null) {
+                            AbilityApiBridge.clearSpeciesAbilities(playerRefComponent, ref, store, world, previousSpecies);
+                        }
+                    }
+                    // Apply new species abilities.
+                    AbilityApiBridge.applySpeciesAbilities(playerRefComponent, ref, store, world, species);
+                } catch (NoClassDefFoundError e) {
+                    java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName())
+                            .warning("AbilityAPI classes not present at runtime; disabling ability integration.");
+                }
+            }
+        }
+
+        if (!sameSpecies) {
+            SpeciesCommandUtil.runSpeciesCommands(playerComponent, species.getSelectCommands());
+        }
+
         // Consume item from inventory
         consumeSelectorItem(playerComponent);
         

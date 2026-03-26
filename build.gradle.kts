@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.hexvane"
-version = "1.4.0"
+version = "2.1.0"
 val javaVersion = 25
 
 repositories {
@@ -18,6 +18,9 @@ dependencies {
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.jspecify)
     compileOnly(libs.nimbus.jose.jwt)
+    // Compile against AbilityAPI as an optional library mod.
+    // At runtime, OrbisOrigins will gate all calls behind PluginManager checks.
+    implementation(files("../AbilityAPI/build/libs/AbilityAPI-1.1.0.jar"))
 }
 
 hytale {
@@ -28,7 +31,7 @@ hytale {
 
     // uncomment if you want to develop your mod against the pre-release version of the game.
     //
-    updateChannel = "pre-release"
+    //updateChannel = "pre-release"
 }
 
 java {

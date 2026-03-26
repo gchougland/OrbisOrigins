@@ -189,7 +189,6 @@
     {
       "VariantName": "Sapling",
       "ParentModel": "Kweebec_Sapling",
-      "SleepingRaiseHeight": 0.5,
       "Model": "NPC/Intelligent/Kweebec_Sapling/Models/Model.blockymodel",
       "Textures": [
         "NPC/Intelligent/Kweebec_Sapling/Models/Model_Textures/Orange.png",
@@ -475,8 +474,6 @@
       "Model": "NPC/Intelligent/Kweebec_Seedling/Models/Model.blockymodel",
       "EyeHeight": 0.3,
       "CrouchOffset": -0.05,
-      "SleepingOffset": 1.0,
-      "SleepingRaiseHeight": 0.75,
       "HitBox": {
         "Max": {
           "X": 0.25,
@@ -507,8 +504,6 @@
       ],
       "EyeHeight": 0.75,
       "CrouchOffset": -0.2,
-      "SleepingOffset": 1.0,
-      "SleepingRaiseHeight": 0.45,
       "HitBox": {
         "Max": {
           "X": 0.25,
@@ -556,6 +551,17 @@
     "Armor_Kweebec_Chest",
     "Weapon_Staff_Wood_Kweebec"
   ],
+  "abilities": [
+    {
+      "id": "health_regen",
+      "value": 0.5,
+      "condition": "in_sunlight",
+      "name": "Photosynthesis",
+      "description": "Regenerates health while standing in sunlight with open sky."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Nature": 0.5
   }

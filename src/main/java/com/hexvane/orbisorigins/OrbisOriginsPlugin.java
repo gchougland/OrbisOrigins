@@ -5,6 +5,8 @@ import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
+import com.hypixel.hytale.common.plugin.PluginIdentifier;
+import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.OpenCustomUIInteraction;
 import com.hypixel.hytale.server.core.util.Config;
@@ -22,9 +24,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class OrbisOriginsPlugin extends JavaPlugin {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
+    private static OrbisOriginsPlugin instance;
 
     /** Recipe ID for the species selector item (generated from item JSON). */
     private static final String SPECIES_SELECTOR_RECIPE_ID = "OrbisOrigins_Species_Selector_Recipe_Generated_0";
@@ -32,13 +36,24 @@ public class OrbisOriginsPlugin extends JavaPlugin {
     @Nonnull
     private final Config<OrbisOriginsConfig> config = this.withConfig("config", OrbisOriginsConfig.CODEC);
 
+
     public OrbisOriginsPlugin(JavaPluginInit init) {
         super(init);
+        instance = this;
         LOGGER.atInfo().log("Hello from %s version %s", this.getName(), this.getManifest().getVersion().toString());
     }
 
     @Override
     protected void setup() {
+        // Log initial AbilityAPI presence at setup (mods may still load afterwards)
+        PluginIdentifier abilityApiId = PluginIdentifier.fromString("hexvane:AbilityAPI");
+        boolean initialPresent = PluginManager.get() != null && PluginManager.get().getPlugin(abilityApiId) != null;
+        if (initialPresent) {
+            LOGGER.atInfo().log("AbilityAPI detected at setup - enabling species ability integration.");
+        } else {
+            LOGGER.atInfo().log("AbilityAPI not detected at setup - will re-check at species selection time.");
+        }
+
         // Initialize persistent data storage
         com.hexvane.orbisorigins.data.PlayerDataStorage.initialize(this.getDataDirectory());
         
@@ -140,5 +155,22 @@ public class OrbisOriginsPlugin extends JavaPlugin {
         // Save all player data before shutdown
         com.hexvane.orbisorigins.data.PlayerDataStorage.saveAll();
         LOGGER.atInfo().log("Saved all player data on shutdown");
+    }
+
+    /**
+     * Returns true if AbilityAPI is currently loaded as a plugin.
+     */
+    public boolean isAbilityApiPresent() {
+        PluginIdentifier abilityApiId = PluginIdentifier.fromString("hexvane:AbilityAPI");
+        PluginManager manager = PluginManager.get();
+        return manager != null && manager.getPlugin(abilityApiId) != null;
+    }
+
+    /**
+     * Returns the active OrbisOrigins plugin instance, or null if not initialized.
+     */
+    @Nullable
+    public static OrbisOriginsPlugin getInstance() {
+        return instance;
     }
 }

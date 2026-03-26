@@ -41,6 +41,16 @@
   "eyeHeightModifiers": {},
   "hitboxHeightModifiers": {},
   "starterItems": [],
+  "abilities": [
+    {
+      "id": "resistance_poison",
+      "value": 1.0,
+      "name": "Poison Proof",
+      "description": "Immune to poison effects."
+    }
+  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Void": 0.0,
     "Magic": 0.5,

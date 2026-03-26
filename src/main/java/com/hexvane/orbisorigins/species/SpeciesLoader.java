@@ -63,7 +63,8 @@ public class SpeciesLoader {
                         String json = new String(stream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
                         SpeciesData species = SpeciesJsonCodec.fromJson(json);
                         speciesList.add(species);
-                        LOGGER.info("Loaded species from resources: " + species.getId() + " (" + fileName + ")");
+                        LOGGER.info("Loaded species from resources: " + species.getId()
+                                + " (" + fileName + "), abilities=" + species.getAbilities().size());
                     } catch (Exception e) {
                         LOGGER.warning("Failed to load species from resources: " + fileName + " - " + e.getMessage());
                         e.printStackTrace();
@@ -108,12 +109,13 @@ public class SpeciesLoader {
                         try {
                             String json = Files.readString(path);
                             SpeciesData species = SpeciesJsonCodec.fromJson(json);
-                            
+
                             // Remove any existing species with the same ID (from resources)
                             speciesList.removeIf(s -> s.getId().equals(species.getId()));
                             
                             speciesList.add(species);
-                            LOGGER.info("Loaded species from data directory: " + species.getId() + " (" + path.getFileName() + ")");
+                            LOGGER.info("Loaded species from data directory: " + species.getId()
+                                    + " (" + path.getFileName() + "), abilities=" + species.getAbilities().size());
                         } catch (Exception e) {
                             LOGGER.warning("Failed to load species from data directory: " + path.getFileName() + " - " + e.getMessage());
                             e.printStackTrace();

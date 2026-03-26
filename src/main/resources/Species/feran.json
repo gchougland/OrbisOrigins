@@ -232,6 +232,22 @@
     "Weapon_Shortbow_Crude",
     "Weapon_Axe_Crude"
   ],
+  "abilities": [
+    {
+      "id": "stamina_regen",
+      "value": 3.0,
+      "condition": "in_zone",
+      "metadata": { "zones": [7, 8, 9, 10, 11] },
+      "name": "Desert Endurance",
+      "description": "Stamina regenerates faster in the deserts of zone 2."
+    }
+  ],
+  "selectCommands": [
+    "gamemode creative {player}"
+  ],
+  "deselectCommands": [
+    "gamemode adventure {player}"
+  ],
   "damageResistances": {
     "Fire": 0.5,
     "Lava": 0.5
