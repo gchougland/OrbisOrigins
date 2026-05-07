@@ -472,12 +472,12 @@
       "VariantName": "Seedling",
       "ParentModel": "Kweebec_Seedling",
       "Model": "NPC/Intelligent/Kweebec_Seedling/Models/Model.blockymodel",
-      "EyeHeight": 0.3,
+      "EyeHeight": 0.8,
       "CrouchOffset": -0.05,
       "HitBox": {
         "Max": {
           "X": 0.25,
-          "Y": 0.5,
+          "Y": 1.0,
           "Z": 0.25
         },
         "Min": {

@@ -242,12 +242,8 @@
       "description": "Stamina regenerates faster in the deserts of zone 2."
     }
   ],
-  "selectCommands": [
-    "gamemode creative {player}"
-  ],
-  "deselectCommands": [
-    "gamemode adventure {player}"
-  ],
+  "selectCommands": [],
+  "deselectCommands": [],
   "damageResistances": {
     "Fire": 0.5,
     "Lava": 0.5

@@ -3,6 +3,7 @@ package com.hexvane.orbisorigins;
 import com.hypixel.hytale.assetstore.event.LoadedAssetsEvent;
 import com.hypixel.hytale.assetstore.map.DefaultAssetMap;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.asset.AssetPackRegisterEvent;
 import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.common.plugin.PluginIdentifier;
@@ -12,6 +13,8 @@ import com.hypixel.hytale.server.core.modules.interaction.interaction.config.ser
 import com.hypixel.hytale.server.core.util.Config;
 import com.hexvane.orbisorigins.config.OrbisOriginsConfig;
 import com.hexvane.orbisorigins.gui.OrbisOriginsPageSupplier;
+import com.hexvane.orbisorigins.species.SpeciesData;
+import com.hexvane.orbisorigins.species.SpeciesLoader;
 import com.hexvane.orbisorigins.species.SpeciesRegistry;
 import com.hexvane.orbisorigins.systems.FirstJoinSystem;
 import com.hexvane.orbisorigins.systems.SpeciesDamageResistanceSystem;
@@ -59,6 +62,21 @@ public class OrbisOriginsPlugin extends JavaPlugin {
         
         // Initialize species registry (loads from JSON files)
         SpeciesRegistry.initialize(this.getDataDirectory());
+
+        // Packs that register after this plugin (other mods with IncludesAssetPack) still contribute Species/*.json
+        this.getEventRegistry().register(AssetPackRegisterEvent.class, event -> {
+            List<SpeciesData> added = SpeciesLoader.loadSpeciesFromPack(event.getAssetPack());
+            for (SpeciesData species : added) {
+                SpeciesRegistry.registerSpecies(species);
+            }
+            if (!added.isEmpty()) {
+                LOGGER.atInfo().log(
+                        "Merged %d species definition(s) from late-registered asset pack: %s",
+                        added.size(),
+                        event.getAssetPack().getName()
+                );
+            }
+        });
         
         // Register the custom UI page supplier
         OpenCustomUIInteraction.PAGE_CODEC.register(

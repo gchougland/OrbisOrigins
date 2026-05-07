@@ -2,6 +2,25 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [2.1.3] - 5/7/2026
+
+### Fixed
+
+- Mod-breaking bug introduced in 2.1.2
+
+## [2.1.2] - 5/6/2026
+
+### Added
+
+- Species files are now automatically read from other packs and plugins in the resources/Species/ folder.
+
+## [2.1.1] - 4/6/2026
+
+### Fixed
+
+- Feran species turning player into creative mode
+- Seedling Kweebed clipping through block when climbing
+
 ## [2.1.0] - 3/26/2026
 
 ### Added
