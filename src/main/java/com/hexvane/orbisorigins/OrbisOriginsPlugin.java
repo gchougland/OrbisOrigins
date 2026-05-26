@@ -179,9 +179,7 @@ public class OrbisOriginsPlugin extends JavaPlugin {
      * Returns true if AbilityAPI is currently loaded as a plugin.
      */
     public boolean isAbilityApiPresent() {
-        PluginIdentifier abilityApiId = PluginIdentifier.fromString("hexvane:AbilityAPI");
-        PluginManager manager = PluginManager.get();
-        return manager != null && manager.getPlugin(abilityApiId) != null;
+        return com.hexvane.orbisorigins.ability.AbilityApiBridge.isAvailable();
     }
 
     /**

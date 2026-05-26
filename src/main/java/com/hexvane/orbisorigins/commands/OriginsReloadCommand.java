@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hexvane.orbisorigins.OrbisOriginsPlugin;
+import com.hexvane.orbisorigins.ability.AbilityApiBridge;
 import com.hexvane.orbisorigins.data.PlayerSpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesRegistry;
@@ -85,6 +86,10 @@ public class OriginsReloadCommand extends CommandBase {
 
                         // Reapply stats
                         SpeciesStatUtil.applySpeciesStats(ref, store, species);
+
+                        if (AbilityApiBridge.isAvailable() && !species.getAbilities().isEmpty()) {
+                            AbilityApiBridge.applySpeciesAbilities(playerRef, ref, store, world, species);
+                        }
 
                         // Reapply model (if not orbian)
                         if (!species.usesPlayerModel()) {

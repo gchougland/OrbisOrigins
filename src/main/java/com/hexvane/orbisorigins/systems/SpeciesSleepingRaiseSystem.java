@@ -8,7 +8,9 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
-import com.hypixel.hytale.math.vector.Vector3f;
+import com.hypixel.hytale.math.vector.Rotation3f;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 import com.hypixel.hytale.protocol.BlockMount;
 import com.hypixel.hytale.protocol.MountController;
 import com.hypixel.hytale.protocol.MountedUpdate;
@@ -125,21 +127,21 @@ public class SpeciesSleepingRaiseSystem extends EntityTickingSystem<EntityStore>
         if (occupiedSeat == null) {
             return;
         }
-        Vector3f position = occupiedSeat.computeWorldSpacePosition(blockMountComponent.getBlockPos());
-        Vector3f rotationEuler = occupiedSeat.computeRotationEuler(blockMountComponent.getExpectedRotation());
+        Vector3d position = occupiedSeat.computeWorldSpacePosition(blockMountComponent.getBlockPos());
+        Rotation3f rotationEuler = occupiedSeat.computeRotationEuler(blockMountComponent.getExpectedRotation());
         BlockType blockType = blockMountComponent.getExpectedBlockType();
         int blockTypeId = BlockType.getAssetMap().getIndex(blockType.getId());
 
-        com.hypixel.hytale.protocol.Vector3f raisedPosition = new com.hypixel.hytale.protocol.Vector3f(position.x, position.y + raise, position.z);
-        com.hypixel.hytale.protocol.Vector3f orientation = new com.hypixel.hytale.protocol.Vector3f(rotationEuler.x, rotationEuler.y, rotationEuler.z);
+        Vector3f raisedPosition = new Vector3f((float) position.x, (float) (position.y + raise), (float) position.z);
+        Vector3f orientation = new Vector3f(rotationEuler.x, rotationEuler.y, rotationEuler.z);
         BlockMount blockMount = new BlockMount(
                 blockMountComponent.getType(),
                 raisedPosition,
                 orientation,
                 blockTypeId
         );
-        Vector3f attachmentOffset = mounted.getAttachmentOffset();
-        com.hypixel.hytale.protocol.Vector3f netOffset = new com.hypixel.hytale.protocol.Vector3f(attachmentOffset.x, attachmentOffset.y, attachmentOffset.z);
+        Rotation3f attachmentOffset = mounted.getAttachmentOffset();
+        Vector3f netOffset = new Vector3f(attachmentOffset.x, attachmentOffset.y, attachmentOffset.z);
         MountedUpdate mountedUpdate = new MountedUpdate(0, netOffset, MountController.BlockMount, blockMount);
 
         EntityTrackerSystems.Visible visible = store.getComponent(ref, EntityTrackerSystems.Visible.getComponentType());

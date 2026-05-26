@@ -2,7 +2,7 @@ package com.hexvane.orbisorigins.util;
 
 import com.hypixel.hytale.server.core.command.system.CommandManager;
 import com.hypixel.hytale.server.core.console.ConsoleSender;
-import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
@@ -25,11 +25,11 @@ public final class SpeciesCommandUtil {
      * (use in commands that need an explicit target, e.g. {@code give {player} SomeItem}).
      * Failures are logged; execution continues with the next line.
      */
-    public static void runSpeciesCommands(@Nonnull Player selectingPlayer, @Nonnull List<String> commands) {
+    public static void runSpeciesCommands(@Nonnull PlayerRef selectingPlayer, @Nonnull List<String> commands) {
         if (commands.isEmpty()) {
             return;
         }
-        String username = selectingPlayer.getDisplayName();
+        String username = selectingPlayer.getUsername();
         CompletableFuture<Void> chain = CompletableFuture.completedFuture(null);
         for (String raw : commands) {
             if (raw == null || raw.isBlank()) {

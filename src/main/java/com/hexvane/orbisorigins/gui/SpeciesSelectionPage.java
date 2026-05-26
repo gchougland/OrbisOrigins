@@ -9,9 +9,9 @@ import com.hypixel.hytale.component.NonSerialized;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.RemoveReason;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.math.vector.Transform;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.asset.type.model.config.Model;
@@ -57,7 +57,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
     @Nullable
     private Ref<EntityStore> modelPreview;
     private Vector3d previewPosition;
-    private Vector3f previewRotation;
+    private Rotation3f previewRotation;
     /** Yaw offset in radians for rotating the preview model so the player can see all sides. */
     private float previewRotationYawOffset;
     private volatile boolean dismissed;
@@ -523,13 +523,13 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
         
         Vector3d playerPosition = transformComponent.getPosition();
-        Vector3f headRotation = headRotationComponent.getRotation();
+        Rotation3f headRotation = headRotationComponent.getRotation();
         
         // Spawn entity 4 blocks in front of player
-        Vector3d direction = Transform.getDirection(headRotation.getPitch(), headRotation.getYaw());
+        Vector3d direction = Transform.getDirection(headRotation.pitch(), headRotation.yaw());
         Vector3d previewPosition = TargetUtil.getTargetLocation(ref, 8.0, store);
         if (previewPosition == null) {
-            previewPosition = playerPosition.clone().add(direction.scale(4.0));
+            previewPosition = new Vector3d(playerPosition).fma(4.0, direction);
         }
         
         // Find ground level for the preview entity
@@ -543,14 +543,14 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
             previewPosition = targetGround;
         } else {
             // Fallback: spawn at player's feet level
-            previewPosition.setY(playerPosition.y);
+            previewPosition.y = playerPosition.y;
         }
         
         // Make entity face player, then apply rotation offset so player can spin the preview
-        Vector3d relativePos = playerPosition.clone().subtract(previewPosition);
-        relativePos.setY(0.0);
-        Vector3f previewRot = Vector3f.lookAt(relativePos);
-        previewRot = new Vector3f(previewRot.getPitch(), previewRot.getYaw() + previewRotationYawOffset, previewRot.getRoll());
+        Vector3d relativePos = new Vector3d(playerPosition).sub(previewPosition);
+        relativePos.y = 0.0;
+        Rotation3f previewRot = Rotation3f.lookAt(relativePos);
+        previewRot = new Rotation3f(previewRot.pitch(), previewRot.yaw() + previewRotationYawOffset, previewRot.roll());
         
         Vector3d spawnPosition = previewPosition;
         
@@ -584,11 +584,11 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
         previewRotationYawOffset += direction * ROTATE_PREVIEW_STEP_RADIANS;
         if (previewRotation != null) {
-            float newYaw = previewRotation.getYaw() + direction * ROTATE_PREVIEW_STEP_RADIANS;
-            this.previewRotation = new Vector3f(previewRotation.getPitch(), newYaw, previewRotation.getRoll());
+            float newYaw = previewRotation.yaw() + direction * ROTATE_PREVIEW_STEP_RADIANS;
+            this.previewRotation = new Rotation3f(previewRotation.pitch(), newYaw, previewRotation.roll());
             Ref<EntityStore> previewRef = this.modelPreview;
             Vector3d pos = this.previewPosition;
-            Vector3f rot = this.previewRotation;
+            Rotation3f rot = this.previewRotation;
             Store<EntityStore> storeRef = store;
             world.execute(() -> {
                 if (dismissed || previewRef == null || !previewRef.isValid()) {
@@ -948,7 +948,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         if (!sameSpecies && previousSpeciesId != null && !previousSpeciesId.isEmpty()) {
             SpeciesData previousSpecies = SpeciesRegistry.getSpecies(previousSpeciesId);
             if (previousSpecies != null) {
-                SpeciesCommandUtil.runSpeciesCommands(playerComponent, previousSpecies.getDeselectCommands());
+                SpeciesCommandUtil.runSpeciesCommands(playerRef, previousSpecies.getDeselectCommands());
             }
         }
 
@@ -987,27 +987,19 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
                         + ", abilities=" + species.getAbilities().size()
                         + ", abilityApiPresent=" + abilityApiPresent);
         if (abilityApiPresent) {
-            PlayerRef playerRefComponent = store.getComponent(ref, PlayerRef.getComponentType());
-            if (playerRefComponent != null) {
-                try {
-                    // Clear abilities from previous species selection, if any.
-                    if (previousSpeciesId != null && !previousSpeciesId.isEmpty()) {
-                        SpeciesData previousSpecies = SpeciesRegistry.getSpecies(previousSpeciesId);
-                        if (previousSpecies != null) {
-                            AbilityApiBridge.clearSpeciesAbilities(playerRefComponent, ref, store, world, previousSpecies);
-                        }
-                    }
-                    // Apply new species abilities.
-                    AbilityApiBridge.applySpeciesAbilities(playerRefComponent, ref, store, world, species);
-                } catch (NoClassDefFoundError e) {
-                    java.util.logging.Logger.getLogger(SpeciesSelectionPage.class.getName())
-                            .warning("AbilityAPI classes not present at runtime; disabling ability integration.");
+            // Clear abilities from previous species selection, if any.
+            if (previousSpeciesId != null && !previousSpeciesId.isEmpty()) {
+                SpeciesData previousSpecies = SpeciesRegistry.getSpecies(previousSpeciesId);
+                if (previousSpecies != null) {
+                    AbilityApiBridge.clearSpeciesAbilities(playerRef, ref, store, world, previousSpecies);
                 }
             }
+            // Apply new species abilities (via AbilityAPI plugin classloader).
+            AbilityApiBridge.applySpeciesAbilities(playerRef, ref, store, world, species);
         }
 
         if (!sameSpecies) {
-            SpeciesCommandUtil.runSpeciesCommands(playerComponent, species.getSelectCommands());
+            SpeciesCommandUtil.runSpeciesCommands(playerRef, species.getSelectCommands());
         }
 
         // Consume item from inventory

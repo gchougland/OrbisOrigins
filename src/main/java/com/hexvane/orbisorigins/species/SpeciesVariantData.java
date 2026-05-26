@@ -1,7 +1,6 @@
 package com.hexvane.orbisorigins.species;
 
 import com.hypixel.hytale.math.shape.Box;
-import com.hypixel.hytale.math.vector.Vector3d;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

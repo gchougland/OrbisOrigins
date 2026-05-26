@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.hexvane"
-version = "2.1.3"
+version = "2.2.0"
 val javaVersion = 25
 
 repositories {
@@ -18,9 +18,7 @@ dependencies {
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.jspecify)
     compileOnly(libs.nimbus.jose.jwt)
-    // Compile against AbilityAPI as an optional library mod.
-    // At runtime, OrbisOrigins will gate all calls behind PluginManager checks.
-    implementation(files("../AbilityAPI/build/libs/AbilityAPI-1.1.0.jar"))
+    // AbilityAPI is invoked via reflection at runtime (see AbilityApiBridge); do not add it as implementation.
 }
 
 hytale {
@@ -97,6 +95,26 @@ idea {
     }
 }
 
+// Sibling AbilityAPI is not on OrbisOrigins' classpath; copy its JAR into run/mods for runServer.
+val abilityApiJar =
+    layout.projectDirectory.dir("../ability-api/build/libs").file("AbilityAPI-1.2.0.jar")
+
+val copyAbilityApiForDev = tasks.register<Copy>("copyAbilityApiForDev") {
+    group = "hytale"
+    description = "Copies ../ability-api/build/libs/AbilityAPI-1.2.0.jar into run/mods for local testing."
+    from(abilityApiJar)
+    into(layout.projectDirectory.dir("run/mods"))
+    onlyIf { abilityApiJar.asFile.exists() }
+    doFirst {
+        if (!abilityApiJar.asFile.exists()) {
+            logger.warn(
+                "AbilityAPI JAR not found at ${abilityApiJar.asFile}. " +
+                    "Run .\\gradlew build in ../ability-api first."
+            )
+        }
+    }
+}
+
 val syncAssets = tasks.register<Copy>("syncAssets") {
     group = "hytale"
     description = "Automatically syncs assets from Build back to Source after server stops."
@@ -119,13 +137,42 @@ val syncAssets = tasks.register<Copy>("syncAssets") {
 }
 
 afterEvaluate {
-    // Now Gradle will find it, because the plugin has finished working
-    val targetTask = tasks.findByName("runServer") ?: tasks.findByName("server")
-
-    if (targetTask != null) {
-        targetTask.finalizedBy(syncAssets)
-        logger.lifecycle("✅ specific task '${targetTask.name}' hooked for auto-sync.")
-    } else {
-        logger.warn("⚠️ Could not find 'runServer' or 'server' task to hook auto-sync into.")
+    val runServerTask = tasks.findByName("runServer") ?: tasks.findByName("server")
+    if (runServerTask == null) {
+        logger.warn("⚠️ Could not find 'runServer' or 'server' task (hytale-mod). syncAssets not hooked.")
+        return@afterEvaluate
     }
+    if (runServerTask !is JavaExec) {
+        logger.warn("⚠️ Task '${runServerTask.name}' is not JavaExec; skipping sync hook and runServerNoSync.")
+        return@afterEvaluate
+    }
+    val runServer = runServerTask as JavaExec
+    // hytale-mod 0.7.x always adds an empty jvmArg when HytaleServer.aot is missing; on Windows Gradle's
+    // JavaExec then fails with "Could not find or load main class" (empty ClassNotFoundException).
+    runServer.jvmArgs = runServer.jvmArgs.filter { it.isNotBlank() }
+    runServer.dependsOn(copyAbilityApiForDev)
+    runServer.finalizedBy(syncAssets)
+    logger.lifecycle("✅ Task '${runServer.name}' finalized by syncAssets (copy build resources back to src on exit).")
+    logger.lifecycle("✅ Task '${runServer.name}' depends on copyAbilityApiForDev.")
+
+    tasks.register<JavaExec>("runServerNoSync") {
+        group = "hytale"
+        description =
+            "Same as runServer but does not run syncAssets afterward — safe when you edit src/main/resources while testing."
+        classpath = runServer.classpath
+        mainClass = runServer.mainClass
+        mainModule = runServer.mainModule
+        modularity.inferModulePath = runServer.modularity.inferModulePath
+        jvmArgs = runServer.jvmArgs.filter { it.isNotBlank() }
+        workingDir = runServer.workingDir
+        args = runServer.args
+        systemProperties = runServer.systemProperties
+        environment = runServer.environment
+        standardInput = runServer.standardInput
+        isIgnoreExitValue = runServer.isIgnoreExitValue
+        javaLauncher = runServer.javaLauncher
+        enableAssertions = runServer.enableAssertions
+        dependsOn(copyAbilityApiForDev)
+    }
+    logger.lifecycle("✅ Task 'runServerNoSync' registered (no post-exit asset sync).")
 }

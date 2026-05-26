@@ -2,6 +2,22 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [2.2.0] - 5/26/2026
+
+### Compatibility
+
+- **Hytale 0.5.0** — Targets Hytale server `^0.5.0` (semver `ServerVersion` in manifest; no longer uses the legacy `YYYY.MM.DD-<sha>` pin). Compile against AbilityAPI 1.2.0 from `ability-api`.
+
+### Changed
+
+- **Math types** — `Vector3d` uses `org.joml`; rotations use `Rotation3f` / `org.joml.Vector3f` where the server API changed (preview entity, sleeping mount packets).
+
+### Fixed
+
+- Species command placeholders (`{player}` / `{username}`) now use `PlayerRef#getUsername()` instead of the removed `Player#getDisplayName()` API.
+- AbilityAPI integration now calls the loaded `hexvane:AbilityAPI` plugin via reflection so species abilities are stored in the same `PlayerAbilityStorage` as `/ability` commands (fixes abilities not applying when switching species).
+- Species abilities are reapplied when a player entity is loaded into the world (`AddReason.LOAD`), not only on first spawn.
+
 ## [2.1.3] - 5/7/2026
 
 ### Fixed

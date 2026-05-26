@@ -15,6 +15,7 @@ import com.hypixel.hytale.server.core.modules.entity.player.PlayerSystems;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hexvane.orbisorigins.ability.AbilityApiBridge;
 import com.hexvane.orbisorigins.data.PlayerSpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesRegistry;
@@ -56,8 +57,8 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
             @Nonnull Store<EntityStore> store,
             @Nonnull CommandBuffer<EntityStore> commandBuffer
     ) {
-        // Only apply on spawn
-        if (reason != AddReason.SPAWN) {
+        // Apply on first spawn and when a saved player is loaded into the world
+        if (reason != AddReason.SPAWN && reason != AddReason.LOAD) {
             return;
         }
 
@@ -96,6 +97,11 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
 
         // Apply stats immediately
         SpeciesStatUtil.applySpeciesStats(ref, store, species);
+
+        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+        if (playerRef != null && AbilityApiBridge.isAvailable() && !species.getAbilities().isEmpty()) {
+            AbilityApiBridge.applySpeciesAbilities(playerRef, ref, store, world, species);
+        }
 
         // Defer model application - the maintenance system will handle ensuring it's correct
         // We still apply it here with a delay, but the maintenance system is the real safety net
