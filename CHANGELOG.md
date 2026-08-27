@@ -2,6 +2,19 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [2.3.0] - 8/27/2026 (Hytale Update 6)
+
+### Compatibility
+
+- **Hytale Update 6** — Targets Hytale server `>=0.6.0-pre.0 <0.7.0`. Compile against AbilityAPI 1.3.0 from `ability-api`. AbilityAPI is an optional plugin dependency so it loads first when present.
+
+### Changed
+
+- **Commands** — `/origins hidemodel` uses `requireNoPermission()` (`canGeneratePermission` is gone).
+- **Inventory** — First-join selector, starter items, and selector consume use `InventoryComponent.getCombined` instead of the deprecated `Inventory` façade.
+- **Custom UI** — Species selection page registers through `OpenCustomUIInteraction.registerCustomPageSupplier` (plugin codec registry) instead of the global `PAGE_CODEC` map.
+- **Sleeping raise** — `MountedComponent.getAttachmentOffset()` is a JOML `Vector3fc` and is passed straight into `MountedUpdate`.
+
 ## [2.2.0] - 5/26/2026
 
 ### Compatibility
@@ -15,8 +28,6 @@ All notable changes to Orbis Origins will be documented in this file.
 ### Fixed
 
 - Species command placeholders (`{player}` / `{username}`) now use `PlayerRef#getUsername()` instead of the removed `Player#getDisplayName()` API.
-- AbilityAPI integration now calls the loaded `hexvane:AbilityAPI` plugin via reflection so species abilities are stored in the same `PlayerAbilityStorage` as `/ability` commands (fixes abilities not applying when switching species).
-- Species abilities are reapplied when a player entity is loaded into the world (`AddReason.LOAD`), not only on first spawn.
 
 ## [2.1.3] - 5/7/2026
 

@@ -33,11 +33,7 @@ public class OriginsHideModelCommand extends AbstractPlayerCommand {
 
     public OriginsHideModelCommand() {
         super("hidemodel", "Hide or show your species model");
-    }
-
-    @Override
-    protected boolean canGeneratePermission() {
-        return false;
+        requireNoPermission();
     }
 
     @Override

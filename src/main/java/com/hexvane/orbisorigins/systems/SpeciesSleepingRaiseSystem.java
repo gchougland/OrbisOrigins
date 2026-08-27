@@ -140,9 +140,12 @@ public class SpeciesSleepingRaiseSystem extends EntityTickingSystem<EntityStore>
                 orientation,
                 blockTypeId
         );
-        Rotation3f attachmentOffset = mounted.getAttachmentOffset();
-        Vector3f netOffset = new Vector3f(attachmentOffset.x, attachmentOffset.y, attachmentOffset.z);
-        MountedUpdate mountedUpdate = new MountedUpdate(0, netOffset, MountController.BlockMount, blockMount);
+        MountedUpdate mountedUpdate = new MountedUpdate(
+                0,
+                mounted.getAttachmentOffset(),
+                MountController.BlockMount,
+                blockMount
+        );
 
         EntityTrackerSystems.Visible visible = store.getComponent(ref, EntityTrackerSystems.Visible.getComponentType());
         if (visible == null || visible.visibleTo.isEmpty()) {

@@ -18,6 +18,7 @@ import com.hypixel.hytale.server.core.asset.type.model.config.Model;
 import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.inventory.InventoryComponent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
 import com.hypixel.hytale.server.core.modules.entity.component.ModelComponent;
@@ -971,9 +972,9 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         SpeciesStatUtil.applySpeciesStats(ref, store, species);
         
         // Give starter items
+        var combinedInventory = InventoryComponent.getCombined(store, ref, InventoryComponent.HOTBAR_FIRST);
         for (String itemId : species.getStarterItems()) {
-            ItemStack itemStack = new ItemStack(itemId, 1);
-            playerComponent.getInventory().getCombinedHotbarFirst().addItemStack(itemStack);
+            combinedInventory.addItemStack(new ItemStack(itemId, 1));
         }
         
         // Store choice with attachment selections and texture selection
@@ -1003,7 +1004,7 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         }
 
         // Consume item from inventory
-        consumeSelectorItem(playerComponent);
+        consumeSelectorItem(ref, store);
         
         // Clean up preview - defer to next tick to avoid race with ChunkSavingSystems during serialization
         if (modelPreview != null && modelPreview.isValid()) {
@@ -1021,28 +1022,13 @@ public class SpeciesSelectionPage extends InteractiveCustomUIPage<SpeciesSelecti
         this.close();
     }
 
-    private void consumeSelectorItem(@Nonnull Player playerComponent) {
-        // Find and remove the species selector item
-        var inventory = playerComponent.getInventory();
-        var hotbar = inventory.getHotbar();
-        
-        // Check hotbar first
-        short hotbarCapacity = hotbar.getCapacity();
-        for (short i = 0; i < hotbarCapacity; i++) {
-            var itemStack = hotbar.getItemStack(i);
+    private void consumeSelectorItem(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store) {
+        var inventory = InventoryComponent.getCombined(store, ref, InventoryComponent.HOTBAR_FIRST);
+        short capacity = inventory.getCapacity();
+        for (short i = 0; i < capacity; i++) {
+            var itemStack = inventory.getItemStack(i);
             if (itemStack != null && "OrbisOrigins_Species_Selector".equals(itemStack.getItemId())) {
-                hotbar.removeItemStackFromSlot(i);
-                return;
-            }
-        }
-        
-        // Check storage inventory if not found in hotbar
-        var storage = inventory.getStorage();
-        short storageCapacity = storage.getCapacity();
-        for (short i = 0; i < storageCapacity; i++) {
-            var itemStack = storage.getItemStack(i);
-            if (itemStack != null && "OrbisOrigins_Species_Selector".equals(itemStack.getItemId())) {
-                storage.removeItemStackFromSlot(i);
+                inventory.removeItemStackFromSlot(i);
                 return;
             }
         }

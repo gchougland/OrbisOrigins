@@ -9,6 +9,7 @@ import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.HolderSystem;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.inventory.InventoryComponent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -95,10 +96,11 @@ public class FirstJoinSystem extends HolderSystem<EntityStore> {
                     Store<EntityStore> playerStore = ref.getStore();
                     Player player = playerStore.getComponent(ref, Player.getComponentType());
                     if (player != null) {
-                        // Give the species selector item
                         ItemStack selectorItem = new ItemStack(SPECIES_SELECTOR_ITEM_ID, 1);
                         LOGGER.info("FirstJoinSystem: Creating item stack: " + SPECIES_SELECTOR_ITEM_ID);
-                        var transaction = player.getInventory().getCombinedHotbarFirst().addItemStack(selectorItem);
+                        var transaction = InventoryComponent.getCombined(
+                                playerStore, ref, InventoryComponent.HOTBAR_FIRST
+                        ).addItemStack(selectorItem);
                         LOGGER.info("FirstJoinSystem: Attempted to give species selector item. Transaction: " + transaction);
                         
                         // Mark that player has received the selector for this world

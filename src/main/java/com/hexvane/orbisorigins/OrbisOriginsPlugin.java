@@ -79,10 +79,11 @@ public class OrbisOriginsPlugin extends JavaPlugin {
         });
         
         // Register the custom UI page supplier
-        OpenCustomUIInteraction.PAGE_CODEC.register(
-                "OrbisOriginsSpeciesSelection",
+        OpenCustomUIInteraction.registerCustomPageSupplier(
+                this,
                 OrbisOriginsPageSupplier.class,
-                OrbisOriginsPageSupplier.CODEC
+                "OrbisOriginsSpeciesSelection",
+                new OrbisOriginsPageSupplier()
         );
         LOGGER.atInfo().log("Registered Orbis Origins custom UI page supplier");
 
