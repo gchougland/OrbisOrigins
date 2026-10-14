@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.hexvane"
-version = "2.3.0"
+version = "2.4.0"
 val javaVersion = 25
 
 repositories {
@@ -97,11 +97,11 @@ idea {
 
 // Sibling AbilityAPI is not on OrbisOrigins' classpath; copy its JAR into run/mods for runServer.
 val abilityApiJar =
-    layout.projectDirectory.dir("../ability-api/build/libs").file("AbilityAPI-1.3.0.jar")
+    layout.projectDirectory.dir("../ability-api/build/libs").file("AbilityAPI-1.4.0.jar")
 
 val copyAbilityApiForDev = tasks.register<Copy>("copyAbilityApiForDev") {
     group = "hytale"
-    description = "Copies ../ability-api/build/libs/AbilityAPI-1.3.0.jar into run/mods for local testing."
+    description = "Copies ../ability-api/build/libs/AbilityAPI-1.4.0.jar into run/mods for local testing."
     from(abilityApiJar)
     into(layout.projectDirectory.dir("run/mods"))
     onlyIf { abilityApiJar.asFile.exists() }

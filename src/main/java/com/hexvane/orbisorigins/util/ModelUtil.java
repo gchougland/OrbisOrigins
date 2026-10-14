@@ -159,7 +159,9 @@ public class ModelUtil {
         }
         
         Model modelToApply = baseModel;
-        boolean needsNewModel = false;
+        // A player wearing this model should not make the creature's idle and movement noises.
+        Map<String, ModelAsset.AnimationSet> animationSets = SpeciesModelSounds.withoutCreatureSounds(baseModel.getAnimationSetMap());
+        boolean needsNewModel = animationSets != baseModel.getAnimationSetMap();
         float newEyeHeight = baseModel.getEyeHeight();
         com.hypixel.hytale.math.shape.Box newBoundingBox = baseModel.getBoundingBox();
         
@@ -202,7 +204,7 @@ public class ModelUtil {
                     baseModel.getCrouchOffset(),
                     baseModel.getSittingOffset(),
                     baseModel.getSleepingOffset(),
-                    baseModel.getAnimationSetMap(),
+                    animationSets,
                     baseModel.getCamera(),
                     baseModel.getLight(),
                     baseModel.getParticles(),
@@ -296,7 +298,7 @@ public class ModelUtil {
                 crouchOffset,
                 sittingOffset,
                 sleepingOffset,
-                parentAsset.getAnimationSetMap(),
+                SpeciesModelSounds.withoutCreatureSounds(parentAsset.getAnimationSetMap()),
                 parentAsset.getCamera(),
                 parentAsset.getLight(),
                 parentAsset.getParticles(),

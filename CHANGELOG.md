@@ -2,6 +2,17 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [2.4.0] - 10/12/2026 (Hytale Update 7)
+
+### Compatibility
+
+- **Hytale Update 7** — Orbis Origins now runs on Hytale Update 7 (0.7.0). Species abilities need AbilityAPI 1.4.0.
+
+### Changed
+
+- **Goblin looks** — Hytale Update 7 redrew the goblin, so the hair, beard and eyebrow options that no longer exist are replaced by its new styles. The Goblin also gets the new skins, outfits and accessories.
+- **Species sounds** — Players no longer make their species' creature noises while running, standing or looking around, such as the zombie's constant grunting. Hurt and death sounds are unchanged.
+
 ## [2.3.0] - 8/27/2026 (Hytale Update 6)
 
 ### Compatibility
