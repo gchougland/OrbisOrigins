@@ -1,0 +1,30 @@
+// A species ability. Java sets #AbIcon.AssetPath, #AbName.Text, #AbTag.Text and #AbDesc.Text.
+Group {
+  LayoutMode: Left;
+  Anchor: (Bottom: 8);
+  Padding: (Full: 8);
+  Background: #140f08(0.7);
+  OutlineSize: 1;
+  OutlineColor: #6b5427;
+
+  Group {
+    Anchor: (Width: 52, Height: 52, Right: 12);
+    OutlineSize: 1;
+    OutlineColor: #E8A93B;
+    AssetImage #AbIcon {
+      Anchor: (Full: 1);
+      AssetPath: "Icons/Abilities/Rune_ChargedShot.png";
+    }
+  }
+
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Top;
+    Group {
+      LayoutMode: Left;
+      Label #AbName { FlexWeight: 1; Text: ""; Style: (FontSize: 16, RenderBold: true, TextColor: #f1c46b); }
+      Label #AbTag { Text: ""; Style: (FontSize: 11, RenderBold: true, RenderUppercase: true, TextColor: #8a7650, VerticalAlignment: Center); }
+    }
+    Label #AbDesc { Anchor: (Top: 2); Text: ""; Style: (FontSize: 14, TextColor: #b9c6d3, Wrap: true); }
+  }
+}

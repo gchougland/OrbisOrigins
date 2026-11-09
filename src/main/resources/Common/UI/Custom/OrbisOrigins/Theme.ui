@@ -1,0 +1,36 @@
+// Orbis Origins: shared colours and styles for the species page and its rows.
+$C = "../Common.ui";
+
+@Gold = #E8A93B;
+@TileBg = #18222f(0.92);
+@TileHover = #24364a(0.95);
+@TileOutline = #2b3a4d;
+@SelectedBg = #2a2210(0.92);
+
+@TileStyle = ButtonStyle(
+  Default: (Background: #18222f(0.92)),
+  Hovered: (Background: #24364a(0.95)),
+  Pressed: (Background: #2a2210(0.92)),
+  Sounds: $C.@ButtonSounds
+);
+
+@CaptionStyle = LabelStyle(FontSize: 13, RenderBold: true, RenderUppercase: true, TextColor: #96a9be, LetterSpacing: 1);
+
+// Section heading with a thin rule under it.
+@Section = Group {
+  @Text = "";
+  LayoutMode: Top;
+  Anchor: (Top: 10, Bottom: 8);
+  Label { Text: @Text; Style: @CaptionStyle; }
+  Group { Anchor: (Height: 1, Top: 4); Background: #393426(0.8); }
+};
+
+// A gold ring drawn over a tile when it is selected.
+@Ring = Group {
+  Anchor: (Full: 0);
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Background: #E8A93B(0.10);
+  HitTestVisible: false;
+  Visible: false;
+};

@@ -1,0 +1,212 @@
+// Mockup A: "Avatar Studio". Vanilla-avatar-style editor on the left, the live in-world
+// preview in the open middle, a character sheet on the right.
+$C = "../Common.ui";
+$K = "Kit.ui";
+
+Group #Root {
+  Anchor: (Full: 0);
+
+  // Stand-in for the in-world preview entity (not part of the real page).
+  Group #PreviewStandIn {
+    Anchor: (Left: 860, Top: 170, Width: 472, Height: 520);
+    Background: "Img/Hero_Trork.png";
+  }
+
+  // Rotate / randomize bar under the preview.
+  Group {
+    LayoutMode: Left;
+    Anchor: (Left: 950, Top: 760, Width: 300, Height: 44);
+    $K.@IconBtn { @Icon = "Img/ArrowL.png"; }
+    $K.@IconBtn { @Icon = "Img/ArrowR.png"; }
+    Group { Anchor: (Width: 16); }
+    $C.@SecondaryTextButton #Randomize { @Text = "RANDOMIZE"; @Anchor = (Width: 172); }
+  }
+
+  // ---------- Left: editor ----------
+  $C.@DecoratedContainer #Editor {
+    Anchor: (Left: 50, Top: 80, Width: 770, Height: 770);
+
+    #Title {
+      $C.@Title { @Text = "Choose Your Origin"; }
+    }
+
+    #Content {
+      LayoutMode: Left;
+
+      // Species rail
+      Group {
+        Anchor: (Width: 84);
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: (Spacing: 0, Size: 0);
+        Padding: (Right: 8);
+        $K.@SpeciesOn { @Img = "Img/P_Trork.png"; }
+        $K.@Species { @Img = "Img/P_Feran.png"; }
+        $K.@Species { @Img = "Img/P_Kweebec.png"; }
+        $K.@Species { @Img = "Img/P_Goblin.png"; }
+        $K.@Species { @Img = "Img/P_Outlander.png"; }
+        $K.@Species { @Img = "Img/P_Undead.png"; }
+        $K.@Species { @Img = "Img/P_FenStalker.png"; }
+        $K.@Species { @Img = "Img/P_GolemEarth.png"; }
+        $K.@Species { @Img = "Img/P_GolemFlame.png"; }
+        $K.@Species { @Img = "Img/P_GolemFrost.png"; }
+        $K.@Species { @Img = "Img/P_GolemThunder.png"; }
+      }
+
+      Group { Anchor: (Width: 2, Right: 8); Background: #2b3542; }
+
+      // Category rail
+      Group {
+        Anchor: (Width: 64);
+        LayoutMode: Top;
+        $K.@Cat { @Icon = "Img/C_Body.png"; }
+        $K.@CatOn { @Icon = "Img/C_HairOn.png"; }
+        $K.@Cat { @Icon = "Img/C_Beard.png"; }
+        $K.@Cat { @Icon = "Img/C_Eyes.png"; }
+        $K.@Cat { @Icon = "Img/C_Eyebrows.png"; }
+        $K.@Cat { @Icon = "Img/C_Mouth.png"; }
+        $K.@Cat { @Icon = "Img/C_Head.png"; }
+        $K.@Cat { @Icon = "Img/C_Chest.png"; }
+        $K.@Cat { @Icon = "Img/C_Neck.png"; }
+        $K.@Cat { @Icon = "Img/C_Hands.png"; }
+        $K.@Cat { @Icon = "Img/C_Feet.png"; }
+      }
+
+      // Options column
+      Group {
+        FlexWeight: 1;
+        LayoutMode: Top;
+        Padding: (Left: 12);
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 30);
+          Label { Text: "TRORK"; Style: (FontName: "Secondary", FontSize: 17, RenderBold: true, TextColor: #d1dae6, VerticalAlignment: Center); }
+          Label { Text: "  /  "; Style: (FontSize: 16, TextColor: #5f6f82, VerticalAlignment: Center); }
+          Label { Text: "HAIR"; Style: (FontName: "Secondary", FontSize: 17, RenderBold: true, TextColor: #E8A93B, VerticalAlignment: Center); }
+          Group { FlexWeight: 1; }
+          Label { Text: "4 STYLES  -  21 COLOURS"; Style: (FontSize: 12, RenderBold: true, TextColor: #5f6f82, VerticalAlignment: Center); }
+        }
+
+        $C.@TextField #Search {
+          Anchor: (Height: 34, Top: 8, Bottom: 12);
+          PlaceholderText: "Search";
+        }
+
+        Group {
+          LayoutMode: LeftWrap;
+          $K.@ThumbNone { @Size = 118; }
+          $K.@ThumbOn { @Size = 118; @Img = "Img/T_Hair_Mohawk.png"; }
+          $K.@Thumb { @Size = 118; @Img = "Img/T_Hair_Braids.png"; }
+          $K.@Thumb { @Size = 118; @Img = "Img/T_Hair_Samurai.png"; }
+          $K.@Thumb { @Size = 118; @Img = "Img/T_Hair_Cross.png"; }
+        }
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 26, Top: 4);
+          Label { Text: "Mohawk"; Style: (FontSize: 18, RenderBold: true, TextColor: #f1e3c4, VerticalAlignment: Center); }
+          Group { FlexWeight: 1; }
+          Label { Text: "Blond"; Style: (FontSize: 14, RenderBold: true, TextColor: #8a7650, VerticalAlignment: Center); }
+        }
+
+        $K.@Section { @Text = "Colour"; }
+        Group {
+          LayoutMode: LeftWrap;
+          Anchor: (Height: 44);
+          $K.@Swatch { @Color = #1c1a24; }
+          $K.@Swatch { @Color = #3b2a1e; }
+          $K.@Swatch { @Color = #6b4428; }
+          $K.@Swatch { @Color = #8f5a2c; }
+          $K.@SwatchOn { @Color = #d6a55a; }
+          $K.@Swatch { @Color = #e6cf8d; }
+          $K.@Swatch { @Color = #b8432f; }
+          $K.@Swatch { @Color = #7a2a22; }
+          $K.@Swatch { @Color = #c7c7c7; }
+          $K.@Swatch { @Color = #f2efe6; }
+          $K.@Swatch { @Color = #3c5a3a; }
+          $K.@Swatch { @Color = #2f4a6b; }
+          $K.@Swatch { @Color = #5e3f6e; }
+          $K.@Swatch { @Color = #a35b7a; }
+        }
+
+        $K.@Section { @Text = "Skin"; }
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 40);
+          $K.@Swatch { @Color = #5d7a8f; }
+          $K.@Swatch { @Color = #3f5566; }
+          $K.@SwatchOn { @Color = #b5532e; }
+          $K.@Swatch { @Color = #6f8a4a; }
+          $K.@Swatch { @Color = #8a6d4f; }
+          $K.@Swatch { @Color = #a5a0a6; }
+          Group { FlexWeight: 1; }
+          Label { Text: "Chieftain"; Style: (FontSize: 14, RenderBold: true, TextColor: #d1dae6, VerticalAlignment: Center); }
+        }
+      }
+    }
+  }
+
+  // ---------- Right: character sheet ----------
+  $C.@Container #Sheet {
+    Anchor: (Right: 50, Top: 80, Width: 470, Height: 700);
+
+    #Title {
+      $C.@Title { @Text = "Character Sheet"; }
+    }
+
+    #Content {
+      LayoutMode: Top;
+
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 84);
+        Group { Anchor: (Width: 80, Height: 80, Right: 14); Background: "Img/P_Trork.png"; OutlineSize: 2; OutlineColor: #E8A93B; }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Middle;
+          Label { Text: "Trork"; Style: (FontName: "Secondary", FontSize: 28, RenderBold: true, RenderUppercase: true, TextColor: #f1e3c4); }
+          Label { Text: "Brute  -  Zone 1 Highlands"; Style: (FontSize: 14, RenderBold: true, TextColor: #8a7650); }
+        }
+      }
+
+      Label {
+        Anchor: (Top: 10);
+        Text: "A large, brutish warrior. Much higher health and physical resistance.";
+        Style: (FontSize: 15, TextColor: #b9c6d3, Wrap: true);
+      }
+
+      $K.@Section { @Text = "Attributes"; }
+      $K.@Stat { @Icon = "Img/S_Health.png"; @Name = "Health"; @Val = "+40"; @ValColor = #7fd36b; @Fill = 170; @BarColor = #c94b4b; }
+      $K.@Stat { @Icon = "Img/S_Stamina.png"; @Name = "Stamina"; @Val = "-5"; @ValColor = #e36b5b; @Fill = 80; @BarColor = #d9a63a; }
+      $K.@Stat { @Icon = "Img/S_Mana.png"; @Name = "Mana"; @Val = "0"; @ValColor = #96a9be; @Fill = 100; @BarColor = #4f7fd9; }
+
+      $K.@Section { @Text = "Resistances"; }
+      Group {
+        LayoutMode: LeftWrap;
+        $K.@Resist { @Icon = "Img/S_Physical.png"; @Text = "Physical -25%"; }
+        $K.@Resist { @Icon = "Img/S_Burn.png"; @Text = "Fire  -"; @TextColor = #96a9be; }
+      }
+
+      $K.@Section { @Text = "Abilities"; }
+      $K.@Ability { @Icon = "Img/A_Rune_Enrage.png"; @Name = "Berserker Fury"; @Tag = "Below 50% HP"; @Desc = "Deal 20% more damage when below half health."; }
+
+      $K.@Section { @Text = "Starter Kit"; }
+      Group {
+        LayoutMode: Left;
+        $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Head.png"; }
+        $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Chest.png"; }
+        $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Hands.png"; }
+        $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Legs.png"; }
+        $K.@Item { @Img = "Img/I_Weapon_Sword_Stone_Trork.png"; }
+      }
+    }
+  }
+
+  // ---------- Bottom-right actions ----------
+  Group {
+    LayoutMode: Right;
+    Anchor: (Right: 50, Top: 806, Width: 470, Height: 44);
+    $C.@TextButton #Confirm { @Text = "BECOME TRORK"; @Anchor = (Width: 250); }
+    Group { Anchor: (Width: 10); }
+    $C.@CancelTextButton #Cancel { @Text = "CANCEL"; @Anchor = (Width: 180); }
+  }
+}

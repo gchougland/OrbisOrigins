@@ -1,0 +1,17 @@
+// The "nothing in this slot" tile at the start of a grid. Java sets #TileRing.Visible.
+$T = "Theme.ui";
+
+Button {
+  Anchor: (Width: 116, Height: 116, Right: 8, Bottom: 8);
+  Style: $T.@TileStyle;
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+
+  Label {
+    Text: %server.customUI.orbisOrigins.none;
+    Style: (FontSize: 13, RenderBold: true, RenderUppercase: true, TextColor: #5f6f82, HorizontalAlignment: Center, VerticalAlignment: Center);
+    HitTestVisible: false;
+  }
+
+  $T.@Ring #TileRing {}
+}

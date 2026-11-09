@@ -25,6 +25,7 @@ public class PlayerDataStorage {
     private static final String DATA_FILE_NAME = "player_species_data.json";
     private static final String FIRST_JOIN_FILE_NAME = "first_join_tracking.json";
     private static final String SPECIES_MODEL_HIDDEN_FILE_NAME = "species_model_hidden.json";
+    private static final String ABILITIES_DISABLED_FILE_NAME = "abilities_disabled.json";
 
     private static Path dataDirectory;
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -37,6 +38,9 @@ public class PlayerDataStorage {
 
     // In-memory cache: player UUID -> species model hidden (persisted so maintenance skips re-apply)
     private static final Map<UUID, Boolean> SPECIES_MODEL_HIDDEN = new ConcurrentHashMap<>();
+
+    // In-memory cache: player UUID -> racial abilities switched off by the player
+    private static final Map<UUID, Boolean> ABILITIES_DISABLED = new ConcurrentHashMap<>();
     
     /**
      * Initialize the storage system with the plugin's data directory.
@@ -50,7 +54,8 @@ public class PlayerDataStorage {
             // Load existing data
             loadSpeciesData();
             loadFirstJoinData();
-            loadSpeciesModelHidden();
+            loadFlags(SPECIES_MODEL_HIDDEN_FILE_NAME, SPECIES_MODEL_HIDDEN);
+            loadFlags(ABILITIES_DISABLED_FILE_NAME, ABILITIES_DISABLED);
 
             LOGGER.info("PlayerDataStorage initialized. Loaded data for " + SPECIES_STORAGE.size() + " players");
         } catch (IOException e) {
@@ -65,7 +70,8 @@ public class PlayerDataStorage {
     public static void saveAll() {
         saveSpeciesData();
         saveFirstJoinData();
-        saveSpeciesModelHidden();
+        saveFlags(SPECIES_MODEL_HIDDEN_FILE_NAME, SPECIES_MODEL_HIDDEN);
+        saveFlags(ABILITIES_DISABLED_FILE_NAME, ABILITIES_DISABLED);
     }
 
     // ========== Species Model Hidden (per-player preference) ==========
@@ -76,7 +82,18 @@ public class PlayerDataStorage {
 
     public static void setSpeciesModelHidden(@Nonnull UUID playerId, boolean hidden) {
         SPECIES_MODEL_HIDDEN.put(playerId, hidden);
-        saveSpeciesModelHidden();
+        saveFlags(SPECIES_MODEL_HIDDEN_FILE_NAME, SPECIES_MODEL_HIDDEN);
+    }
+
+    // ========== Racial abilities switched off (per-player preference) ==========
+
+    public static boolean getAbilitiesDisabled(@Nonnull UUID playerId) {
+        return Boolean.TRUE.equals(ABILITIES_DISABLED.get(playerId));
+    }
+
+    public static void setAbilitiesDisabled(@Nonnull UUID playerId, boolean disabled) {
+        ABILITIES_DISABLED.put(playerId, disabled);
+        saveFlags(ABILITIES_DISABLED_FILE_NAME, ABILITIES_DISABLED);
     }
     
     // ========== Species Selection Storage (server-wide, one per player) ==========
@@ -299,11 +316,12 @@ public class PlayerDataStorage {
         }
     }
 
-    private static void loadSpeciesModelHidden() {
+    /** Reads a file of player UUID -> true into the given map. */
+    private static void loadFlags(@Nonnull String fileName, @Nonnull Map<UUID, Boolean> into) {
         if (dataDirectory == null) {
             return;
         }
-        Path dataFile = dataDirectory.resolve(SPECIES_MODEL_HIDDEN_FILE_NAME);
+        Path dataFile = dataDirectory.resolve(fileName);
         if (!Files.exists(dataFile)) {
             return;
         }
@@ -315,36 +333,36 @@ public class PlayerDataStorage {
             TypeToken<Map<String, Boolean>> typeToken = new TypeToken<Map<String, Boolean>>() {};
             Map<String, Boolean> loaded = GSON.fromJson(json, typeToken.getType());
             if (loaded != null) {
-                SPECIES_MODEL_HIDDEN.clear();
+                into.clear();
                 for (Map.Entry<String, Boolean> e : loaded.entrySet()) {
                     try {
-                        SPECIES_MODEL_HIDDEN.put(UUID.fromString(e.getKey()), Boolean.TRUE.equals(e.getValue()));
+                        into.put(UUID.fromString(e.getKey()), Boolean.TRUE.equals(e.getValue()));
                     } catch (IllegalArgumentException ignored) {
                         // skip invalid UUID
                     }
                 }
             }
+            LOGGER.info("Loaded " + into.size() + " entries from " + fileName);
         } catch (Exception e) {
-            LOGGER.warning("Failed to load species model hidden data: " + e.getMessage());
+            LOGGER.warning("Failed to load " + fileName + ": " + e.getMessage());
         }
     }
 
-    private static void saveSpeciesModelHidden() {
+    /** Writes the players whose flag is true. */
+    private static synchronized void saveFlags(@Nonnull String fileName, @Nonnull Map<UUID, Boolean> flags) {
         if (dataDirectory == null) {
             return;
         }
         try {
             Map<String, Boolean> toSave = new HashMap<>();
-            for (Map.Entry<UUID, Boolean> e : SPECIES_MODEL_HIDDEN.entrySet()) {
+            for (Map.Entry<UUID, Boolean> e : flags.entrySet()) {
                 if (Boolean.TRUE.equals(e.getValue())) {
                     toSave.put(e.getKey().toString(), true);
                 }
             }
-            Path dataFile = dataDirectory.resolve(SPECIES_MODEL_HIDDEN_FILE_NAME);
-            String json = GSON.toJson(toSave);
-            Files.writeString(dataFile, json);
+            Files.writeString(dataDirectory.resolve(fileName), GSON.toJson(toSave));
         } catch (Exception e) {
-            LOGGER.severe("Failed to save species model hidden data: " + e.getMessage());
+            LOGGER.severe("Failed to save " + fileName + ": " + e.getMessage());
         }
     }
 

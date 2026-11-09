@@ -1,0 +1,195 @@
+// Orbis Origins mockup kit: shared colours, styles and templates.
+$C = "../Common.ui";
+
+@Gold = #E8A93B;
+@Ink = #d1dae6;
+@Muted = #96a9be;
+@Dim = #5f6f82;
+@TileBg = #18222f(0.92);
+@TileHover = #24364a(0.95);
+@Panel = #0a111a(0.72);
+@Good = #7fd36b;
+@Bad = #e36b5b;
+
+@H1 = LabelStyle(FontName: "Secondary", FontSize: 30, RenderBold: true, RenderUppercase: true, TextColor: #f1e3c4, LetterSpacing: 1);
+@H2 = LabelStyle(FontName: "Secondary", FontSize: 18, RenderBold: true, RenderUppercase: true, TextColor: #d1dae6);
+@Caption = LabelStyle(FontSize: 13, RenderBold: true, RenderUppercase: true, TextColor: #96a9be, LetterSpacing: 1);
+@Body = LabelStyle(FontSize: 15, TextColor: #b9c6d3, Wrap: true);
+@Small = LabelStyle(FontSize: 13, TextColor: #96a9be);
+@Value = LabelStyle(FontSize: 15, RenderBold: true, TextColor: #d1dae6, HorizontalAlignment: End);
+
+// A square cosmetic tile with a rendered thumbnail.
+@Thumb = Button {
+  @Img = "";
+  @Size = 92;
+  Anchor: (Width: @Size, Height: @Size, Right: 8, Bottom: 8);
+  Style: (Default: (Background: @TileBg), Hovered: (Background: @TileHover), Pressed: (Background: @TileHover));
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  Group { Anchor: (Full: 6); Background: @Img; }
+};
+
+@ThumbOn = Button {
+  @Img = "";
+  @Size = 92;
+  Anchor: (Width: @Size, Height: @Size, Right: 8, Bottom: 8);
+  Style: (Default: (Background: #2a2210(0.9)), Hovered: (Background: #3a2e14(0.95)));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Full: 6); Background: @Img; }
+};
+
+// "None" tile.
+@ThumbNone = Button {
+  @Size = 92;
+  Anchor: (Width: @Size, Height: @Size, Right: 8, Bottom: 8);
+  Style: (Default: (Background: @TileBg), Hovered: (Background: @TileHover));
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  Label { Text: "NONE"; Style: (FontSize: 13, RenderBold: true, TextColor: #5f6f82, HorizontalAlignment: Center, VerticalAlignment: Center); }
+};
+
+// Category icon button (vertical rail).
+@Cat = Button {
+  @Icon = "";
+  Anchor: (Width: 56, Height: 56, Bottom: 6);
+  Style: (Default: (Background: #0d1520(0.6)), Hovered: (Background: #1b2a3c(0.9)));
+  Group { Anchor: (Width: 36, Height: 36); Background: @Icon; }
+};
+
+@CatOn = Button {
+  @Icon = "";
+  Anchor: (Width: 56, Height: 56, Bottom: 6);
+  Style: (Default: (Background: #2a2210(0.9)));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Width: 36, Height: 36); Background: @Icon; }
+};
+
+// Species portrait tile.
+@Species = Button {
+  @Img = "";
+  @Size = 72;
+  Anchor: (Width: @Size, Height: @Size, Bottom: 8);
+  Style: (Default: (Background: @TileBg), Hovered: (Background: @TileHover));
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  Group { Anchor: (Full: 4); Background: @Img; }
+};
+
+@SpeciesOn = Button {
+  @Img = "";
+  @Size = 72;
+  Anchor: (Width: @Size, Height: @Size, Bottom: 8);
+  Style: (Default: (Background: #2a2210(0.9)));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Full: 4); Background: @Img; }
+};
+
+// Colour swatch.
+@Swatch = Button {
+  @Color = #ffffff;
+  Anchor: (Width: 34, Height: 34, Right: 6, Bottom: 6);
+  Style: (Default: (Background: #0d1520), Hovered: (Background: #24364a));
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  Group { Anchor: (Full: 4); Background: @Color; }
+};
+
+@SwatchOn = Button {
+  @Color = #ffffff;
+  Anchor: (Width: 34, Height: 34, Right: 6, Bottom: 6);
+  Style: (Default: (Background: #E8A93B));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Full: 4); Background: @Color; }
+};
+
+// A stat line: icon, name, value, bar. @Fill is the bar width out of 200.
+@Stat = Group {
+  @Icon = "";
+  @Name = "";
+  @Val = "";
+  @ValColor = #d1dae6;
+  @Fill = 100;
+  @BarColor = #c94b4b;
+  LayoutMode: Left;
+  Anchor: (Height: 30, Bottom: 6);
+  Group { Anchor: (Width: 26, Height: 26, Right: 10); Background: @Icon; }
+  Label { Anchor: (Width: 92); Text: @Name; Style: (FontSize: 15, RenderBold: true, TextColor: #b9c6d3, VerticalAlignment: Center); }
+  Group {
+    Anchor: (Width: 200, Height: 10);
+    Background: #05090e(0.9);
+    OutlineSize: 1;
+    OutlineColor: #2b3a4d;
+    Group { Anchor: (Left: 1, Top: 1, Bottom: 1, Width: @Fill); Background: @BarColor; }
+  }
+  Label { FlexWeight: 1; Text: @Val; Style: (FontSize: 15, RenderBold: true, TextColor: @ValColor, HorizontalAlignment: End, VerticalAlignment: Center); }
+};
+
+// A resistance chip.
+@Resist = Group {
+  @Icon = "";
+  @Text = "";
+  @TextColor = #7fd36b;
+  LayoutMode: Left;
+  Anchor: (Height: 32, Right: 8, Bottom: 8);
+  Padding: (Horizontal: 8);
+  Background: #0d1520(0.85);
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  Group { Anchor: (Width: 20, Height: 20, Right: 6); Background: @Icon; }
+  Label { Text: @Text; Style: (FontSize: 14, RenderBold: true, TextColor: @TextColor, VerticalAlignment: Center); }
+};
+
+// An ability card.
+@Ability = Group {
+  @Icon = "";
+  @Name = "";
+  @Desc = "";
+  @Tag = "";
+  LayoutMode: Left;
+  Anchor: (Bottom: 8);
+  Padding: (Full: 8);
+  Background: #140f08(0.7);
+  OutlineSize: 1;
+  OutlineColor: #6b5427;
+  Group { Anchor: (Width: 52, Height: 52, Right: 12); Background: @Icon; OutlineSize: 1; OutlineColor: #E8A93B; }
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Top;
+    Group {
+      LayoutMode: Left;
+      Label { Text: @Name; Style: (FontSize: 16, RenderBold: true, TextColor: #f1c46b); }
+      Group { FlexWeight: 1; }
+      Label { Text: @Tag; Style: (FontSize: 11, RenderBold: true, RenderUppercase: true, TextColor: #8a7650, VerticalAlignment: Center); }
+    }
+    Label { Text: @Desc; Style: (FontSize: 14, TextColor: #b9c6d3, Wrap: true); Anchor: (Top: 2); }
+  }
+};
+
+// Starter item slot.
+@Item = Group {
+  @Img = "";
+  Anchor: (Width: 52, Height: 52, Right: 6);
+  Background: (TexturePath: "../Common/IngredientSlot.png", Border: 6);
+  Group { Anchor: (Full: 5); Background: @Img; }
+};
+
+// Section heading with a thin rule under it.
+@Section = Group {
+  @Text = "";
+  LayoutMode: Top;
+  Anchor: (Top: 10, Bottom: 8);
+  Label { Text: @Text; Style: @Caption; }
+  Group { Anchor: (Height: 1, Top: 4); Background: #393426(0.8); }
+};
+
+// Small square icon button (rotate, randomize ...).
+@IconBtn = Button {
+  @Icon = "";
+  Anchor: (Width: 44, Height: 44, Right: 6);
+  Style: (Default: (Background: (TexturePath: "../Common/Buttons/Secondary.png", Border: 12)), Hovered: (Background: (TexturePath: "../Common/Buttons/Secondary_Hovered.png", Border: 12)));
+  Group { Anchor: (Width: 20, Height: 20); Background: @Icon; }
+};

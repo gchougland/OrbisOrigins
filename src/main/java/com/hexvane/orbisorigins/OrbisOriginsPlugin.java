@@ -12,7 +12,10 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.OpenCustomUIInteraction;
 import com.hypixel.hytale.server.core.util.Config;
 import com.hexvane.orbisorigins.config.OrbisOriginsConfig;
+import com.hexvane.orbisorigins.generated.HstatsBuildMetadata;
+import com.hexvane.orbisorigins.gui.DisplayItems;
 import com.hexvane.orbisorigins.gui.OrbisOriginsPageSupplier;
+import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hexvane.orbisorigins.species.SpeciesData;
 import com.hexvane.orbisorigins.species.SpeciesLoader;
 import com.hexvane.orbisorigins.species.SpeciesRegistry;
@@ -37,6 +40,8 @@ public class OrbisOriginsPlugin extends JavaPlugin {
     private static final String SPECIES_SELECTOR_RECIPE_ID = "OrbisOrigins_Species_Selector_Recipe_Generated_0";
 
     @Nonnull
+    @Nullable
+    private com.hexvane.orbisorigins.ability.AbilityKey abilityKey;
     private final Config<OrbisOriginsConfig> config = this.withConfig("config", OrbisOriginsConfig.CODEC);
 
 
@@ -48,6 +53,8 @@ public class OrbisOriginsPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
+        logHstats();
+
         // Log initial AbilityAPI presence at setup (mods may still load afterwards)
         PluginIdentifier abilityApiId = PluginIdentifier.fromString("hexvane:AbilityAPI");
         boolean initialPresent = PluginManager.get() != null && PluginManager.get().getPlugin(abilityApiId) != null;
@@ -78,6 +85,12 @@ public class OrbisOriginsPlugin extends JavaPlugin {
             }
         });
         
+        // Live 3D previews on the species page need a display item per cosmetic; make them once items exist.
+        this.getEventRegistry().register(LoadedAssetsEvent.class, Item.class, this::onItemsLoaded);
+
+        // Crouch + O (the game mode key) toggles racial abilities
+        abilityKey = new com.hexvane.orbisorigins.ability.AbilityKey();
+
         // Register the custom UI page supplier
         OpenCustomUIInteraction.registerCustomPageSupplier(
                 this,
@@ -169,9 +182,44 @@ public class OrbisOriginsPlugin extends JavaPlugin {
         }
     }
     
+    private boolean syncingDisplayItems;
+
+    private void onItemsLoaded(@Nonnull LoadedAssetsEvent<String, Item, DefaultAssetMap<String, Item>> event) {
+        syncDisplayItems();
+    }
+
+    private void syncDisplayItems() {
+        if (syncingDisplayItems) return; // our own registration fires this event again
+        syncingDisplayItems = true;
+        try {
+            DisplayItems.syncAll();
+        } catch (RuntimeException e) {
+            LOGGER.atWarning().withCause(e).log("Could not register species preview items");
+        } finally {
+            syncingDisplayItems = false;
+        }
+    }
+
+    private void logHstats() {
+        String hstatsModUuid = HstatsBuildMetadata.HSTATS_MOD_UUID;
+        String modVersion = this.getManifest().getVersion().toString();
+        if (!hstatsModUuid.isBlank()) {
+            new HStats(hstatsModUuid, modVersion);
+            LOGGER.atInfo().log("HStats metrics enabled for Orbis Origins v%s.", modVersion);
+        } else {
+            LOGGER.atInfo().log(
+                "HStats metrics disabled: set ORBISORIGINS_HSTATS_MOD_UUID when building, or Gradle property hstats_mod_uuid (gradle.properties / -Phstats_mod_uuid=...), to your hstats.dev mod UUID at build time to enable."
+            );
+        }
+    }
+
     @Override
     protected void shutdown() {
         // Save all player data before shutdown
+        if (abilityKey != null) {
+            abilityKey.close();
+            abilityKey = null;
+        }
         com.hexvane.orbisorigins.data.PlayerDataStorage.saveAll();
         LOGGER.atInfo().log("Saved all player data on shutdown");
     }

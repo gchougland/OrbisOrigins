@@ -1,0 +1,6 @@
+$K = "CatBase.ui";
+
+$K.@CatTile {
+  @Off = "Icons/BodyCharacteristic.png";
+  @On = "Icons/BodyCharacteristic.png";
+}

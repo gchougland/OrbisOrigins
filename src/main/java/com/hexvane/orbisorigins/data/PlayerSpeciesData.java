@@ -250,4 +250,17 @@ public class PlayerSpeciesData {
             PlayerDataStorage.setSpeciesModelHidden(playerId, hidden);
         }
     }
+
+    /** Whether the player has switched their racial abilities off. Persisted across restarts. */
+    public static boolean getAbilitiesDisabled(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store) {
+        UUID playerId = getPlayerUuid(ref, store);
+        return playerId != null && PlayerDataStorage.getAbilitiesDisabled(playerId);
+    }
+
+    public static void setAbilitiesDisabled(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, boolean disabled) {
+        UUID playerId = getPlayerUuid(ref, store);
+        if (playerId != null) {
+            PlayerDataStorage.setAbilitiesDisabled(playerId, disabled);
+        }
+    }
 }

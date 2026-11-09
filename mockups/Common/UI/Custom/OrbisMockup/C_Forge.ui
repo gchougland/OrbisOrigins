@@ -1,0 +1,217 @@
+// Mockup C: "Hero Forge". The world and the preview stay the star: light floating panels,
+// a species carousel along the bottom, stats on the left, wardrobe on the right.
+$C = "../Common.ui";
+$K = "Kit.ui";
+
+@Glass = Group {
+  Background: #0a111a(0.78);
+  OutlineSize: 1;
+  OutlineColor: #3a4a5e(0.8);
+};
+
+@BigStat = Group {
+  @Icon = "";
+  @Num = "";
+  @Delta = "";
+  @DeltaColor = #7fd36b;
+  @Name = "";
+  Anchor: (Width: 112, Height: 104, Right: 8);
+  LayoutMode: Top;
+  Padding: (Top: 10);
+  Background: #18222f(0.9);
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  Group { Anchor: (Width: 30, Height: 30); Background: @Icon; }
+  Label { Text: @Num; Anchor: (Top: 2); Style: (FontName: "Secondary", FontSize: 24, RenderBold: true, TextColor: #f1e3c4, HorizontalAlignment: Center); }
+  Label { Text: @Delta; Style: (FontSize: 12, RenderBold: true, TextColor: @DeltaColor, HorizontalAlignment: Center); }
+  Label { Text: @Name; Style: (FontSize: 11, RenderBold: true, RenderUppercase: true, TextColor: #5f6f82, HorizontalAlignment: Center); }
+};
+
+@Tab = Button {
+  @Icon = "";
+  Anchor: (Width: 48, Height: 48, Right: 6, Bottom: 6);
+  Style: (Default: (Background: #18222f(0.6)), Hovered: (Background: #24364a(0.95)));
+  Group { Anchor: (Width: 30, Height: 30); Background: @Icon; }
+};
+
+@TabOn = Button {
+  @Icon = "";
+  Anchor: (Width: 48, Height: 48, Right: 6, Bottom: 6);
+  Style: (Default: (Background: #2a2210(0.92)));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Width: 30, Height: 30); Background: @Icon; }
+};
+
+@Pick = Button {
+  @Img = "";
+  Anchor: (Width: 64, Height: 64, Horizontal: 4);
+  Style: (Default: (Background: #0a111a(0.8)), Hovered: (Background: #24364a(0.95)));
+  OutlineSize: 1;
+  OutlineColor: #3a4a5e;
+  Group { Anchor: (Full: 3); Background: @Img; }
+};
+
+@PickOn = Button {
+  @Img = "";
+  Anchor: (Width: 84, Height: 84, Horizontal: 6);
+  Style: (Default: (Background: #2a2210(0.92)));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Full: 3); Background: @Img; }
+};
+
+Group #Root {
+  Anchor: (Full: 0);
+
+  // Soft vignette at the top and bottom so text reads over any world.
+  Group { Anchor: (Top: 0, Height: 170); Background: #000000(0.35); }
+  Group { Anchor: (Bottom: 0, Height: 170); Background: #000000(0.35); }
+
+  Group #PreviewStandIn {
+    Anchor: (Left: 700, Top: 220, Width: 520, Height: 573);
+    Background: "Img/Hero_Trork.png";
+  }
+
+  // ---- Title ----
+  Group {
+    LayoutMode: Top;
+    Anchor: (Top: 34, Height: 140, Left: 560, Right: 560);
+    Label { Text: "Trork"; Style: (FontName: "Secondary", FontSize: 52, RenderBold: true, RenderUppercase: true, TextColor: #f1e3c4, HorizontalAlignment: Center, LetterSpacing: 2); }
+    Label { Text: "BRUTE OF THE HIGHLANDS"; Style: (FontSize: 14, RenderBold: true, TextColor: #b08d4a, HorizontalAlignment: Center, LetterSpacing: 2); }
+    Group {
+      LayoutMode: Center;
+      Anchor: (Height: 40, Top: 12);
+      $K.@IconBtn { @Icon = "Img/ArrowL.png"; Anchor: (Width: 36, Height: 36, Right: 12); }
+      Label { Anchor: (Width: 180); Text: "Chieftain  3 / 8"; Style: (FontSize: 16, RenderBold: true, TextColor: #d1dae6, HorizontalAlignment: Center, VerticalAlignment: Center); }
+      $K.@IconBtn { @Icon = "Img/ArrowR.png"; Anchor: (Width: 36, Height: 36, Left: 12); }
+    }
+  }
+
+  // ---- Left: stats ----
+  @Glass #Stats {
+    Anchor: (Left: 40, Top: 200, Width: 400, Height: 560);
+    LayoutMode: Top;
+    Padding: (Full: 18);
+
+    Label { Text: "A large, brutish warrior. Much higher health and physical resistance."; Style: (FontSize: 15, TextColor: #b9c6d3, Wrap: true); }
+
+    Group {
+      LayoutMode: Left;
+      Anchor: (Top: 16, Height: 104);
+      @BigStat { @Icon = "Img/S_Health.png"; @Num = "140"; @Delta = "+40"; @Name = "Health"; }
+      @BigStat { @Icon = "Img/S_Stamina.png"; @Num = "95"; @Delta = "-5"; @DeltaColor = #e36b5b; @Name = "Stamina"; }
+      @BigStat { @Icon = "Img/S_Mana.png"; @Num = "100"; @Delta = "+0"; @DeltaColor = #5f6f82; @Name = "Mana"; Anchor: (Width: 112, Height: 104); }
+    }
+
+    $K.@Section { @Text = "Resistances"; }
+    Group {
+      LayoutMode: LeftWrap;
+      $K.@Resist { @Icon = "Img/S_Physical.png"; @Text = "Physical -25%"; }
+    }
+
+    $K.@Section { @Text = "Abilities"; }
+    $K.@Ability { @Icon = "Img/A_Rune_Enrage.png"; @Name = "Berserker Fury"; @Tag = "Passive"; @Desc = "Deal 20% more damage when below 50% health."; }
+
+    $K.@Section { @Text = "Starter Kit"; }
+    Group {
+      LayoutMode: Left;
+      $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Head.png"; }
+      $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Chest.png"; }
+      $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Hands.png"; }
+      $K.@Item { @Img = "Img/I_Armor_Trork_Warrior_Legs.png"; }
+      $K.@Item { @Img = "Img/I_Weapon_Sword_Stone_Trork.png"; }
+    }
+  }
+
+  // ---- Right: wardrobe ----
+  @Glass #Wardrobe {
+    Anchor: (Right: 40, Top: 200, Width: 460, Height: 560);
+    LayoutMode: Top;
+    Padding: (Full: 18);
+
+    Group {
+      LayoutMode: LeftWrap;
+      @Tab { @Icon = "Img/C_Body.png"; }
+      @Tab { @Icon = "Img/C_Hair.png"; }
+      @TabOn { @Icon = "Img/C_BeardOn.png"; }
+      @Tab { @Icon = "Img/C_Eyes.png"; }
+      @Tab { @Icon = "Img/C_Eyebrows.png"; }
+      @Tab { @Icon = "Img/C_Mouth.png"; }
+      @Tab { @Icon = "Img/C_Head.png"; }
+      @Tab { @Icon = "Img/C_Chest.png"; }
+      @Tab { @Icon = "Img/C_Neck.png"; }
+      @Tab { @Icon = "Img/C_Hands.png"; }
+      @Tab { @Icon = "Img/C_Feet.png"; }
+    }
+
+    Group {
+      LayoutMode: Left;
+      Anchor: (Height: 30, Top: 6, Bottom: 10);
+      Label { Text: "BEARD"; Style: (FontName: "Secondary", FontSize: 18, RenderBold: true, TextColor: #E8A93B, VerticalAlignment: Center); }
+      Group { FlexWeight: 1; }
+      Label { Text: "Triple Braided"; Style: (FontSize: 15, RenderBold: true, TextColor: #d1dae6, VerticalAlignment: Center); }
+    }
+
+    Group {
+      LayoutMode: LeftWrap;
+      $K.@ThumbNone { @Size = 98; }
+      $K.@Thumb { @Size = 98; @Img = "Img/T_Beard_Single.png"; }
+      $K.@Thumb { @Size = 98; @Img = "Img/T_Beard_Double.png"; }
+      $K.@ThumbOn { @Size = 98; @Img = "Img/T_Beard_Triple.png"; }
+    }
+
+    $K.@Section { @Text = "Colour"; }
+    Group {
+      LayoutMode: LeftWrap;
+      $K.@Swatch { @Color = #1c1a24; }
+      $K.@Swatch { @Color = #3b2a1e; }
+      $K.@Swatch { @Color = #6b4428; }
+      $K.@Swatch { @Color = #8f5a2c; }
+      $K.@SwatchOn { @Color = #d6a55a; }
+      $K.@Swatch { @Color = #e6cf8d; }
+      $K.@Swatch { @Color = #b8432f; }
+      $K.@Swatch { @Color = #7a2a22; }
+      $K.@Swatch { @Color = #c7c7c7; }
+      $K.@Swatch { @Color = #f2efe6; }
+      $K.@Swatch { @Color = #3c5a3a; }
+      $K.@Swatch { @Color = #2f4a6b; }
+    }
+
+    Group { FlexWeight: 1; }
+    Group {
+      LayoutMode: Left;
+      Anchor: (Height: 44);
+      $C.@SecondaryTextButton #Randomize { @Text = "RANDOMIZE"; @Anchor = (Width: 200); }
+      Group { FlexWeight: 1; }
+      $C.@SecondaryTextButton #ResetSlot { @Text = "RESET"; @Anchor = (Width: 172); }
+    }
+  }
+
+  Group {
+    LayoutMode: Left;
+    Anchor: (Left: 910, Top: 806, Width: 100, Height: 44);
+    $K.@IconBtn { @Icon = "Img/ArrowL.png"; }
+    $K.@IconBtn { @Icon = "Img/ArrowR.png"; }
+  }
+
+  // ---- Bottom: species carousel ----
+  Group {
+    LayoutMode: Center;
+    Anchor: (Bottom: 46, Height: 92, Left: 300, Right: 300);
+    @Pick { @Img = "Img/P_GolemSand.png"; }
+    @Pick { @Img = "Img/P_Undead.png"; }
+    @Pick { @Img = "Img/P_Outlander.png"; }
+    @Pick { @Img = "Img/P_Goblin.png"; }
+    @Pick { @Img = "Img/P_Kweebec.png"; }
+    @PickOn { @Img = "Img/P_Trork.png"; }
+    @Pick { @Img = "Img/P_Feran.png"; }
+    @Pick { @Img = "Img/P_FenStalker.png"; }
+    @Pick { @Img = "Img/P_GolemEarth.png"; }
+    @Pick { @Img = "Img/P_GolemFlame.png"; }
+    @Pick { @Img = "Img/P_GolemFrost.png"; }
+  }
+
+  $C.@CancelTextButton #Cancel { @Text = "CANCEL"; Anchor: (Left: 40, Bottom: 70, Width: 180, Height: 44); }
+  $C.@TextButton #Confirm { @Text = "BECOME TRORK"; Anchor: (Right: 40, Bottom: 70, Width: 260, Height: 44); }
+}

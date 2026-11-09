@@ -87,12 +87,13 @@ public class OriginsReloadCommand extends CommandBase {
                         // Reapply stats
                         SpeciesStatUtil.applySpeciesStats(ref, store, species);
 
-                        if (AbilityApiBridge.isAvailable() && !species.getAbilities().isEmpty()) {
+                        if (AbilityApiBridge.isAvailable() && !species.getAbilities().isEmpty()
+                                && !PlayerSpeciesData.getAbilitiesDisabled(ref, store)) {
                             AbilityApiBridge.applySpeciesAbilities(playerRef, ref, store, world, species);
                         }
 
-                        // Reapply model (if not orbian)
-                        if (!species.usesPlayerModel()) {
+                        // Reapply model (if not orbian, and the player has not hidden it)
+                        if (!species.usesPlayerModel() && !PlayerSpeciesData.getSpeciesModelHidden(ref, store)) {
                             if (species.isVersion2()) {
                                 java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
                                 String textureSelection = PlayerSpeciesData.getTextureSelection(ref, store, world);

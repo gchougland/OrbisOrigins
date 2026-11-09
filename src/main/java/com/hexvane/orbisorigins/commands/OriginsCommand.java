@@ -13,5 +13,7 @@ public class OriginsCommand extends AbstractCommandCollection {
         super("origins", "Orbis Origins commands");
         this.addSubCommand(new OriginsReloadCommand(plugin));
         this.addSubCommand(new OriginsHideModelCommand());
+        this.addSubCommand(new OriginsChooseCommand());
+        this.addSubCommand(new OriginsAbilityCommand());
     }
 }

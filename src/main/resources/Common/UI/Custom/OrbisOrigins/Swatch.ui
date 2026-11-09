@@ -1,0 +1,25 @@
+// A colour swatch. Java sets #SwFill.Background (a PatchStyle with Color) and #SwRing.Visible,
+// and the button's TooltipText with the colour's name.
+$C = "../Common.ui";
+
+Button {
+  Anchor: (Width: 34, Height: 34, Right: 6, Bottom: 6);
+  Style: (Default: (Background: #0d1520), Hovered: (Background: #24364a), Sounds: $C.@ButtonSounds);
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+
+  Group #SwFill {
+    Anchor: (Full: 4);
+    Background: #808080;
+    HitTestVisible: false;
+  }
+
+  Group #SwRing {
+    Anchor: (Full: 0);
+    OutlineSize: 2;
+    OutlineColor: #E8A93B;
+    HitTestVisible: false;
+    Visible: false;
+  }
+}

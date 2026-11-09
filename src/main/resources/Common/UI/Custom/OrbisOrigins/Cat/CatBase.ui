@@ -1,0 +1,24 @@
+// Template for one category button on the category rail. Icons are copies of the vanilla avatar-editor
+// category icons (client art is not reachable from a server page). The ring marks the selected one.
+//
+// Java sets #CatOff.Visible / #CatOn.Visible / #CatRing.Visible and the button's TooltipText.
+$C = "../../Common.ui";
+
+@CatTile = Button {
+  @Off = "";
+  @On = "";
+  Anchor: (Width: 56, Height: 56, Bottom: 6);
+  Style: (Default: (Background: #0d1520(0.6)), Hovered: (Background: #1b2a3c(0.9)), Pressed: (Background: #2a2210(0.9)), Sounds: $C.@ButtonSounds);
+  TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+
+  Group #CatRing {
+    Anchor: (Full: 0);
+    OutlineSize: 2;
+    OutlineColor: #E8A93B;
+    Background: #2a2210(0.9);
+    HitTestVisible: false;
+    Visible: false;
+  }
+  Group #CatOff { Anchor: (Width: 52, Height: 39); Background: @Off; HitTestVisible: false; }
+  Group #CatOn { Anchor: (Width: 52, Height: 39); Background: @On; HitTestVisible: false; Visible: false; }
+};

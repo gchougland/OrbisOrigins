@@ -99,7 +99,8 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
         SpeciesStatUtil.applySpeciesStats(ref, store, species);
 
         PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-        if (playerRef != null && AbilityApiBridge.isAvailable() && !species.getAbilities().isEmpty()) {
+        if (playerRef != null && AbilityApiBridge.isAvailable() && !species.getAbilities().isEmpty()
+                && !PlayerSpeciesData.getAbilitiesDisabled(ref, store)) {
             AbilityApiBridge.applySpeciesAbilities(playerRef, ref, store, world, species);
         }
 
@@ -137,8 +138,8 @@ public class SpeciesModelSystem extends RefSystem<EntityStore> {
             return;
         }
         
-        // Apply model (if not orbian)
-        if (!species.usesPlayerModel()) {
+        // Apply model (if not orbian, and the player has not hidden it)
+        if (!species.usesPlayerModel() && !PlayerSpeciesData.getSpeciesModelHidden(ref, store)) {
             if (species.isVersion2()) {
                 java.util.Map<String, String> attachmentSelections = PlayerSpeciesData.getAttachmentSelections(ref, store, world);
                 String textureSelection = PlayerSpeciesData.getTextureSelection(ref, store, world);

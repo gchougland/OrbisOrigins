@@ -1,0 +1,25 @@
+// One cosmetic style in the grid: a live 3D preview of the cosmetic itself. Java sets
+// #TilePreview.ItemId, #TileRing.Visible and #TileLabel.Text (a fallback when there is no preview).
+$T = "Theme.ui";
+
+Button {
+  Anchor: (Width: 116, Height: 116, Right: 8, Bottom: 8);
+  Style: $T.@TileStyle;
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+
+  ItemPreviewComponent #TilePreview {
+    Anchor: (Full: 4);
+    ItemScale: 1;
+    HitTestVisible: false;
+  }
+
+  Label #TileLabel {
+    Anchor: (Full: 6);
+    Text: "";
+    Style: (FontSize: 13, RenderBold: true, TextColor: #96a9be, HorizontalAlignment: Center, VerticalAlignment: Center, Wrap: true);
+    HitTestVisible: false;
+  }
+
+  $T.@Ring #TileRing {}
+}

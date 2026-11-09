@@ -2,6 +2,23 @@
 
 All notable changes to Orbis Origins will be documented in this file.
 
+## [3.0.0] - 11/9/2026
+
+### Added
+
+- **New species screen** — The species selector is rebuilt in the style of the avatar editor. Pick a species from the left rail, then a category icon, then a style, shown as live 3D previews. Hair, beards and other pieces that come in many colours show each style once, with colour swatches under it.
+- **Character sheet** — The species screen shows each species' health, stamina and mana changes, its resistances and weaknesses, its abilities and its starter kit.
+- **Search and randomize** — Search a category's styles by name, or roll a random look with one click.
+- **Remembers your look** — Opening the selector again starts on your current species and outfit.
+- **`/origins choose`** — Opens the species screen without a Species Selector. Operators only by default.
+- **Toggle racial abilities** — Crouch and press O, or use `/origins ability` (add `on` or `off` to choose). Your choice is kept after the server restarts.
+- **HStats** — Orbis Origins now reports anonymous usage statistics to hstats.dev. Server owners can turn this off in `hstats-server-uuid.txt`.
+
+### Fixed
+
+- **Hidden species models stay hidden** — `/origins hidemodel` now lasts through rejoining and server restarts, and also holds after `/origins reload`. Choosing a new species shows your model again.
+- **Simpler command arguments** — `/origins hidemodel hide` and `/origins hidemodel show` work as typed.
+
 ## [2.4.0] - 10/12/2026 (Hytale Update 7)
 
 ### Compatibility

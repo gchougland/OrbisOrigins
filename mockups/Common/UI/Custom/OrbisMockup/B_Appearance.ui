@@ -1,0 +1,202 @@
+// Mockup B, step 2: "Wardrobe". Category list, option list with rendered thumbnails,
+// the live in-world preview in the open middle, an outfit summary on the right.
+$C = "../Common.ui";
+$K = "Kit.ui";
+
+@CatRow = Button {
+  @Icon = "";
+  @Name = "";
+  @Count = "";
+  LayoutMode: Left;
+  Anchor: (Height: 46, Bottom: 4);
+  Padding: (Horizontal: 10);
+  Style: (Default: (Background: #18222f(0.6)), Hovered: (Background: #24364a(0.95)));
+  Group { Anchor: (Width: 28, Height: 28, Right: 12); Background: @Icon; }
+  Label { FlexWeight: 1; Text: @Name; Style: (FontSize: 16, RenderBold: true, TextColor: #b9c6d3, VerticalAlignment: Center); }
+  Label { Text: @Count; Style: (FontSize: 13, RenderBold: true, TextColor: #5f6f82, VerticalAlignment: Center); }
+};
+
+@CatRowOn = Button {
+  @Icon = "";
+  @Name = "";
+  @Count = "";
+  LayoutMode: Left;
+  Anchor: (Height: 46, Bottom: 4);
+  Padding: (Horizontal: 10);
+  Style: (Default: (Background: #2a2210(0.92)));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Width: 28, Height: 28, Right: 12); Background: @Icon; }
+  Label { FlexWeight: 1; Text: @Name; Style: (FontSize: 16, RenderBold: true, TextColor: #f1c46b, VerticalAlignment: Center); }
+  Label { Text: @Count; Style: (FontSize: 13, RenderBold: true, TextColor: #b08d4a, VerticalAlignment: Center); }
+};
+
+@OptRow = Button {
+  @Img = "";
+  @Name = "";
+  @Sub = "";
+  LayoutMode: Left;
+  Anchor: (Height: 84, Bottom: 6);
+  Padding: (Full: 6);
+  Style: (Default: (Background: #18222f(0.92)), Hovered: (Background: #24364a(0.95)));
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+  Group { Anchor: (Width: 72, Height: 72, Right: 12); Background: #0b121b; Group { Anchor: (Full: 3); Background: @Img; } }
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Middle;
+    Label { Text: @Name; Style: (FontSize: 17, RenderBold: true, TextColor: #d1dae6); }
+    Label { Text: @Sub; Style: (FontSize: 13, TextColor: #5f6f82); }
+  }
+};
+
+@OptRowOn = Button {
+  @Img = "";
+  @Name = "";
+  @Sub = "";
+  LayoutMode: Left;
+  Anchor: (Height: 84, Bottom: 6);
+  Padding: (Full: 6);
+  Style: (Default: (Background: #2a2210(0.92)));
+  OutlineSize: 2;
+  OutlineColor: #E8A93B;
+  Group { Anchor: (Width: 72, Height: 72, Right: 12); Background: #0b121b; Group { Anchor: (Full: 3); Background: @Img; } }
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Middle;
+    Label { Text: @Name; Style: (FontSize: 17, RenderBold: true, TextColor: #f1c46b); }
+    Label { Text: @Sub; Style: (FontSize: 13, TextColor: #b08d4a); }
+  }
+  Label { Text: "WORN"; Anchor: (Right: 6); Style: (FontSize: 11, RenderBold: true, TextColor: #E8A93B, VerticalAlignment: Center); }
+};
+
+@Worn = Group {
+  @Icon = "";
+  @Slot = "";
+  @Name = "";
+  LayoutMode: Left;
+  Anchor: (Height: 30);
+  Group { Anchor: (Width: 22, Height: 22, Right: 10); Background: @Icon; }
+  Label { Anchor: (Width: 90); Text: @Slot; Style: (FontSize: 14, RenderBold: true, TextColor: #5f6f82, VerticalAlignment: Center); }
+  Label { Text: @Name; Style: (FontSize: 14, RenderBold: true, TextColor: #d1dae6, VerticalAlignment: Center); }
+};
+
+Group #Root {
+  Anchor: (Full: 0);
+
+  Group #PreviewStandIn {
+    Anchor: (Left: 860, Top: 190, Width: 472, Height: 520);
+    Background: "Img/Hero_Trork.png";
+  }
+
+  // Stepper (step 1 done)
+  Group {
+    LayoutMode: Center;
+    Anchor: (Top: 30, Height: 40);
+    Group {
+      LayoutMode: Left;
+      Anchor: (Height: 36, Horizontal: 10);
+      Group { Anchor: (Width: 30, Height: 30, Right: 10); Background: #18222f; OutlineSize: 1; OutlineColor: #E8A93B;
+        Label { Text: "1"; Style: (FontSize: 16, RenderBold: true, TextColor: #E8A93B, HorizontalAlignment: Center, VerticalAlignment: Center); } }
+      Label { Text: "TRORK"; Style: (FontName: "Secondary", FontSize: 18, RenderBold: true, TextColor: #b08d4a, VerticalAlignment: Center); }
+    }
+    Group { Anchor: (Width: 80, Height: 2); Background: #E8A93B; }
+    Group {
+      LayoutMode: Left;
+      Anchor: (Height: 36, Horizontal: 10);
+      Group { Anchor: (Width: 30, Height: 30, Right: 10); Background: #E8A93B;
+        Label { Text: "2"; Style: (FontSize: 16, RenderBold: true, TextColor: #1a1206, HorizontalAlignment: Center, VerticalAlignment: Center); } }
+      Label { Text: "APPEARANCE"; Style: (FontName: "Secondary", FontSize: 18, RenderBold: true, TextColor: #f1e3c4, VerticalAlignment: Center); }
+    }
+  }
+
+  // Categories
+  $C.@Container #Wardrobe {
+    Anchor: (Left: 50, Top: 100, Width: 290, Height: 760);
+    #Title { $C.@Title { @Text = "Wardrobe"; } }
+    #Content {
+      @CatRow { @Icon = "Img/C_Body.png"; @Name = "Skin"; @Count = "8"; }
+      @CatRow { @Icon = "Img/C_Hair.png"; @Name = "Hair"; @Count = "86"; }
+      @CatRow { @Icon = "Img/C_Beard.png"; @Name = "Beard"; @Count = "63"; }
+      @CatRow { @Icon = "Img/C_Eyes.png"; @Name = "Eyes"; @Count = "3"; }
+      @CatRow { @Icon = "Img/C_Eyebrows.png"; @Name = "Eyebrows"; @Count = "4"; }
+      @CatRow { @Icon = "Img/C_Mouth.png"; @Name = "Tusks"; @Count = "2"; }
+      @CatRow { @Icon = "Img/C_Head.png"; @Name = "Head"; @Count = "3"; }
+      @CatRowOn { @Icon = "Img/C_ChestOn.png"; @Name = "Chest"; @Count = "6"; }
+      @CatRow { @Icon = "Img/C_Neck.png"; @Name = "Neck"; @Count = "1"; }
+      @CatRow { @Icon = "Img/C_Hands.png"; @Name = "Hands"; @Count = "3"; }
+      @CatRow { @Icon = "Img/C_Feet.png"; @Name = "Feet"; @Count = "3"; }
+    }
+  }
+
+  // Options
+  $C.@Container #Options {
+    Anchor: (Left: 350, Top: 100, Width: 440, Height: 760);
+    #Title { $C.@Title { @Text = "Chest"; } }
+    #Content {
+      $C.@TextField #Search { Anchor: (Height: 34, Bottom: 12); PlaceholderText: "Search chest pieces"; }
+      Group {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        @OptRow { @Img = "Img/Empty.png"; @Name = "Bare"; @Sub = "No chest piece"; }
+        @OptRowOn { @Img = "Img/T_Chest_Chieftain.png"; @Name = "Chieftain"; @Sub = "Chieftain set"; }
+        @OptRow { @Img = "Img/T_Chest_Warrior.png"; @Name = "Warrior"; @Sub = "Warrior set"; }
+        @OptRow { @Img = "Img/T_Chest_Hunter.png"; @Name = "Hunter"; @Sub = "Hunter set"; }
+        @OptRow { @Img = "Img/T_Chest_Shaman.png"; @Name = "Shaman"; @Sub = "Shaman set"; }
+        @OptRow { @Img = "Img/T_Chest_Sentry.png"; @Name = "Sentry"; @Sub = "Sentry set"; }
+        @OptRow { @Img = "Img/T_Chest_LoinCloth.png"; @Name = "Loin Cloth"; @Sub = "Cosmetic"; }
+      }
+    }
+  }
+
+  // Rotate bar
+  Group {
+    LayoutMode: Left;
+    Anchor: (Left: 950, Top: 760, Width: 300, Height: 44);
+    $K.@IconBtn { @Icon = "Img/ArrowL.png"; }
+    $K.@IconBtn { @Icon = "Img/ArrowR.png"; }
+    Group { Anchor: (Width: 16); }
+    $C.@SecondaryTextButton #Randomize { @Text = "RANDOMIZE"; @Anchor = (Width: 172); }
+  }
+
+  // Identity + outfit summary
+  $C.@Container #Summary {
+    Anchor: (Right: 50, Top: 100, Width: 420, Height: 560);
+    #Title { $C.@Title { @Text = "Your Trork"; } }
+    #Content {
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 64, Bottom: 6);
+        Group { Anchor: (Width: 60, Height: 60, Right: 12); Background: "Img/P_Trork.png"; OutlineSize: 2; OutlineColor: #E8A93B; }
+        Group {
+          FlexWeight: 1;
+          LayoutMode: Middle;
+          Label { Text: "Trork  -  Chieftain"; Style: (FontSize: 18, RenderBold: true, TextColor: #f1e3c4); }
+          Label { Text: "HP 140   STA 95   MANA 100"; Style: (FontSize: 12, RenderBold: true, TextColor: #8a7650); }
+        }
+      }
+      $K.@Section { @Text = "Outfit"; }
+      @Worn { @Icon = "Img/C_Hair.png"; @Slot = "Hair"; @Name = "Mohawk, Blond"; }
+      @Worn { @Icon = "Img/C_Beard.png"; @Slot = "Beard"; @Name = "Triple Braided, Blond"; }
+      @Worn { @Icon = "Img/C_Eyes.png"; @Slot = "Eyes"; @Name = "Orange"; }
+      @Worn { @Icon = "Img/C_Eyebrows.png"; @Slot = "Eyebrows"; @Name = "Brown"; }
+      @Worn { @Icon = "Img/C_Mouth.png"; @Slot = "Tusks"; @Name = "Chieftain"; }
+      @Worn { @Icon = "Img/C_Head.png"; @Slot = "Head"; @Name = "None"; }
+      @Worn { @Icon = "Img/C_ChestOn.png"; @Slot = "Chest"; @Name = "Chieftain"; }
+      @Worn { @Icon = "Img/C_Neck.png"; @Slot = "Neck"; @Name = "None"; }
+      @Worn { @Icon = "Img/C_Hands.png"; @Slot = "Hands"; @Name = "Warrior"; }
+      @Worn { @Icon = "Img/C_Feet.png"; @Slot = "Feet"; @Name = "Warrior"; }
+      Group { Anchor: (Height: 12); }
+      $C.@SecondaryTextButton #ResetOutfit { @Text = "RESET OUTFIT"; @Anchor = (Width: 200); }
+    }
+  }
+
+  Group {
+    LayoutMode: Right;
+    Anchor: (Right: 50, Bottom: 70, Height: 44, Left: 50);
+    $C.@TextButton #Confirm { @Text = "BECOME TRORK"; @Anchor = (Width: 260); }
+    Group { Anchor: (Width: 10); }
+    $C.@SecondaryTextButton #Back { @Text = "BACK"; @Anchor = (Width: 180); }
+  }
+}

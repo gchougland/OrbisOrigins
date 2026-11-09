@@ -1,0 +1,12 @@
+// One starter item. Java sets #KitIcon.ItemId (only for items that exist) and the TooltipText.
+$C = "../Common.ui";
+
+Group {
+  Anchor: (Width: 52, Height: 52, Right: 6);
+  Background: (TexturePath: "../Common/IngredientSlot.png", Border: 6);
+  TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+
+  ItemIcon #KitIcon {
+    Anchor: (Full: 6);
+  }
+}

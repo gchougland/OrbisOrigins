@@ -1,0 +1,25 @@
+// A species on the left rail: a live 3D preview of the species. Java sets #TilePreview.ItemId,
+// #TileRing.Visible and #TileLabel.Text (shown only when the species has no preview).
+$T = "Theme.ui";
+
+Button {
+  Anchor: (Width: 72, Height: 72, Bottom: 8);
+  Style: $T.@TileStyle;
+  OutlineSize: 1;
+  OutlineColor: #2b3a4d;
+
+  ItemPreviewComponent #TilePreview {
+    Anchor: (Full: 2);
+    ItemScale: 1;
+    HitTestVisible: false;
+  }
+
+  Label #TileLabel {
+    Anchor: (Full: 2);
+    Text: "";
+    Style: (FontSize: 11, RenderBold: true, TextColor: #96a9be, HorizontalAlignment: Center, VerticalAlignment: Center, Wrap: true);
+    HitTestVisible: false;
+  }
+
+  $T.@Ring #TileRing {}
+}

@@ -4,7 +4,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
+import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -24,16 +24,40 @@ import javax.annotation.Nonnull;
  */
 public class OriginsHideModelCommand extends AbstractPlayerCommand {
 
-    @Nonnull
-    private final OptionalArg<String> actionArg = this.withOptionalArg(
-            "hide|show",
-            "Hide or show your species model (omit to toggle)",
-            ArgTypes.STRING
-    );
-
     public OriginsHideModelCommand() {
         super("hidemodel", "Hide or show your species model");
         requireNoPermission();
+        addUsageVariant(new SetVariant());
+    }
+
+    /** /origins hidemodel hide|show */
+    private static final class SetVariant extends AbstractPlayerCommand {
+        @Nonnull
+        private final RequiredArg<String> actionArg = this.withRequiredArg("hide|show", "Hide or show your species model", ArgTypes.STRING);
+
+        SetVariant() {
+            super("Hide or show your species model");
+            requireNoPermission();
+        }
+
+        @Override
+        protected void execute(
+                @Nonnull CommandContext context,
+                @Nonnull Store<EntityStore> store,
+                @Nonnull Ref<EntityStore> ref,
+                @Nonnull PlayerRef playerRef,
+                @Nonnull World world
+        ) {
+            String raw = actionArg.get(context);
+            String action = raw == null ? "" : raw.trim().toLowerCase();
+            if ("hide".equals(action)) {
+                apply(context, store, ref, world, true);
+            } else if ("show".equals(action)) {
+                apply(context, store, ref, world, false);
+            } else {
+                context.sendMessage(Message.raw("[Orbis Origins] Use /origins hidemodel hide or /origins hidemodel show."));
+            }
+        }
     }
 
     @Override
@@ -44,26 +68,16 @@ public class OriginsHideModelCommand extends AbstractPlayerCommand {
             @Nonnull PlayerRef playerRef,
             @Nonnull World world
     ) {
-        boolean wantHide;
-        if (actionArg.provided(context)) {
-            String raw = actionArg.get(context);
-            if (raw == null) {
-                raw = "";
-            }
-            String action = raw.trim().toLowerCase();
-            if ("hide".equals(action)) {
-                wantHide = true;
-            } else if ("show".equals(action)) {
-                wantHide = false;
-            } else {
-                context.sendMessage(Message.raw("[Orbis Origins] Use /origins hidemodel hide or /origins hidemodel show."));
-                return;
-            }
-        } else {
-            // Toggle
-            wantHide = !PlayerSpeciesData.getSpeciesModelHidden(ref, store);
-        }
+        apply(context, store, ref, world, !PlayerSpeciesData.getSpeciesModelHidden(ref, store));
+    }
 
+    private static void apply(
+            @Nonnull CommandContext context,
+            @Nonnull Store<EntityStore> store,
+            @Nonnull Ref<EntityStore> ref,
+            @Nonnull World world,
+            boolean wantHide
+    ) {
         if (wantHide) {
             PlayerSpeciesData.setSpeciesModelHidden(ref, store, true);
             ModelUtil.resetToPlayerSkin(ref, store);
